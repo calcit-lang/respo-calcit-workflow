@@ -30,7 +30,7 @@ jobs:
       run: >
         ./ci-bin/cr_once --emit-js --once
         && wget -O js-out/calcit.procs.mjs http://js.calcit-lang.org/calcit.procs.mjs
-        && yarn && yarn vite build
+        && yarn && yarn vite build --base=./
 
     - name: Deploy to server
       id: deploy
