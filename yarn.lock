@@ -2,15 +2,20 @@
 # yarn lockfile v1
 
 
+"@calcit/ternary-tree@^0.0.4-a2":
+  version "0.0.4-a2"
+  resolved "https://registry.npm.taobao.org/@calcit/ternary-tree/download/@calcit/ternary-tree-0.0.4-a2.tgz#674e50b056bebc6abb7fa3d0931d96a8e9be399b"
+  integrity sha1-Z05QsFa+vGq7f6PQkx2WqOm+OZs=
+
 colorette@^1.2.1:
   version "1.2.1"
-  resolved "https://registry.npm.taobao.org/colorette/download/colorette-1.2.1.tgz#4d0b921325c14faf92633086a536db6e89564b1b"
+  resolved "https://registry.npm.taobao.org/colorette/download/colorette-1.2.1.tgz?cache=0&sync_timestamp=1593955804228&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcolorette%2Fdownload%2Fcolorette-1.2.1.tgz#4d0b921325c14faf92633086a536db6e89564b1b"
   integrity sha1-TQuSEyXBT6+SYzCGpTbbbolWSxs=
 
-esbuild@^0.8.26:
-  version "0.8.31"
-  resolved "https://registry.npm.taobao.org/esbuild/download/esbuild-0.8.31.tgz#c21e7adb3ad283c951a53de7ad64a5ae2df2ed34"
-  integrity sha1-wh562zrSg8lRpT3nrWSlri3y7TQ=
+esbuild@^0.8.34:
+  version "0.8.34"
+  resolved "https://registry.npm.taobao.org/esbuild/download/esbuild-0.8.34.tgz#16b4ac58f74c821d2c5a8c2f0585ca96a38ab4e6"
+  integrity sha1-FrSsWPdMgh0sWowvBYXKlqOKtOY=
 
 fsevents@~2.1.2:
   version "2.1.3"
@@ -31,14 +36,14 @@ has@^1.0.3:
 
 is-core-module@^2.1.0:
   version "2.2.0"
-  resolved "https://registry.npm.taobao.org/is-core-module/download/is-core-module-2.2.0.tgz?cache=0&sync_timestamp=1606411666495&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fis-core-module%2Fdownload%2Fis-core-module-2.2.0.tgz#97037ef3d52224d85163f5597b2b63d9afed981a"
+  resolved "https://registry.npm.taobao.org/is-core-module/download/is-core-module-2.2.0.tgz?cache=0&sync_timestamp=1606411588663&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fis-core-module%2Fdownload%2Fis-core-module-2.2.0.tgz#97037ef3d52224d85163f5597b2b63d9afed981a"
   integrity sha1-lwN+89UiJNhRY/VZeytj2a/tmBo=
   dependencies:
     has "^1.0.3"
 
 nanoid@^3.1.20:
   version "3.1.20"
-  resolved "https://registry.npm.taobao.org/nanoid/download/nanoid-3.1.20.tgz#badc263c6b1dcf14b71efaa85f6ab4c1d6cfc788"
+  resolved "https://registry.npm.taobao.org/nanoid/download/nanoid-3.1.20.tgz?cache=0&sync_timestamp=1606833990942&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fnanoid%2Fdownload%2Fnanoid-3.1.20.tgz#badc263c6b1dcf14b71efaa85f6ab4c1d6cfc788"
   integrity sha1-utwmPGsdzxS3HvqoX2q0wdbPx4g=
 
 path-parse@^1.0.6:
@@ -48,7 +53,7 @@ path-parse@^1.0.6:
 
 postcss@^8.2.1:
   version "8.2.4"
-  resolved "https://registry.npm.taobao.org/postcss/download/postcss-8.2.4.tgz?cache=0&sync_timestamp=1610186282508&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fpostcss%2Fdownload%2Fpostcss-8.2.4.tgz#20a98a39cf303d15129c2865a9ec37eda0031d04"
+  resolved "https://registry.npm.taobao.org/postcss/download/postcss-8.2.4.tgz?cache=0&sync_timestamp=1610186312013&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fpostcss%2Fdownload%2Fpostcss-8.2.4.tgz#20a98a39cf303d15129c2865a9ec37eda0031d04"
   integrity sha1-IKmKOc8wPRUSnChlqew37aADHQQ=
   dependencies:
     colorette "^1.2.1"
@@ -57,16 +62,16 @@ postcss@^8.2.1:
 
 resolve@^1.19.0:
   version "1.19.0"
-  resolved "https://registry.npm.taobao.org/resolve/download/resolve-1.19.0.tgz?cache=0&sync_timestamp=1605052050544&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fresolve%2Fdownload%2Fresolve-1.19.0.tgz#1af5bf630409734a067cae29318aac7fa29a267c"
+  resolved "https://registry.npm.taobao.org/resolve/download/resolve-1.19.0.tgz#1af5bf630409734a067cae29318aac7fa29a267c"
   integrity sha1-GvW/YwQJc0oGfK4pMYqsf6KaJnw=
   dependencies:
     is-core-module "^2.1.0"
     path-parse "^1.0.6"
 
 rollup@^2.35.1:
-  version "2.36.1"
-  resolved "https://registry.npm.taobao.org/rollup/download/rollup-2.36.1.tgz?cache=0&sync_timestamp=1609940261447&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frollup%2Fdownload%2Frollup-2.36.1.tgz#2174f0c25c7b400d57b05628d0e732c7ae8d2178"
-  integrity sha1-IXTwwlx7QA1XsFYo0Ocyx66NIXg=
+  version "2.38.0"
+  resolved "https://registry.npm.taobao.org/rollup/download/rollup-2.38.0.tgz?cache=0&sync_timestamp=1611333080406&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frollup%2Fdownload%2Frollup-2.38.0.tgz#57942d5a10826cb12ed1f19c261f774efa502d2d"
+  integrity sha1-V5QtWhCCbLEu0fGcJh93TvpQLS0=
   optionalDependencies:
     fsevents "~2.1.2"
 
@@ -75,12 +80,12 @@ source-map@^0.6.1:
   resolved "https://registry.npm.taobao.org/source-map/download/source-map-0.6.1.tgz#74722af32e9614e9c287a8d0bbde48b5e2f1a263"
   integrity sha1-dHIq8y6WFOnCh6jQu95IteLxomM=
 
-vite@^2.0.0-beta.23:
-  version "2.0.0-beta.23"
-  resolved "https://registry.npm.taobao.org/vite/download/vite-2.0.0-beta.23.tgz?cache=0&sync_timestamp=1610422472108&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvite%2Fdownload%2Fvite-2.0.0-beta.23.tgz#9cbbfc85c5737f5bdee4784c7b838365852396f7"
-  integrity sha1-nLv8hcVzf1ve5HhMe4ODZYUjlvc=
+vite@^2.0.0-beta.48:
+  version "2.0.0-beta.48"
+  resolved "https://registry.npm.taobao.org/vite/download/vite-2.0.0-beta.48.tgz#76938af039fedd62177c3305b6195f8d25eb591a"
+  integrity sha1-dpOK8Dn+3WIXfDMFthlfjSXrWRo=
   dependencies:
-    esbuild "^0.8.26"
+    esbuild "^0.8.34"
     postcss "^8.2.1"
     resolve "^1.19.0"
     rollup "^2.35.1"
