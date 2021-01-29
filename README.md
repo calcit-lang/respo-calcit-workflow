@@ -13,8 +13,6 @@ To develop:
 ```bash
 cr --emit-js # watching
 
-cp -v http://js.calcit-lang.org/calcit.procs.js js-out/
-
 yarn # to install vite
 yarn vite # watching and running on localhost:3000
 ```
