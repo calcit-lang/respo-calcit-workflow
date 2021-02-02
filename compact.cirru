@@ -4,7 +4,7 @@
   :files $ {}
     |app.comp.container $ {}
       :ns $ quote
-        ns app.comp.container $ :require ([] hsl.core :refer $ [] hsl) ([] respo-ui.core :as ui) ([] respo.core :refer $ [] defcomp defeffect <> >> div button textarea span input) ([] respo.comp.space :refer $ [] =<) ([] reel.comp.reel :refer $ [] comp-reel) ([] respo-md.comp.md :refer $ [] comp-md) ([] app.config :refer $ [] dev?)
+        ns app.comp.container $ :require ([] respo-ui.core :as ui) ([] respo.core :refer $ [] defcomp defeffect <> >> div button textarea span input) ([] respo.comp.space :refer $ [] =<) ([] reel.comp.reel :refer $ [] comp-reel) ([] respo-md.comp.md :refer $ [] comp-md) ([] app.config :refer $ [] dev?)
       :defs $ {}
         |comp-container $ quote
           defcomp comp-container (reel)

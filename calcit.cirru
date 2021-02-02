@@ -13,15 +13,6 @@
             |v $ {} (:type :expr) (:at 1499755354983)
               :data $ {}
                 |T $ {} (:type :leaf) (:by |root) (:at 1499755354983) (:text |:require)
-                |j $ {} (:type :expr) (:at 1499755354983)
-                  :data $ {}
-                    |T $ {} (:type :leaf) (:by |root) (:at 1499755354983) (:text |[])
-                    |j $ {} (:type :leaf) (:by |root) (:at 1499755354983) (:text |hsl.core)
-                    |r $ {} (:type :leaf) (:by |root) (:at 1499755354983) (:text |:refer)
-                    |v $ {} (:type :expr) (:at 1499755354983)
-                      :data $ {}
-                        |T $ {} (:type :leaf) (:by |root) (:at 1499755354983) (:text |[])
-                        |j $ {} (:type :leaf) (:by |root) (:at 1499755354983) (:text |hsl)
                 |r $ {} (:type :expr) (:at 1499755354983)
                   :data $ {}
                     |T $ {} (:type :leaf) (:by |root) (:at 1499755354983) (:text |[])
