@@ -57,7 +57,7 @@
             reset! *reel $ reel-updater updater @*reel op op-data
         |main! $ quote
           defn main! () (println "\"Running mode:" $ if config/dev? "\"dev" "\"release") (if ssr? $ render-app! realize-ssr!) (render-app! render!)
-            add-watch *reel :changes $ fn () (render-app! render!)
+            add-watch *reel :changes $ fn (reel prev) (render-app! render!)
             listen-devtools! |a dispatch!
             .addEventListener js/window |beforeunload persist-storage!
             repeat! 60 persist-storage!
@@ -78,7 +78,9 @@
           defn render-app! (renderer)
             renderer mount-target (comp-container @*reel) (\ dispatch! % %2)
         |reload! $ quote
-          defn reload! () (clear-cache!) (reset! *reel $ refresh-reel @*reel schema/store updater) (println "|Code updated.")
+          defn reload! () (clear-cache!) (remove-watch *reel :changes)
+            add-watch *reel :changes $ fn (reel prev) (render-app! render!)
+            reset! *reel $ refresh-reel @*reel schema/store updater
         |mount-target $ quote (def mount-target $ .querySelector js/document |.app)
       :proc $ quote ()
     |app.schema $ {}
