@@ -48,7 +48,7 @@
         |repeat! $ quote
           defn repeat! (duration cb)
             js/setTimeout
-              fn () (echo "\"called") (cb)
+              fn () (cb)
                 repeat! (* 1000 duration) cb
               * 1000 duration
         |dispatch! $ quote
@@ -59,7 +59,7 @@
           defn main! () (println "\"Running mode:" $ if config/dev? "\"dev" "\"release") (if ssr? $ render-app! realize-ssr!) (render-app! render!)
             add-watch *reel :changes $ fn (reel prev) (render-app! render!)
             listen-devtools! |a dispatch!
-            .addEventListener js/window |beforeunload persist-storage!
+            .addEventListener js/window |beforeunload $ fn (event) (persist-storage!)
             repeat! 60 persist-storage!
             let
                 raw $ .getItem js/localStorage (:storage-key config/site)

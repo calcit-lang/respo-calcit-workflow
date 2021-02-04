@@ -455,10 +455,6 @@
                       |n $ {} (:type :expr) (:by |rJG4IHzWf) (:at 1610793090420)
                         :data $ {}
                           |T $ {} (:type :leaf) (:by |rJG4IHzWf) (:at 1610793091010) (:text |cb)
-                      |l $ {} (:type :expr) (:by |rJG4IHzWf) (:at 1610794385914)
-                        :data $ {}
-                          |T $ {} (:type :leaf) (:by |rJG4IHzWf) (:at 1610794387387) (:text |echo)
-                          |j $ {} (:type :leaf) (:by |rJG4IHzWf) (:at 1610794388452) (:text "|\"called")
                   |r $ {} (:type :expr) (:by |rJG4IHzWf) (:at 1610793071391)
                     :data $ {}
                       |T $ {} (:type :leaf) (:by |rJG4IHzWf) (:at 1610793071233) (:text |duration)
@@ -508,7 +504,15 @@
                   |T $ {} (:type :leaf) (:by |root) (:at 1518157450281) (:text |.addEventListener)
                   |j $ {} (:type :leaf) (:by |root) (:at 1518157453505) (:text |js/window)
                   |r $ {} (:type :leaf) (:by |root) (:at 1518157458163) (:text ||beforeunload)
-                  |v $ {} (:type :leaf) (:by |rJG4IHzWf) (:at 1533919515671) (:text |persist-storage!)
+                  |v $ {} (:type :expr) (:by |rJG4IHzWf) (:at 1612344221583)
+                    :data $ {}
+                      |T $ {} (:type :expr) (:by |rJG4IHzWf) (:at 1612344224533)
+                        :data $ {}
+                          |T $ {} (:type :leaf) (:by |rJG4IHzWf) (:at 1533919515671) (:text |persist-storage!)
+                      |D $ {} (:type :leaf) (:by |rJG4IHzWf) (:at 1612344222204) (:text |fn)
+                      |L $ {} (:type :expr) (:by |rJG4IHzWf) (:at 1612344222530)
+                        :data $ {}
+                          |T $ {} (:type :leaf) (:by |rJG4IHzWf) (:at 1612344223520) (:text |event)
               |yT $ {} (:type :expr) (:at 1499755354983)
                 :data $ {}
                   |T $ {} (:type :leaf) (:by |root) (:at 1499755354983) (:text |println)
