@@ -28,7 +28,7 @@ jobs:
 
     - name: "compiles to js"
       run: >
-        ./ci-bin/cr_once --emit-js --once
+        ./ci-bin/cr_once --emit-js
         && yarn && yarn vite build --base=./
 
     - name: Deploy to server
