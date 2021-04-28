@@ -2,7 +2,7 @@
 Respo workflow in Calcit-js
 ----
 
-> Respo web page based on calcit-js.
+> Respo web page based on [calcit-js](https://github.com/calcit-lang/calcit_runner.rs).
 
 Demo http://repo.calcit-lang.org/respo-calcit-workflow/ .
 
@@ -11,7 +11,7 @@ Demo http://repo.calcit-lang.org/respo-calcit-workflow/ .
 To develop:
 
 ```bash
-cr --emit-js # watching
+calcit_runner --emit-js # watching
 
 yarn # to install vite
 yarn vite # watching and running on localhost:3000
