@@ -6,12 +6,12 @@
   :files $ {}
     |app.comp.container $ {}
       :ns $ quote
-        ns app.comp.container $ :require ([] respo-ui.core :as ui)
-          [] respo.core :refer $ [] defcomp defeffect <> >> div button textarea span input
-          [] respo.comp.space :refer $ [] =<
-          [] reel.comp.reel :refer $ [] comp-reel
-          [] respo-md.comp.md :refer $ [] comp-md
-          [] app.config :refer $ [] dev?
+        ns app.comp.container $ :require (respo-ui.core :as ui)
+          respo.core :refer $ defcomp defeffect <> >> div button textarea span input
+          respo.comp.space :refer $ =<
+          reel.comp.reel :refer $ comp-reel
+          respo-md.comp.md :refer $ comp-md
+          app.config :refer $ dev?
       :defs $ {}
         |comp-container $ quote
           defcomp comp-container (reel)
@@ -56,14 +56,14 @@
     |app.main $ {}
       :ns $ quote
         ns app.main $ :require
-          [] respo.core :refer $ [] render! clear-cache! realize-ssr!
-          [] app.comp.container :refer $ [] comp-container
-          [] app.updater :refer $ [] updater
-          [] app.schema :as schema
-          [] reel.util :refer $ [] listen-devtools!
-          [] reel.core :refer $ [] reel-updater refresh-reel
-          [] reel.schema :as reel-schema
-          [] app.config :as config
+          respo.core :refer $ render! clear-cache! realize-ssr!
+          app.comp.container :refer $ comp-container
+          app.updater :refer $ updater
+          app.schema :as schema
+          reel.util :refer $ listen-devtools!
+          reel.core :refer $ reel-updater refresh-reel
+          reel.schema :as reel-schema
+          app.config :as config
       :defs $ {}
         |ssr? $ quote
           def ssr? $ some? (js/document.querySelector |meta.respo-ssr)
@@ -121,7 +121,7 @@
     |app.updater $ {}
       :ns $ quote
         ns app.updater $ :require
-          [] respo.cursor :refer $ [] update-states
+          respo.cursor :refer $ update-states
       :defs $ {}
         |updater $ quote
           defn updater (store op data op-id op-time)
