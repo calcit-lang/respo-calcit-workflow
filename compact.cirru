@@ -85,16 +85,16 @@
             if ssr? $ render-app! realize-ssr!
             render-app! render!
             add-watch *reel :changes $ fn (reel prev) (render-app! render!)
-            listen-devtools! |a dispatch!
+            listen-devtools! |k dispatch!
             .addEventListener js/window |beforeunload $ fn (event) (persist-storage!)
             repeat! 60 persist-storage!
             let
-                raw $ .getItem js/localStorage (:storage-key config/site)
+                raw $ .!getItem js/localStorage (:storage-key config/site)
               when (some? raw)
                 dispatch! :hydrate-storage $ extract-cirru-edn (js/JSON.parse raw)
             println "|App started."
         |persist-storage! $ quote
-          defn persist-storage! () $ .setItem js/localStorage (:storage-key config/site)
+          defn persist-storage! () $ .!setItem js/localStorage (:storage-key config/site)
             js/JSON.stringify $ to-cirru-edn (:store @*reel)
         |*reel $ quote
           defatom *reel $ -> reel-schema/reel (assoc :base schema/store) (assoc :store schema/store)
@@ -102,7 +102,7 @@
           defn snippets () $ println config/cdn?
         |render-app! $ quote
           defn render-app! (renderer)
-            renderer mount-target (comp-container @*reel) (\ dispatch! % %2)
+            renderer mount-target (comp-container @*reel) dispatch!
         |reload! $ quote
           defn reload! () (remove-watch *reel :changes) (clear-cache!)
             add-watch *reel :changes $ fn (reel prev) (render-app! render!)
