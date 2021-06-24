@@ -43,20 +43,15 @@
     |app.config $ {}
       :ns $ quote (ns app.config)
       :defs $ {}
-        |cdn? $ quote
-          def cdn? $ cond
-              exists? js/window
-              , false
-            (exists? js/process) (= "\"true" js/process.env.cdn)
-            :else false
-        |dev? $ quote (def dev? true)
+        |dev? $ quote
+          def dev? $ = "\"dev" (get-env "\"mode")
         |site $ quote
-          def site $ {} (:dev-ui "\"http://localhost:8100/main-fonts.css") (:release-ui "\"http://cdn.tiye.me/favored-fonts/main-fonts.css") (:cdn-url "\"http://cdn.tiye.me/calcit-workflow/") (:title "\"Calcit") (:icon "\"http://cdn.tiye.me/logo/mvc-works.png") (:storage-key "\"workflow")
+          def site $ {} (:storage-key "\"workflow")
       :proc $ quote ()
     |app.main $ {}
       :ns $ quote
         ns app.main $ :require
-          respo.core :refer $ render! clear-cache! realize-ssr!
+          respo.core :refer $ render! clear-cache!
           app.comp.container :refer $ comp-container
           app.updater :refer $ updater
           app.schema :as schema
@@ -65,8 +60,6 @@
           reel.schema :as reel-schema
           app.config :as config
       :defs $ {}
-        |ssr? $ quote
-          def ssr? $ some? (js/document.querySelector |meta.respo-ssr)
         |repeat! $ quote
           defn repeat! (duration cb)
             js/setTimeout
@@ -82,33 +75,29 @@
         |main! $ quote
           defn main! ()
             println "\"Running mode:" $ if config/dev? "\"dev" "\"release"
-            if ssr? $ render-app! realize-ssr!
-            render-app! render!
-            add-watch *reel :changes $ fn (reel prev) (render-app! render!)
+            render-app!
+            add-watch *reel :changes $ fn (reel prev) (render-app!)
             listen-devtools! |k dispatch!
-            .addEventListener js/window |beforeunload $ fn (event) (persist-storage!)
+            .!addEventListener js/window |beforeunload $ fn (event) (persist-storage!)
             repeat! 60 persist-storage!
             let
                 raw $ .!getItem js/localStorage (:storage-key config/site)
               when (some? raw)
-                dispatch! :hydrate-storage $ extract-cirru-edn (js/JSON.parse raw)
+                dispatch! :hydrate-storage $ parse-cirru-edn raw
             println "|App started."
         |persist-storage! $ quote
           defn persist-storage! () $ .!setItem js/localStorage (:storage-key config/site)
-            js/JSON.stringify $ to-cirru-edn (:store @*reel)
+            format-cirru-edn $ :store @*reel
         |*reel $ quote
           defatom *reel $ -> reel-schema/reel (assoc :base schema/store) (assoc :store schema/store)
-        |snippets $ quote
-          defn snippets () $ println config/cdn?
         |render-app! $ quote
-          defn render-app! (renderer)
-            renderer mount-target (comp-container @*reel) dispatch!
+          defn render-app! () $ render! mount-target (comp-container @*reel) dispatch!
         |reload! $ quote
           defn reload! () (remove-watch *reel :changes) (clear-cache!)
-            add-watch *reel :changes $ fn (reel prev) (render-app! render!)
+            add-watch *reel :changes $ fn (reel prev) (render-app!)
             reset! *reel $ refresh-reel @*reel schema/store updater
         |mount-target $ quote
-          def mount-target $ .querySelector js/document |.app
+          def mount-target $ .!querySelector js/document |.app
       :proc $ quote ()
     |app.schema $ {}
       :ns $ quote (ns app.schema)
