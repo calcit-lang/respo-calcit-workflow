@@ -17,7 +17,7 @@ yarn # to install vite
 yarn vite # watching and running on localhost:3000
 ```
 
-calcit-js is using [Calcit Editor](https://github.com/Cirru/calcit-editor).
+calcit-js is using [Calcit Editor](https://github.com/calcit-lang/editor).
 
 To build:
 
