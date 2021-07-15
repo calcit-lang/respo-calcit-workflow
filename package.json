@@ -3,6 +3,7 @@
     "@calcit/procs": "^0.4.9"
   },
   "devDependencies": {
+    "bottom-tip": "^0.1.2-a3",
     "vite": "^2.4.2"
   },
   "version": "0.0.1"

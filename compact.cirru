@@ -69,6 +69,7 @@
           reel.schema :as reel-schema
           app.config :as config
           "\"./calcit.build-errors" :default build-errors
+          "\"bottom-tip" :default hud!
       :defs $ {}
         |render-app! $ quote
           defn render-app! () $ render! mount-target (comp-container @*reel) dispatch!
@@ -100,10 +101,10 @@
             reset! *reel $ reel-updater updater @*reel op op-data
         |reload! $ quote
           defn reload! () $ if (nil? build-errors)
-            do (remove-watch *reel :changes) (clear-cache!)
+            do (hud! "\"inactive" nil) (remove-watch *reel :changes) (clear-cache!)
               add-watch *reel :changes $ fn (reel prev) (render-app!)
               reset! *reel $ refresh-reel @*reel schema/store updater
-            js/console.error build-errors
+            hud! "\"error" build-errors
         |repeat! $ quote
           defn repeat! (duration cb)
             js/setTimeout

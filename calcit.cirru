@@ -917,6 +917,14 @@
                   |T $ {}
                     :data $ {}
                       |T $ {} (:text |do) (:type :leaf) (:at 1626201161775) (:by |rJG4IHzWf)
+                      |b $ {}
+                        :data $ {}
+                          |T $ {} (:type :leaf) (:by |rJG4IHzWf) (:at 1626290870185) (:text |hud!)
+                          |j $ {} (:text "|\"inactive") (:type :leaf) (:at 1626290873893) (:by |rJG4IHzWf)
+                          |r $ {} (:text |nil) (:type :leaf) (:at 1626290942556) (:by |rJG4IHzWf)
+                        :type :expr
+                        :at 1626290870185
+                        :by |rJG4IHzWf
                       |j $ {}
                         :data $ {}
                           |T $ {} (:text |remove-watch) (:type :leaf) (:at 1614750747553) (:by |rJG4IHzWf)
@@ -979,7 +987,8 @@
                     :by |rJG4IHzWf
                   |j $ {}
                     :data $ {}
-                      |T $ {} (:text |js/console.error) (:type :leaf) (:at 1626201247165) (:by |rJG4IHzWf)
+                      |T $ {} (:text |hud!) (:type :leaf) (:at 1626290831868) (:by |rJG4IHzWf)
+                      |b $ {} (:text "|\"error") (:type :leaf) (:at 1626290930377) (:by |rJG4IHzWf)
                       |j $ {} (:text |build-errors) (:type :leaf) (:at 1626201209903) (:by |rJG4IHzWf)
                     :type :expr
                     :at 1626201203433
@@ -1067,6 +1076,14 @@
                     |r $ {} (:text |build-errors) (:type :leaf) (:at 1626201187310) (:by |rJG4IHzWf)
                   :type :expr
                   :at 1626201173819
+                  :by |rJG4IHzWf
+                |yyj $ {}
+                  :data $ {}
+                    |T $ {} (:text "|\"bottom-tip") (:type :leaf) (:at 1626290810913) (:by |rJG4IHzWf)
+                    |j $ {} (:text |:default) (:type :leaf) (:at 1626290816153) (:by |rJG4IHzWf)
+                    |r $ {} (:text |hud!) (:type :leaf) (:at 1626290825711) (:by |rJG4IHzWf)
+                  :type :expr
+                  :at 1626290808117
                   :by |rJG4IHzWf
                 |yT $ {}
                   :data $ {}
