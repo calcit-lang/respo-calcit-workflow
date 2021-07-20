@@ -101,9 +101,10 @@
             reset! *reel $ reel-updater updater @*reel op op-data
         |reload! $ quote
           defn reload! () $ if (nil? build-errors)
-            do (hud! "\"inactive" nil) (remove-watch *reel :changes) (clear-cache!)
+            do (remove-watch *reel :changes) (clear-cache!)
               add-watch *reel :changes $ fn (reel prev) (render-app!)
               reset! *reel $ refresh-reel @*reel schema/store updater
+              hud! "\"ok~" "\"Ok"
             hud! "\"error" build-errors
         |repeat! $ quote
           defn repeat! (duration cb)
