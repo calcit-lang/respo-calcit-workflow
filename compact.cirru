@@ -18,8 +18,8 @@
             let
                 store $ :store reel
                 states $ :states store
-                cursor $ either (:cursor states) ([])
-                state $ either (:data states)
+                cursor $ or (:cursor states) ([])
+                state $ or (:data states)
                   {} $ :content "\""
               div
                 {} $ :style (merge ui/global ui/row)
@@ -53,10 +53,10 @@
       :defs $ {}
         |updater $ quote
           defn updater (store op data op-id op-time)
-            case op
+            case-default op
+              do (println "\"unknown op:" op) store
               :states $ update-states store data
               :hydrate-storage data
-              op store
     |app.main $ {}
       :ns $ quote
         ns app.main $ :require
