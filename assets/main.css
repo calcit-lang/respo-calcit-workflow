@@ -2,6 +2,7 @@
 body {
   margin: 0;
   overscroll-behavior-y: none;
+  overscroll-behavior-x: none;
 }
 
 body * {
@@ -19,7 +20,7 @@ body * {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: hsla(200,100%,76%,0.8);
+  background-color: hsla(200,80%,76%,0.8);
 }
 
 ::-webkit-scrollbar-corner {
