@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@calcit/procs@^0.4.28":
-  version "0.4.28"
-  resolved "https://registry.npmjs.org/@calcit/procs/-/procs-0.4.28.tgz#baf0896a7b4bedbd99122602cc0370eec40d8fad"
-  integrity sha512-DYdPCwqXuBGbl7X21qrjankZpaP3fXRm2zE8CpnFofSoDak30z2R/xOia0QHoU/YMklA7x47dIqWAaU7r6E01A==
+"@calcit/procs@^0.4.30":
+  version "0.4.30"
+  resolved "https://registry.npmjs.org/@calcit/procs/-/procs-0.4.30.tgz#d35dbec33df68702b5072695b0be66b5ac6436c0"
+  integrity sha512-OkhqoNFxtfBBqI9cdL4konOwouKtLN6gvWqWbGtbHkYQbLBbCEtDxUdLNQHEp5BRqOwOgi36ob9gu9+clmfc1A==
   dependencies:
     "@calcit/ternary-tree" "0.0.16"
     "@cirru/parser.ts" "^0.0.3"
@@ -44,9 +44,9 @@ camelize@^1.0.0:
   integrity sha1-FkpUg+Yw+kMh5a8HAg5TGDGyYJs=
 
 colorette@^1.2.2:
-  version "1.3.0"
-  resolved "https://registry.npmjs.org/colorette/-/colorette-1.3.0.tgz#ff45d2f0edb244069d3b772adeb04fed38d0a0af"
-  integrity sha512-ecORCqbSFP7Wm8Y6lyqMJjexBQqXSF7SSeaTyGGphogUjBlFP9m9o08wy86HL2uB7fMTxtOUzLMk7ogKcxMg1w==
+  version "1.4.0"
+  resolved "https://registry.npmjs.org/colorette/-/colorette-1.4.0.tgz#5190fbb87276259a86ad700bff2c6d6faa3fca40"
+  integrity sha512-Y2oEozpomLn7Q3HFP7dpww7AtMJplbM9lGZP6RDfHqmbeRjiwRg4n6VM6j4KLmRke85uWEI7JqF17f3pqdRA0g==
 
 dom-walk@^0.1.0:
   version "0.1.2"
@@ -191,10 +191,10 @@ virtual-dom@^2.1.1:
     x-is-array "0.1.0"
     x-is-string "0.1.0"
 
-vite@^2.5.3:
-  version "2.5.3"
-  resolved "https://registry.npmjs.org/vite/-/vite-2.5.3.tgz#88d40a9efb9bec66bd87a7676c5689f35ff63742"
-  integrity sha512-1wMDnjflvtTTkMov8O/Xb5+w1/VW/Gw8oCf8f6dqgHn8lMOEqq0SaPtFEQeikFcOKCfSbiU0nEi0LDIx6DNsaQ==
+vite@^2.5.6:
+  version "2.5.6"
+  resolved "https://registry.npmjs.org/vite/-/vite-2.5.6.tgz#51431bb5b99b041289595300ba15947bad0f89aa"
+  integrity sha512-P++qzXuOPhTql8iDamsatlJfD7/yGi8NCNwzyqkB2p0jrNJC567WEdXiKn3hQ+ZV8amQmB2dTH6svo3Z2tJ6MQ==
   dependencies:
     esbuild "^0.12.17"
     postcss "^8.3.6"
