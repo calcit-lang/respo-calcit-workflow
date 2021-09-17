@@ -4,7 +4,7 @@
   },
   "devDependencies": {
     "bottom-tip": "^0.1.2",
-    "vite": "^2.5.7"
+    "vite": "^2.5.8"
   },
   "version": "0.0.1"
 }
