@@ -3,6 +3,7 @@
   :configs $ {} (:init-fn |app.main/main!) (:reload-fn |app.main/reload!)
     :modules $ [] |respo.calcit/ |lilac/ |memof/ |respo-ui.calcit/ |respo-markdown.calcit/ |reel.calcit/
     :version |0.0.1
+  :entries $ {}
   :files $ {}
     |app.comp.container $ {}
       :ns $ quote
@@ -83,6 +84,7 @@
         |main! $ quote
           defn main! ()
             println "\"Running mode:" $ if config/dev? "\"dev" "\"release"
+            if config/dev? $ load-console-formatter!
             render-app!
             add-watch *reel :changes $ fn (reel prev) (render-app!)
             listen-devtools! |k dispatch!
