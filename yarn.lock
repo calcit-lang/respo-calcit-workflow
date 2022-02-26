@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@calcit/procs@^0.5.18-a2":
-  version "0.5.18-a2"
-  resolved "https://registry.npmjs.org/@calcit/procs/-/procs-0.5.18-a2.tgz#dc30fa004615b2d927819fbab225d6d52cf64c2a"
-  integrity sha512-tQ1Mo8YRr1OM/DmcAfUQxNcUPvKuzegE0UscebhKP59Tot57HH5Vm12JdRCTuH8Y+rvvLsG43LVrJD/Xn23dnw==
+"@calcit/procs@^0.5.18-a3":
+  version "0.5.18-a3"
+  resolved "https://registry.npmjs.org/@calcit/procs/-/procs-0.5.18-a3.tgz#9d6b2f2755d543b4438efe7de5bdb8c27d9c4ab8"
+  integrity sha512-CCahdUpYvu4u6+be/s5+VSLspp8lK7v2H42hYvhxtgmRZZ8bOzLfq4JhWBG66d/7v6uxHx8tXab1Dwnv1Hkj0A==
   dependencies:
     "@calcit/ternary-tree" "0.0.18"
     "@cirru/parser.ts" "^0.0.5"
@@ -233,7 +233,7 @@ min-document@^2.19.0:
   dependencies:
     dom-walk "^0.1.0"
 
-nanoid@^3.2.0:
+nanoid@^3.3.1:
   version "3.3.1"
   resolved "https://registry.npmjs.org/nanoid/-/nanoid-3.3.1.tgz#6347a18cac88af88f58af0b3594b723d5e99bb35"
   integrity sha512-n6Vs/3KGyxPQd6uO0eH4Bv0ojGSUvuLlIHtC3Y0kEO23YRge8H9x1GCzLn28YX0H66pMkxuaeESFq4tKISKwdw==
@@ -254,11 +254,11 @@ picocolors@^1.0.0:
   integrity sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==
 
 postcss@^8.4.6:
-  version "8.4.6"
-  resolved "https://registry.npmjs.org/postcss/-/postcss-8.4.6.tgz#c5ff3c3c457a23864f32cb45ac9b741498a09ae1"
-  integrity sha512-OovjwIzs9Te46vlEx7+uXB0PLijpwjXGKXjVGGPIGubGpq7uh5Xgf6D6FiJ/SzJMBosHDp6a2hiXOS97iBXcaA==
+  version "8.4.7"
+  resolved "https://registry.npmjs.org/postcss/-/postcss-8.4.7.tgz#f99862069ec4541de386bf57f5660a6c7a0875a8"
+  integrity sha512-L9Ye3r6hkkCeOETQX6iOaWZgjp3LL6Lpqm6EtgbKrgqGGteRMNb9vzBfRL96YOSu8o7x3MfIH9Mo5cPJFGrW6A==
   dependencies:
-    nanoid "^3.2.0"
+    nanoid "^3.3.1"
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
 
