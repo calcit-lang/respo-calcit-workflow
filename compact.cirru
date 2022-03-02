@@ -75,8 +75,9 @@
         |render-app! $ quote
           defn render-app! () $ render! mount-target (comp-container @*reel) dispatch!
         |persist-storage! $ quote
-          defn persist-storage! () $ .!setItem js/localStorage (:storage-key config/site)
-            format-cirru-edn $ :store @*reel
+          defn persist-storage! () (js/console.log "\"persist")
+            js/localStorage.setItem (:storage-key config/site)
+              format-cirru-edn $ :store @*reel
         |mount-target $ quote
           def mount-target $ .!querySelector js/document |.app
         |*reel $ quote
@@ -88,10 +89,10 @@
             render-app!
             add-watch *reel :changes $ fn (reel prev) (render-app!)
             listen-devtools! |k dispatch!
-            .!addEventListener js/window |beforeunload $ fn (event) (persist-storage!)
-            repeat! 60 persist-storage!
+            js/window.addEventListener |beforeunload $ fn (event) (persist-storage!)
+            flipped js/setInterval 60000 persist-storage!
             let
-                raw $ .!getItem js/localStorage (:storage-key config/site)
+                raw $ js/localStorage.getItem (:storage-key config/site)
               when (some? raw)
                 dispatch! :hydrate-storage $ parse-cirru-edn raw
             println "|App started."
@@ -108,12 +109,6 @@
               reset! *reel $ refresh-reel @*reel schema/store updater
               hud! "\"ok~" "\"Ok"
             hud! "\"error" build-errors
-        |repeat! $ quote
-          defn repeat! (duration cb)
-            js/setTimeout
-              fn () (cb)
-                repeat! (* 1000 duration) cb
-              * 1000 duration
     |app.config $ {}
       :ns $ quote (ns app.config)
       :defs $ {}
