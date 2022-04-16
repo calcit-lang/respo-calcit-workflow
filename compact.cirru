@@ -1,18 +1,10 @@
 
 {} (:package |app)
-  :configs $ {} (:init-fn |app.main/main!) (:reload-fn |app.main/reload!)
+  :configs $ {} (:init-fn |app.main/main!) (:reload-fn |app.main/reload!) (:version |0.0.1)
     :modules $ [] |respo.calcit/ |lilac/ |memof/ |respo-ui.calcit/ |respo-markdown.calcit/ |reel.calcit/
-    :version |0.0.1
   :entries $ {}
   :files $ {}
     |app.comp.container $ {}
-      :ns $ quote
-        ns app.comp.container $ :require (respo-ui.core :as ui)
-          respo.core :refer $ defcomp defeffect <> >> div button textarea span input
-          respo.comp.space :refer $ =<
-          reel.comp.reel :refer $ comp-reel
-          respo-md.comp.md :refer $ comp-md
-          app.config :refer $ dev?
       :defs $ {}
         |comp-container $ quote
           defcomp comp-container (reel)
@@ -40,48 +32,30 @@
                     :on-click $ fn (e d!)
                       println $ :content state
                 when dev? $ comp-reel (>> states :reel) reel ({})
-    |app.schema $ {}
-      :ns $ quote (ns app.schema)
-      :defs $ {}
-        |store $ quote
-          def store $ {}
-            :states $ {}
-              :cursor $ []
-    |app.updater $ {}
       :ns $ quote
-        ns app.updater $ :require
-          respo.cursor :refer $ update-states
+        ns app.comp.container $ :require (respo-ui.core :as ui)
+          respo.core :refer $ defcomp defeffect <> >> div button textarea span input
+          respo.comp.space :refer $ =<
+          reel.comp.reel :refer $ comp-reel
+          respo-md.comp.md :refer $ comp-md
+          app.config :refer $ dev?
+    |app.config $ {}
       :defs $ {}
-        |updater $ quote
-          defn updater (store op data op-id op-time)
-            case-default op
-              do (println "\"unknown op:" op) store
-              :states $ update-states store data
-              :hydrate-storage data
+        |dev? $ quote
+          def dev? $ = "\"dev" (get-env "\"mode")
+        |site $ quote
+          def site $ {} (:storage-key "\"workflow")
+      :ns $ quote (ns app.config)
     |app.main $ {}
-      :ns $ quote
-        ns app.main $ :require
-          respo.core :refer $ render! clear-cache!
-          app.comp.container :refer $ comp-container
-          app.updater :refer $ updater
-          app.schema :as schema
-          reel.util :refer $ listen-devtools!
-          reel.core :refer $ reel-updater refresh-reel
-          reel.schema :as reel-schema
-          app.config :as config
-          "\"./calcit.build-errors" :default build-errors
-          "\"bottom-tip" :default hud!
       :defs $ {}
-        |render-app! $ quote
-          defn render-app! () $ render! mount-target (comp-container @*reel) dispatch!
-        |persist-storage! $ quote
-          defn persist-storage! () (js/console.log "\"persist")
-            js/localStorage.setItem (:storage-key config/site)
-              format-cirru-edn $ :store @*reel
-        |mount-target $ quote
-          def mount-target $ .!querySelector js/document |.app
         |*reel $ quote
           defatom *reel $ -> reel-schema/reel (assoc :base schema/store) (assoc :store schema/store)
+        |dispatch! $ quote
+          defn dispatch! (op op-data)
+            when
+              and config/dev? $ not= op :states
+              println "\"Dispatch:" op
+            reset! *reel $ reel-updater updater @*reel op op-data
         |main! $ quote
           defn main! ()
             println "\"Running mode:" $ if config/dev? "\"dev" "\"release"
@@ -96,12 +70,12 @@
               when (some? raw)
                 dispatch! :hydrate-storage $ parse-cirru-edn raw
             println "|App started."
-        |dispatch! $ quote
-          defn dispatch! (op op-data)
-            when
-              and config/dev? $ not= op :states
-              println "\"Dispatch:" op
-            reset! *reel $ reel-updater updater @*reel op op-data
+        |mount-target $ quote
+          def mount-target $ .!querySelector js/document |.app
+        |persist-storage! $ quote
+          defn persist-storage! () (js/console.log "\"persist")
+            js/localStorage.setItem (:storage-key config/site)
+              format-cirru-edn $ :store @*reel
         |reload! $ quote
           defn reload! () $ if (nil? build-errors)
             do (remove-watch *reel :changes) (clear-cache!)
@@ -109,10 +83,35 @@
               reset! *reel $ refresh-reel @*reel schema/store updater
               hud! "\"ok~" "\"Ok"
             hud! "\"error" build-errors
-    |app.config $ {}
-      :ns $ quote (ns app.config)
+        |render-app! $ quote
+          defn render-app! () $ render! mount-target (comp-container @*reel) dispatch!
+      :ns $ quote
+        ns app.main $ :require
+          respo.core :refer $ render! clear-cache!
+          app.comp.container :refer $ comp-container
+          app.updater :refer $ updater
+          app.schema :as schema
+          reel.util :refer $ listen-devtools!
+          reel.core :refer $ reel-updater refresh-reel
+          reel.schema :as reel-schema
+          app.config :as config
+          "\"./calcit.build-errors" :default build-errors
+          "\"bottom-tip" :default hud!
+    |app.schema $ {}
       :defs $ {}
-        |dev? $ quote
-          def dev? $ = "\"dev" (get-env "\"mode")
-        |site $ quote
-          def site $ {} (:storage-key "\"workflow")
+        |store $ quote
+          def store $ {}
+            :states $ {}
+              :cursor $ []
+      :ns $ quote (ns app.schema)
+    |app.updater $ {}
+      :defs $ {}
+        |updater $ quote
+          defn updater (store op data op-id op-time)
+            case-default op
+              do (println "\"unknown op:" op) store
+              :states $ update-states store data
+              :hydrate-storage data
+      :ns $ quote
+        ns app.updater $ :require
+          respo.cursor :refer $ update-states
