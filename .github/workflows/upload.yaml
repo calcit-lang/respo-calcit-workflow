@@ -19,9 +19,9 @@ jobs:
 
     - uses: supplypike/setup-bin@v3
       with:
-        uri: 'https://github.com/calcit-lang/calcit/releases/download/0.6.20/cr'
+        uri: 'https://github.com/calcit-lang/calcit/releases/download/0.6.21/cr'
         name: 'cr'
-        version: '0.6.20'
+        version: '0.6.21'
 
     - name: "prepare modules"
       run: >
