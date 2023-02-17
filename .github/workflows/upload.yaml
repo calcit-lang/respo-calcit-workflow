@@ -19,23 +19,19 @@ jobs:
 
     - uses: supplypike/setup-bin@v3
       with:
-        uri: 'https://github.com/calcit-lang/calcit/releases/download/0.6.21/cr'
+        uri: 'https://github.com/calcit-lang/calcit/releases/download/0.6.22/cr'
         name: 'cr'
-        version: '0.6.21'
+        version: '0.6.22'
 
-    - name: "prepare modules"
-      run: >
-        mkdir -p ~/.config/calcit/modules/ && cd ~/.config/calcit/modules/
-        && git clone https://github.com/calcit-lang/lilac.git
-        && git clone https://github.com/calcit-lang/memof.git
-        && git clone https://github.com/Respo/respo.calcit.git
-        && git clone https://github.com/Respo/reel.calcit.git
-        && git clone https://github.com/Respo/respo-markdown.calcit.git
-        && git clone https://github.com/Respo/respo-ui.calcit.git
+    - uses: supplypike/setup-bin@v3
+      with:
+        uri: 'https://github.com/calcit-lang/calcit/releases/download/0.6.22/caps'
+        name: 'caps'
+        version: '0.6.22'
 
     - name: "compiles to js"
       run: >
-        cr --emit-js --once
+        caps --ci && cr --emit-js --once
         && yarn && yarn vite build --base=./
 
     - name: Deploy to server
