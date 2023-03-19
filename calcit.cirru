@@ -43,20 +43,9 @@
                                 :data $ {}
                                   |T $ {} (:at 1584780925829) (:by |rJG4IHzWf) (:text |:cursor) (:type :leaf)
                                   |j $ {} (:at 1584780926681) (:by |rJG4IHzWf) (:text |states) (:type :leaf)
-                              |b $ {} (:at 1664795537125) (:by |rJG4IHzWf) (:type :expr)
+                              |b $ {} (:at 1679237728653) (:by |rJG4IHzWf) (:type :expr)
                                 :data $ {}
-                                  |T $ {} (:at 1664795537277) (:by |rJG4IHzWf) (:type :expr)
-                                    :data $ {}
-                                      |T $ {} (:at 1664795540811) (:by |rJG4IHzWf) (:text "|\"\"") (:type :leaf)
-                                  |b $ {} (:at 1664795537277) (:by |rJG4IHzWf) (:type :expr)
-                                    :data $ {}
-                                      |T $ {} (:at 1664795540811) (:by |rJG4IHzWf) (:text "|\"\"") (:type :leaf)
-                                  |h $ {} (:at 1664795537277) (:by |rJG4IHzWf) (:type :expr)
-                                    :data $ {}
-                                      |T $ {} (:at 1664795540811) (:by |rJG4IHzWf) (:text "|\"\"") (:type :leaf)
-                                  |l $ {} (:at 1664795537277) (:by |rJG4IHzWf) (:type :expr)
-                                    :data $ {}
-                                      |T $ {} (:at 1664795540811) (:by |rJG4IHzWf) (:text "|\"\"") (:type :leaf)
+                                  |T $ {} (:at 1679237728821) (:by |rJG4IHzWf) (:text |[]) (:type :leaf)
                       |r $ {} (:at 1584780887905) (:by |rJG4IHzWf) (:type :expr)
                         :data $ {}
                           |T $ {} (:at 1584780889620) (:by |rJG4IHzWf) (:text |state) (:type :leaf)
@@ -544,7 +533,7 @@
                         :data $ {}
                           |T $ {} (:at 1626777542168) (:by |rJG4IHzWf) (:text |hud!) (:type :leaf)
                           |j $ {} (:at 1626777542168) (:by |rJG4IHzWf) (:text "|\"ok~") (:type :leaf)
-                          |r $ {} (:at 1626777542168) (:by |rJG4IHzWf) (:text "|\"Ok") (:type :leaf)
+                          |r $ {} (:at 1679237703306) (:by |rJG4IHzWf) (:text "|\"Ok") (:type :leaf)
                   |j $ {} (:at 1626201203433) (:by |rJG4IHzWf) (:type :expr)
                     :data $ {}
                       |T $ {} (:at 1626290831868) (:by |rJG4IHzWf) (:text |hud!) (:type :leaf)
