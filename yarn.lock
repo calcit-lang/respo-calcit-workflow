@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@calcit/procs@^0.6.25":
-  version "0.6.25"
-  resolved "https://registry.yarnpkg.com/@calcit/procs/-/procs-0.6.25.tgz#28a88194ae1f048dfb708a9df3967074eb4ad8c1"
-  integrity sha512-JKv96l+emDoxdX/xcjpqCA2Biht4aXJpWS8I1bwwOBqGHkU7IwHHs3/j0kB8XMIKDwhsPjeKKGKgFLneuxe9WQ==
+"@calcit/procs@^0.6.26":
+  version "0.6.26"
+  resolved "https://registry.yarnpkg.com/@calcit/procs/-/procs-0.6.26.tgz#6b5aae18f71b4a2ebdc417fe0ff0e3c97d98ee9d"
+  integrity sha512-waiiKuhGqXQaRphu7qyen9eweGUqYSZpTNDZHEzo1TBw+A0dbzujq5JGgubwEEtRaEz2kWt4dhjQP1hvqstezw==
   dependencies:
     "@calcit/ternary-tree" "0.0.19"
     "@cirru/parser.ts" "^0.0.6"
@@ -301,9 +301,9 @@ resolve@^1.22.1:
     supports-preserve-symlinks-flag "^1.0.0"
 
 rollup@^3.18.0:
-  version "3.19.1"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-3.19.1.tgz#2b3a31ac1ff9f3afab2e523fa687fef5b0ee20fc"
-  integrity sha512-lAbrdN7neYCg/8WaoWn/ckzCtz+jr70GFfYdlf50OF7387HTg+wiuiqJRFYawwSPpqfqDNYqK7smY/ks2iAudg==
+  version "3.20.2"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-3.20.2.tgz#f798c600317f216de2e4ad9f4d9ab30a89b690ff"
+  integrity sha512-3zwkBQl7Ai7MFYQE0y1MeQ15+9jsi7XxfrqwTb/9EK8D9C9+//EBR4M+CuA1KODRaNbFez/lWxA5vhEGZp4MUg==
   optionalDependencies:
     fsevents "~2.3.2"
 
@@ -336,10 +336,10 @@ virtual-dom@^2.1.1:
     x-is-array "0.1.0"
     x-is-string "0.1.0"
 
-vite@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/vite/-/vite-4.2.0.tgz#d4e6eafbc034f3faf0ab376bd5b76ac15775eb99"
-  integrity sha512-AbDTyzzwuKoRtMIRLGNxhLRuv1FpRgdIw+1y6AQG73Q5+vtecmvzKo/yk8X/vrHDpETRTx01ABijqUHIzBXi0g==
+vite@^4.2.1:
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-4.2.1.tgz#6c2eb337b0dfd80a9ded5922163b94949d7fc254"
+  integrity sha512-7MKhqdy0ISo4wnvwtqZkjke6XN4taqQ2TBaTccLIpOKv7Vp2h4Y+NpmWCnGDeSvvn45KxvWgGyb0MkHvY1vgbg==
   dependencies:
     esbuild "^0.17.5"
     postcss "^8.4.21"
