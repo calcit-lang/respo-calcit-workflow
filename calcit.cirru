@@ -1,12 +1,12 @@
 
 {} (:package |app)
-  :configs $ {} (:compact-output? true) (:extension |.cljs) (:init-fn |app.main/main!) (:output |src) (:port 6001) (:reload-fn |app.main/reload!) (:storage-key |calcit.cirru) (:version |0.0.1)
+  :configs $ {} (:init-fn |app.main/main!) (:output |src) (:port 6001) (:reload-fn |app.main/reload!) (:storage-key |calcit.cirru) (:version |0.0.1)
     :modules $ [] |respo.calcit/ |lilac/ |memof/ |respo-ui.calcit/ |respo-markdown.calcit/ |reel.calcit/
   :entries $ {}
   :files $ {}
-    |app.comp.container $ {}
+    |app.comp.container $ %{} :FileEntry
       :defs $ {}
-        |comp-container $ %{} :CodeEntry
+        |comp-container $ %{} :CodeEntry (:doc |)
           :code $ %{} :Expr (:at 1499755354983) (:by nil)
             :data $ {}
               |T $ %{} :Leaf (:at 1499755354983) (:by |root) (:text |defcomp)
@@ -203,8 +203,7 @@
                               |r $ %{} :Expr (:at 1507461840980) (:by |root)
                                 :data $ {}
                                   |T $ %{} :Leaf (:at 1507461841342) (:by |root) (:text |{})
-          :doc |
-      :ns $ %{} :CodeEntry
+      :ns $ %{} :CodeEntry (:doc |)
         :code $ %{} :Expr (:at 1499755354983) (:by nil)
           :data $ {}
             |T $ %{} :Leaf (:at 1499755354983) (:by |root) (:text |ns)
@@ -260,10 +259,9 @@
                     |v $ %{} :Expr (:at 1521954065004) (:by |root)
                       :data $ {}
                         |j $ %{} :Leaf (:at 1521954067604) (:by |root) (:text |dev?)
-        :doc |
-    |app.config $ {}
+    |app.config $ %{} :FileEntry
       :defs $ {}
-        |dev? $ %{} :CodeEntry
+        |dev? $ %{} :CodeEntry (:doc |)
           :code $ %{} :Expr (:at 1544873875614) (:by |rJG4IHzWf)
             :data $ {}
               |T $ %{} :Leaf (:at 1544873875614) (:by |rJG4IHzWf) (:text |def)
@@ -277,8 +275,7 @@
                       |D $ %{} :Leaf (:at 1624469706777) (:by |rJG4IHzWf) (:text |get-env)
                       |T $ %{} :Leaf (:at 1624469708397) (:by |rJG4IHzWf) (:text "|\"mode")
                       |b $ %{} :Leaf (:at 1658121345573) (:by |rJG4IHzWf) (:text "|\"release")
-          :doc |
-        |site $ %{} :CodeEntry
+        |site $ %{} :CodeEntry (:doc |)
           :code $ %{} :Expr (:at 1545933382603) (:by |root)
             :data $ {}
               |T $ %{} :Leaf (:at 1518157345496) (:by |root) (:text |def)
@@ -290,16 +287,14 @@
                     :data $ {}
                       |T $ %{} :Leaf (:at 1544956719115) (:by |rJG4IHzWf) (:text |:storage-key)
                       |j $ %{} :Leaf (:at 1544956719115) (:by |rJG4IHzWf) (:text "|\"workflow")
-          :doc |
-      :ns $ %{} :CodeEntry
+      :ns $ %{} :CodeEntry (:doc |)
         :code $ %{} :Expr (:at 1527788237503) (:by |root)
           :data $ {}
             |T $ %{} :Leaf (:at 1527788237503) (:by |root) (:text |ns)
             |j $ %{} :Leaf (:at 1527788237503) (:by |root) (:text |app.config)
-        :doc |
-    |app.main $ {}
+    |app.main $ %{} :FileEntry
       :defs $ {}
-        |*reel $ %{} :CodeEntry
+        |*reel $ %{} :CodeEntry (:doc |)
           :code $ %{} :Expr (:at 1499755354983) (:by nil)
             :data $ {}
               |T $ %{} :Leaf (:at 1610792986987) (:by |rJG4IHzWf) (:text |defatom)
@@ -318,8 +313,7 @@
                       |T $ %{} :Leaf (:at 1507399781682) (:by |root) (:text |assoc)
                       |j $ %{} :Leaf (:at 1507399793097) (:by |root) (:text |:store)
                       |r $ %{} :Leaf (:at 1507399787471) (:by |root) (:text |schema/store)
-          :doc |
-        |dispatch! $ %{} :CodeEntry
+        |dispatch! $ %{} :CodeEntry (:doc |)
           :code $ %{} :Expr (:at 1499755354983) (:by nil)
             :data $ {}
               |T $ %{} :Leaf (:at 1499755354983) (:by |root) (:text |defn)
@@ -354,8 +348,7 @@
                       |j $ %{} :Leaf (:at 1507399888500) (:by |root) (:text |updater)
                       |r $ %{} :Leaf (:at 1507399891576) (:by |root) (:text |@*reel)
                       |v $ %{} :Leaf (:at 1507399892687) (:by |root) (:text |op)
-          :doc |
-        |main! $ %{} :CodeEntry
+        |main! $ %{} :CodeEntry (:doc |)
           :code $ %{} :Expr (:at 1499755354983) (:by nil)
             :data $ {}
               |T $ %{} :Leaf (:at 1499755354983) (:by |root) (:text |defn)
@@ -458,8 +451,7 @@
                 :data $ {}
                   |T $ %{} :Leaf (:at 1499755354983) (:by |root) (:text |println)
                   |j $ %{} :Leaf (:at 1499755354983) (:by |root) (:text "||App started.")
-          :doc |
-        |mount-target $ %{} :CodeEntry
+        |mount-target $ %{} :CodeEntry (:doc |)
           :code $ %{} :Expr (:at 1499755354983) (:by nil)
             :data $ {}
               |T $ %{} :Leaf (:at 1499755354983) (:by |root) (:text |def)
@@ -469,8 +461,7 @@
                   |T $ %{} :Leaf (:at 1624469553191) (:by |rJG4IHzWf) (:text |.!querySelector)
                   |j $ %{} :Leaf (:at 1499755354983) (:by |root) (:text |js/document)
                   |r $ %{} :Leaf (:at 1499755354983) (:by |root) (:text ||.app)
-          :doc |
-        |persist-storage! $ %{} :CodeEntry
+        |persist-storage! $ %{} :CodeEntry (:doc |)
           :code $ %{} :Expr (:at 1533919515671) (:by |rJG4IHzWf)
             :data $ {}
               |T $ %{} :Leaf (:at 1533919517365) (:by |rJG4IHzWf) (:text |defn)
@@ -495,8 +486,7 @@
                         :data $ {}
                           |T $ %{} :Leaf (:at 1533919515671) (:by |rJG4IHzWf) (:text |:store)
                           |j $ %{} :Leaf (:at 1533919515671) (:by |rJG4IHzWf) (:text |@*reel)
-          :doc |
-        |reload! $ %{} :CodeEntry
+        |reload! $ %{} :CodeEntry (:doc |)
           :code $ %{} :Expr (:at 1626201152815) (:by |rJG4IHzWf)
             :data $ {}
               |D $ %{} :Leaf (:at 1626201153853) (:by |rJG4IHzWf) (:text |defn)
@@ -556,8 +546,7 @@
                       |T $ %{} :Leaf (:at 1626290831868) (:by |rJG4IHzWf) (:text |hud!)
                       |b $ %{} :Leaf (:at 1626290930377) (:by |rJG4IHzWf) (:text "|\"error")
                       |j $ %{} :Leaf (:at 1626201209903) (:by |rJG4IHzWf) (:text |build-errors)
-          :doc |
-        |render-app! $ %{} :CodeEntry
+        |render-app! $ %{} :CodeEntry (:doc |)
           :code $ %{} :Expr (:at 1499755354983) (:by nil)
             :data $ {}
               |T $ %{} :Leaf (:at 1499755354983) (:by |root) (:text |defn)
@@ -573,8 +562,7 @@
                       |T $ %{} :Leaf (:at 1499755354983) (:by |root) (:text |comp-container)
                       |j $ %{} :Leaf (:at 1507400119272) (:by |root) (:text |@*reel)
                   |v $ %{} :Leaf (:at 1623915174985) (:by |rJG4IHzWf) (:text |dispatch!)
-          :doc |
-      :ns $ %{} :CodeEntry
+      :ns $ %{} :CodeEntry (:doc |)
         :code $ %{} :Expr (:at 1499755354983) (:by nil)
           :data $ {}
             |T $ %{} :Leaf (:at 1499755354983) (:by |root) (:text |ns)
@@ -644,10 +632,9 @@
                     |T $ %{} :Leaf (:at 1626290810913) (:by |rJG4IHzWf) (:text "|\"bottom-tip")
                     |j $ %{} :Leaf (:at 1626290816153) (:by |rJG4IHzWf) (:text |:default)
                     |r $ %{} :Leaf (:at 1626290825711) (:by |rJG4IHzWf) (:text |hud!)
-        :doc |
-    |app.schema $ {}
+    |app.schema $ %{} :FileEntry
       :defs $ {}
-        |store $ %{} :CodeEntry
+        |store $ %{} :CodeEntry (:doc |)
           :code $ %{} :Expr (:at 1499755354983) (:by nil)
             :data $ {}
               |T $ %{} :Leaf (:at 1499755354983) (:by |root) (:text |def)
@@ -667,16 +654,14 @@
                               |j $ %{} :Expr (:at 1584781007287) (:by |rJG4IHzWf)
                                 :data $ {}
                                   |T $ %{} :Leaf (:at 1584781007486) (:by |rJG4IHzWf) (:text |[])
-          :doc |
-      :ns $ %{} :CodeEntry
+      :ns $ %{} :CodeEntry (:doc |)
         :code $ %{} :Expr (:at 1499755354983) (:by nil)
           :data $ {}
             |T $ %{} :Leaf (:at 1499755354983) (:by |root) (:text |ns)
             |j $ %{} :Leaf (:at 1499755354983) (:by |root) (:text |app.schema)
-        :doc |
-    |app.updater $ {}
+    |app.updater $ %{} :FileEntry
       :defs $ {}
-        |updater $ %{} :CodeEntry
+        |updater $ %{} :CodeEntry (:doc |)
           :code $ %{} :Expr (:at 1499755354983) (:by nil)
             :data $ {}
               |T $ %{} :Leaf (:at 1499755354983) (:by |root) (:text |defn)
@@ -723,8 +708,7 @@
                               |b $ %{} :Leaf (:at 1688397780408) (:by |rJG4IHzWf) (:text "|\"unknown op:")
                               |h $ %{} :Leaf (:at 1688397780408) (:by |rJG4IHzWf) (:text |op)
                           |h $ %{} :Leaf (:at 1688397780408) (:by |rJG4IHzWf) (:text |store)
-          :doc |
-      :ns $ %{} :CodeEntry
+      :ns $ %{} :CodeEntry (:doc |)
         :code $ %{} :Expr (:at 1499755354983) (:by nil)
           :data $ {}
             |T $ %{} :Leaf (:at 1499755354983) (:by |root) (:text |ns)
@@ -739,12 +723,11 @@
                     |v $ %{} :Expr (:at 1584874621524) (:by |rJG4IHzWf)
                       :data $ {}
                         |j $ %{} :Leaf (:at 1584874623096) (:by |rJG4IHzWf) (:text |update-states)
-        :doc |
   :ir $ {} (:package |app)
     :files $ {}
       |app.comp.container $ {}
         :defs $ {}
-          |comp-container $ %{} :CodeEntry
+          |comp-container $ %{} :CodeEntry (:doc |)
             :code $ %{} :Expr (:at 1499755354983) (:by nil)
               :data $ {}
                 |T $ %{} :Leaf (:at 1499755354983) (:by |root) (:text |defcomp)
@@ -941,8 +924,7 @@
                                 |r $ %{} :Expr (:at 1507461840980) (:by |root)
                                   :data $ {}
                                     |T $ %{} :Leaf (:at 1507461841342) (:by |root) (:text |{})
-            :doc |
-        :ns $ %{} :CodeEntry
+        :ns $ %{} :CodeEntry (:doc |)
           :code $ %{} :Expr (:at 1499755354983) (:by nil)
             :data $ {}
               |T $ %{} :Leaf (:at 1499755354983) (:by |root) (:text |ns)
@@ -998,10 +980,9 @@
                       |v $ %{} :Expr (:at 1521954065004) (:by |root)
                         :data $ {}
                           |j $ %{} :Leaf (:at 1521954067604) (:by |root) (:text |dev?)
-          :doc |
       |app.config $ {}
         :defs $ {}
-          |dev? $ %{} :CodeEntry
+          |dev? $ %{} :CodeEntry (:doc |)
             :code $ %{} :Expr (:at 1544873875614) (:by |rJG4IHzWf)
               :data $ {}
                 |T $ %{} :Leaf (:at 1544873875614) (:by |rJG4IHzWf) (:text |def)
@@ -1015,8 +996,7 @@
                         |D $ %{} :Leaf (:at 1624469706777) (:by |rJG4IHzWf) (:text |get-env)
                         |T $ %{} :Leaf (:at 1624469708397) (:by |rJG4IHzWf) (:text "|\"mode")
                         |b $ %{} :Leaf (:at 1658121345573) (:by |rJG4IHzWf) (:text "|\"release")
-            :doc |
-          |site $ %{} :CodeEntry
+          |site $ %{} :CodeEntry (:doc |)
             :code $ %{} :Expr (:at 1545933382603) (:by |root)
               :data $ {}
                 |T $ %{} :Leaf (:at 1518157345496) (:by |root) (:text |def)
@@ -1028,16 +1008,14 @@
                       :data $ {}
                         |T $ %{} :Leaf (:at 1544956719115) (:by |rJG4IHzWf) (:text |:storage-key)
                         |j $ %{} :Leaf (:at 1544956719115) (:by |rJG4IHzWf) (:text "|\"workflow")
-            :doc |
-        :ns $ %{} :CodeEntry
+        :ns $ %{} :CodeEntry (:doc |)
           :code $ %{} :Expr (:at 1527788237503) (:by |root)
             :data $ {}
               |T $ %{} :Leaf (:at 1527788237503) (:by |root) (:text |ns)
               |j $ %{} :Leaf (:at 1527788237503) (:by |root) (:text |app.config)
-          :doc |
       |app.main $ {}
         :defs $ {}
-          |*reel $ %{} :CodeEntry
+          |*reel $ %{} :CodeEntry (:doc |)
             :code $ %{} :Expr (:at 1499755354983) (:by nil)
               :data $ {}
                 |T $ %{} :Leaf (:at 1610792986987) (:by |rJG4IHzWf) (:text |defatom)
@@ -1056,8 +1034,7 @@
                         |T $ %{} :Leaf (:at 1507399781682) (:by |root) (:text |assoc)
                         |j $ %{} :Leaf (:at 1507399793097) (:by |root) (:text |:store)
                         |r $ %{} :Leaf (:at 1507399787471) (:by |root) (:text |schema/store)
-            :doc |
-          |dispatch! $ %{} :CodeEntry
+          |dispatch! $ %{} :CodeEntry (:doc |)
             :code $ %{} :Expr (:at 1499755354983) (:by nil)
               :data $ {}
                 |T $ %{} :Leaf (:at 1499755354983) (:by |root) (:text |defn)
@@ -1092,8 +1069,7 @@
                         |j $ %{} :Leaf (:at 1507399888500) (:by |root) (:text |updater)
                         |r $ %{} :Leaf (:at 1507399891576) (:by |root) (:text |@*reel)
                         |v $ %{} :Leaf (:at 1507399892687) (:by |root) (:text |op)
-            :doc |
-          |main! $ %{} :CodeEntry
+          |main! $ %{} :CodeEntry (:doc |)
             :code $ %{} :Expr (:at 1499755354983) (:by nil)
               :data $ {}
                 |T $ %{} :Leaf (:at 1499755354983) (:by |root) (:text |defn)
@@ -1196,8 +1172,7 @@
                   :data $ {}
                     |T $ %{} :Leaf (:at 1499755354983) (:by |root) (:text |println)
                     |j $ %{} :Leaf (:at 1499755354983) (:by |root) (:text "||App started.")
-            :doc |
-          |mount-target $ %{} :CodeEntry
+          |mount-target $ %{} :CodeEntry (:doc |)
             :code $ %{} :Expr (:at 1499755354983) (:by nil)
               :data $ {}
                 |T $ %{} :Leaf (:at 1499755354983) (:by |root) (:text |def)
@@ -1207,8 +1182,7 @@
                     |T $ %{} :Leaf (:at 1624469553191) (:by |rJG4IHzWf) (:text |.!querySelector)
                     |j $ %{} :Leaf (:at 1499755354983) (:by |root) (:text |js/document)
                     |r $ %{} :Leaf (:at 1499755354983) (:by |root) (:text ||.app)
-            :doc |
-          |persist-storage! $ %{} :CodeEntry
+          |persist-storage! $ %{} :CodeEntry (:doc |)
             :code $ %{} :Expr (:at 1533919515671) (:by |rJG4IHzWf)
               :data $ {}
                 |T $ %{} :Leaf (:at 1533919517365) (:by |rJG4IHzWf) (:text |defn)
@@ -1233,8 +1207,7 @@
                           :data $ {}
                             |T $ %{} :Leaf (:at 1533919515671) (:by |rJG4IHzWf) (:text |:store)
                             |j $ %{} :Leaf (:at 1533919515671) (:by |rJG4IHzWf) (:text |@*reel)
-            :doc |
-          |reload! $ %{} :CodeEntry
+          |reload! $ %{} :CodeEntry (:doc |)
             :code $ %{} :Expr (:at 1626201152815) (:by |rJG4IHzWf)
               :data $ {}
                 |D $ %{} :Leaf (:at 1626201153853) (:by |rJG4IHzWf) (:text |defn)
@@ -1294,8 +1267,7 @@
                         |T $ %{} :Leaf (:at 1626290831868) (:by |rJG4IHzWf) (:text |hud!)
                         |b $ %{} :Leaf (:at 1626290930377) (:by |rJG4IHzWf) (:text "|\"error")
                         |j $ %{} :Leaf (:at 1626201209903) (:by |rJG4IHzWf) (:text |build-errors)
-            :doc |
-          |render-app! $ %{} :CodeEntry
+          |render-app! $ %{} :CodeEntry (:doc |)
             :code $ %{} :Expr (:at 1499755354983) (:by nil)
               :data $ {}
                 |T $ %{} :Leaf (:at 1499755354983) (:by |root) (:text |defn)
@@ -1311,8 +1283,7 @@
                         |T $ %{} :Leaf (:at 1499755354983) (:by |root) (:text |comp-container)
                         |j $ %{} :Leaf (:at 1507400119272) (:by |root) (:text |@*reel)
                     |v $ %{} :Leaf (:at 1623915174985) (:by |rJG4IHzWf) (:text |dispatch!)
-            :doc |
-        :ns $ %{} :CodeEntry
+        :ns $ %{} :CodeEntry (:doc |)
           :code $ %{} :Expr (:at 1499755354983) (:by nil)
             :data $ {}
               |T $ %{} :Leaf (:at 1499755354983) (:by |root) (:text |ns)
@@ -1382,10 +1353,9 @@
                       |T $ %{} :Leaf (:at 1626290810913) (:by |rJG4IHzWf) (:text "|\"bottom-tip")
                       |j $ %{} :Leaf (:at 1626290816153) (:by |rJG4IHzWf) (:text |:default)
                       |r $ %{} :Leaf (:at 1626290825711) (:by |rJG4IHzWf) (:text |hud!)
-          :doc |
       |app.schema $ {}
         :defs $ {}
-          |store $ %{} :CodeEntry
+          |store $ %{} :CodeEntry (:doc |)
             :code $ %{} :Expr (:at 1499755354983) (:by nil)
               :data $ {}
                 |T $ %{} :Leaf (:at 1499755354983) (:by |root) (:text |def)
@@ -1405,16 +1375,14 @@
                                 |j $ %{} :Expr (:at 1584781007287) (:by |rJG4IHzWf)
                                   :data $ {}
                                     |T $ %{} :Leaf (:at 1584781007486) (:by |rJG4IHzWf) (:text |[])
-            :doc |
-        :ns $ %{} :CodeEntry
+        :ns $ %{} :CodeEntry (:doc |)
           :code $ %{} :Expr (:at 1499755354983) (:by nil)
             :data $ {}
               |T $ %{} :Leaf (:at 1499755354983) (:by |root) (:text |ns)
               |j $ %{} :Leaf (:at 1499755354983) (:by |root) (:text |app.schema)
-          :doc |
       |app.updater $ {}
         :defs $ {}
-          |updater $ %{} :CodeEntry
+          |updater $ %{} :CodeEntry (:doc |)
             :code $ %{} :Expr (:at 1499755354983) (:by nil)
               :data $ {}
                 |T $ %{} :Leaf (:at 1499755354983) (:by |root) (:text |defn)
@@ -1461,8 +1429,7 @@
                                 |b $ %{} :Leaf (:at 1688397780408) (:by |rJG4IHzWf) (:text "|\"unknown op:")
                                 |h $ %{} :Leaf (:at 1688397780408) (:by |rJG4IHzWf) (:text |op)
                             |h $ %{} :Leaf (:at 1688397780408) (:by |rJG4IHzWf) (:text |store)
-            :doc |
-        :ns $ %{} :CodeEntry
+        :ns $ %{} :CodeEntry (:doc |)
           :code $ %{} :Expr (:at 1499755354983) (:by nil)
             :data $ {}
               |T $ %{} :Leaf (:at 1499755354983) (:by |root) (:text |ns)
@@ -1477,7 +1444,6 @@
                       |v $ %{} :Expr (:at 1584874621524) (:by |rJG4IHzWf)
                         :data $ {}
                           |j $ %{} :Leaf (:at 1584874623096) (:by |rJG4IHzWf) (:text |update-states)
-          :doc |
   :users $ {}
     |rJG4IHzWf $ {} (:avatar nil) (:id |rJG4IHzWf) (:name |chen) (:nickname |chen) (:password |d41d8cd98f00b204e9800998ecf8427e) (:theme :star-trail)
     |root $ {} (:avatar nil) (:id |root) (:name |root) (:nickname |root) (:password |d41d8cd98f00b204e9800998ecf8427e) (:theme :star-trail)
