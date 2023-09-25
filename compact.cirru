@@ -1,7 +1,7 @@
 
 {} (:package |app)
   :configs $ {} (:init-fn |app.main/main!) (:reload-fn |app.main/reload!) (:version |0.0.1)
-    :modules $ [] |respo.calcit/ |lilac/ |memof/ |respo-ui.calcit/ |respo-markdown.calcit/ |reel.calcit/
+    :modules $ [] |respo.calcit/ |lilac/ |memof/ |respo-ui.calcit/ |reel.calcit/
   :entries $ {}
   :files $ {}
     |app.comp.container $ %{} :FileEntry
@@ -16,30 +16,30 @@
                   state $ or (:data states)
                     {} $ :content "\""
                 div
-                  {} $ :style (merge ui/global ui/row)
+                  {} $ :class-name (str-spaced css/global css/row)
                   textarea $ {}
                     :value $ :content state
                     :placeholder "\"Content"
-                    :style $ merge ui/expand ui/textarea
-                      {} $ :height 320
+                    :class-name $ str-spaced css/expand css/textarea
+                    :style $ {} (:height 320)
                     :on-input $ fn (e d!)
                       d! cursor $ assoc state :content (:value e)
                   =< 8 nil
                   div
-                    {} $ :style ui/expand
-                    comp-md "|This is some content with `code`"
+                    {} $ :class-name css/expand
+                    <> "|This is some content with `code`"
                     =< |8px nil
-                    button $ {} (:style ui/button) (:inner-text "\"Run")
+                    button $ {} (:class-name css/button) (:inner-text "\"Run")
                       :on-click $ fn (e d!)
                         println $ :content state
                   when dev? $ comp-reel (>> states :reel) reel ({})
       :ns $ %{} :CodeEntry (:doc |)
         :code $ quote
-          ns app.comp.container $ :require (respo-ui.core :as ui)
+          ns app.comp.container $ :require (respo-ui.css :as css)
+            respo.css :refer $ defstyle
             respo.core :refer $ defcomp defeffect <> >> div button textarea span input
             respo.comp.space :refer $ =<
             reel.comp.reel :refer $ comp-reel
-            respo-md.comp.md :refer $ comp-md
             app.config :refer $ dev?
     |app.config $ %{} :FileEntry
       :defs $ {}
@@ -80,7 +80,7 @@
               println "|App started."
         |mount-target $ %{} :CodeEntry (:doc |)
           :code $ quote
-            def mount-target $ .!querySelector js/document |.app
+            def mount-target $ js/document.querySelector |.app
         |persist-storage! $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn persist-storage! () (js/console.log "\"persist")
@@ -128,7 +128,7 @@
                   :states cursor s
                   update-states store cursor s
                 (:hydrate-storage data) data
-                _ $ do (println "\"unknown op:" op) store
+                _ $ do (eprintln "\"unknown op:" op) store
       :ns $ %{} :CodeEntry (:doc |)
         :code $ quote
           ns app.updater $ :require
