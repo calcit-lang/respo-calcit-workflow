@@ -72,6 +72,8 @@
               add-watch *reel :changes $ fn (reel prev) (render-app!)
               listen-devtools! |k dispatch!
               js/window.addEventListener |beforeunload $ fn (event) (persist-storage!)
+              js/window.addEventListener |visibilitychange $ fn (event)
+                if (= "\"hidden" js/document.visibilityState) (persist-storage!)
               flipped js/setInterval 60000 persist-storage!
               let
                   raw $ js/localStorage.getItem (:storage-key config/site)
@@ -83,7 +85,8 @@
             def mount-target $ js/document.querySelector |.app
         |persist-storage! $ %{} :CodeEntry (:doc |)
           :code $ quote
-            defn persist-storage! () (js/console.log "\"persist")
+            defn persist-storage! ()
+              println "\"Saved at" $ .!toISOString (new js/Date)
               js/localStorage.setItem (:storage-key config/site)
                 format-cirru-edn $ :store @*reel
         |reload! $ %{} :CodeEntry (:doc |)
