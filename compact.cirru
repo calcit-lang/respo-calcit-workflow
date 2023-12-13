@@ -16,7 +16,7 @@
                   state $ or (:data states)
                     {} $ :content "\""
                 div
-                  {} $ :class-name (str-spaced css/global css/row)
+                  {} $ :class-name (str-spaced css/preset css/global css/row)
                   textarea $ {}
                     :value $ :content state
                     :placeholder "\"Content"
