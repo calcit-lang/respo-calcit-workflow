@@ -19,7 +19,7 @@ jobs:
 
     - uses: calcit-lang/setup-cr@0.0.3
       with:
-        version: '0.8.38'
+        version: '0.8.41'
 
     - name: "compiles to js"
       run: >
