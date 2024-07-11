@@ -4,14 +4,14 @@ Respo workflow in Calcit-js
 
 > Respo web page based on [calcit-js](https://github.com/calcit-lang/calcit).
 
-Demo http://repo.calcit-lang.org/respo-calcit-workflow/ .
+Demo https://repo.calcit-lang.org/respo-calcit-workflow/ .
 
 ### Usages
 
 To develop:
 
 ```bash
-cr --emit-js # watching
+cr js # watching
 
 yarn # to install vite
 yarn vite # watching and running on localhost:3000
