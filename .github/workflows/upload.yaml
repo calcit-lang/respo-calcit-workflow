@@ -17,9 +17,7 @@ jobs:
         node-version: 20
         cache: 'yarn'
 
-    - uses: calcit-lang/setup-cr@0.0.4
-      with:
-        version: '0.9.2'
+    - uses: calcit-lang/setup-cr@0.0.6
 
     - name: "compiles to js"
       run: >
