@@ -1,10 +1,10 @@
 {
   "dependencies": {
-    "@calcit/procs": "^0.9.17"
+    "@calcit/procs": "^0.9.18"
   },
   "devDependencies": {
     "bottom-tip": "^0.1.5",
-    "vite": "^7.0.6"
+    "vite": "^7.1.5"
   },
   "version": "0.0.1"
 }
