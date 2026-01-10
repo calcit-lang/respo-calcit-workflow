@@ -85,8 +85,10 @@ Calcit 程序使用 `cr` 命令：
 - `cr query peek <namespace/definition>` - 查看定义签名（参数、文档、表达式数量），不返回完整实现体
   - 输出：Doc、Form 类型、参数列表、Body 表达式数量、首个表达式预览、Examples 数量
   - 用于快速了解函数接口，减少 token 消耗
-- `cr query def <namespace/definition>` - 读取定义的完整语法树（JSON 格式）
-  - 同时显示 Doc 和 Examples 的完整内容
+- `cr query def <namespace/definition> [-j]` - 读取定义的完整 Cirru 代码
+  - 默认输出：Doc、Examples 数量、Cirru 格式代码
+  - `-j` / `--json`：同时输出 JSON 格式（用于程序化处理）
+  - 推荐：LLM 直接读取 Cirru 格式即可，通常不需要 JSON
 - `cr query examples <namespace/definition>` - 读取定义的示例代码
   - 输出：每个 example 的 Cirru 格式和 JSON 格式
 
@@ -203,7 +205,10 @@ Calcit 程序使用 `cr` 命令：
 
 **主要操作：**
 
-- `cr tree show` - 查看节点（输出包含子节点索引和操作提示）
+- `cr tree show <ns/def> -p "<path>" [-j]` - 查看节点
+  - 默认输出：节点类型、Cirru 预览、子节点索引列表、操作提示
+  - `-j` / `--json`：同时输出 JSON 格式（用于程序化处理）
+  - 推荐：直接查看 Cirru 格式即可，通常不需要 JSON
 - `cr tree replace` - 替换节点
 - `cr tree delete` - 删除节点
 - `cr tree insert-before/after` - 插入相邻节点
@@ -329,7 +334,7 @@ cr tree delete namespace/def -p "3,2,2"
 
 **常见混淆点：**
 
-❌ **错误理解：** Calcit 字符串是 `"x"` → JSON 是 `"\"x\""`
+❌ **错误理解：** Calcit 字符串是 `"x"` → JSON 是 `"\"x\""`  
 ✅ **正确理解：** Cirru `|x` → JSON `"x"`，Cirru `"x"` → JSON `"x"`
 
 **示例对照：**
@@ -679,3 +684,7 @@ cr query error
 | `unexpected format`          | 语法错误                | 用 `cr cirru parse '<code>'` 验证 |
 
 **调试命令：** `cr query error`（会显示详细提示）、`cr --check-only`
+
+---
+
+Also read `llms/Respo.md` for UI library usages.
