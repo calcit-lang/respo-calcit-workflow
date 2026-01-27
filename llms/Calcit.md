@@ -153,11 +153,12 @@ Calcit 程序使用 `cr` 命令：
 **高级结构搜索（搜索代码结构 ⭐⭐⭐）：**
 
 - `cr query search-expr <pattern> [-f <filter>] [-l] [-j]` - 搜索结构表达式（List）
-  - `-l / --loose`：宽松匹配，查找包含连续子序列的结构
+  - `-l / --loose`：宽松匹配，从头部开始的前缀匹配（嵌套表达式也支持前缀）
   - `-j / --json`：将模式解析为 JSON 数组
   - 示例：
     - `cr query search-expr 'fn (x)' -f app.main/process -l` - 查找函数定义
-    - `cr query search-expr '>> state task-id'` - 查找状态访问
+    - `cr query search-expr '>> state task-id' -l` - 查找状态访问（匹配 `>> state task-id ...` 或 `>> state`）
+    - `cr query search-expr 'dispatch! (:: :states)' -l` - 匹配 `dispatch! (:: :states data)` 类型的表达式
     - `cr query search-expr 'memof1-call-by' -l` - 查找记忆化调用
 
 **搜索结果格式：** `[索引1,索引2,...] in 父级上下文`，可配合 `cr tree show <ns/def> -p '<path>'` 查看节点。**修改代码时优先用 search 命令，比逐层导航快 10 倍。**
@@ -165,7 +166,7 @@ Calcit 程序使用 `cr` 命令：
 ### LLM 辅助：动态方法提示
 
 - `&inspect-class-methods` - 打印某个值对应 class 的方法清单（不改变原值）
-  - 用法：`(&inspect-class-methods value |optional note)`
+  - 用法：`(&inspect-class-methods value "|optional note")`
   - 用途：帮助 LLM 发现动态类型的方法与 proc 签名信息（不是测试/验证用途）
   - 适合在 pipeline 中插入，快速查看方法、参数、命名空间和 proc 类型信息
 
@@ -177,7 +178,7 @@ Calcit 程序使用 `cr` 命令：
   - `-c <num>` - 显示匹配行的上下文行数（默认 5）
   - `-f <filename>` - 按文件名过滤搜索结果
   - 输出：匹配行及其上下文，带行号和高亮
-  - 示例：`cr docs search "macro" -c 10` 或 `cr docs search "defn" -f macros.md`
+  - 示例：`cr docs search 'macro' -c 10` 或 `cr docs search 'defn' -f macros.md`
 
 - `cr docs read <filename> [-s <start>] [-n <lines>]` - 阅读指定文档
   - `-s <start>` - 起始行号（默认 0）
@@ -274,7 +275,7 @@ cr query modules
 # ===== 方案 A：单点修改（精确定位） =====
 
 # 1. 快速定位目标节点（一步到位）
-cr query search "target-symbol" -f namespace/def
+cr query search 'target-symbol' -f namespace/def
 # 输出：[3,2,5,1] in (fn (x) target-symbol ...)
 
 # 2. 直接修改（路径已知）
@@ -287,7 +288,7 @@ cr tree show namespace/def -p '3,2,5,1'
 # ===== 方案 B：批量重命名（多处修改） =====
 
 # 1. 搜索所有匹配位置
-cr query search "old-name" -f namespace/def
+cr query search 'old-name' -f namespace/def
 # 自动显示：4 处匹配，已按路径从大到小排序
 # [3,2,5,8] [3,2,5,2] [3,1,0] [2,1]
 
@@ -433,7 +434,7 @@ cr tree replace namespace/def -p '3,2,2,5,2,4,1,2' -e 'let ((x 1)) (+ x task)'
 
 **常见混淆点：**
 
-❌ **错误理解：** Calcit 字符串是 `"x"` → JSON 是 `"\"x\""`  
+❌ **错误理解：** Calcit 字符串是 `"x"` → JSON 是 `"\"x\""`
 ✅ **正确理解：** Cirru `|x` → JSON `"x"`，Cirru `"x"` → JSON `"x"`
 
 **字符串 vs 符号的关键区分：**
@@ -523,7 +524,36 @@ defn add-numbers (a b)
 
 **常见类型：** `:number` `:string` `:bool` `:list` `:map` `:set` `:tuple` `:keyword` `:nil`
 
+#### 可选类型标注（`:optional`）
+
+用于允许参数或变量为 `nil` 或指定类型。
+
+```cirru
+defn find-name (user)
+  assert-type user :: :optional :record
+  ; user 可能为 nil
+```
+
+也可用于可选参数：
+
+```cirru
+defn take (xs ? n)
+  assert-type n :: :optional :number
+  ; n 为空时走默认逻辑
+```
+
 **验证类型：** `cr --check-only` 或 `cr ir -1` 查看 IR 中的类型信息
+
+#### Variadic 参数类型（简要）
+
+仅在少量场景使用。变长参数用 `&`，类型写在对应的 `assert-type` 上：
+
+```cirru
+defn sum (x & ys)
+  assert-type x :number
+  assert-type ys $ :: :& :number
+  reduce ys x &+
+```
 
 ### 其他易错点
 
@@ -717,7 +747,7 @@ cr edit imports app.main -j '[["app.lib", ":as", "lib"], ["app.util", ":refer", 
 
 - **从后往前操作**（推荐）：先删大索引，再删小索引
 - **单次操作后重新搜索**：每次修改立即用 `cr query search` 更新路径
-- **整体重写**：用 `cr tree replace -p ""` 替换整个定义
+- **整体重写**：用 `cr tree replace -p ''` 替换整个定义
 
 命令会在路径错误时提示最长有效路径和可用子节点。
 
@@ -746,16 +776,16 @@ cr edit imports app.main -j '[["app.lib", ":as", "lib"], ["app.util", ":refer", 
 
 ```bash
 # ✅ 替换表达式
-cr tree replace app.main/fn -p "2" -e 'println |hello'
+cr tree replace app.main/fn -p '2' -e 'println |hello'
 
 # ✅ 替换 leaf（推荐 --leaf）
-cr tree replace app.main/fn -p "2,0" --leaf -e 'new-symbol'
+cr tree replace app.main/fn -p '2,0' --leaf -e 'new-symbol'
 
 # ✅ 替换字符串 leaf
-cr tree replace app.main/fn -p "2,1" --leaf -e '|new text'
+cr tree replace app.main/fn -p '2,1' --leaf -e '|new text'
 
 # ❌ 避免：用 -e 传单个 token（会变成 list）
-cr tree replace app.main/fn -p "2,0" -e 'symbol'  # 结果：["symbol"]
+cr tree replace app.main/fn -p '2,0' -e 'symbol'  # 结果：["symbol"]
 ```
 
 ### 3. Cirru 字符串和数据类型 ⭐⭐
@@ -800,7 +830,7 @@ send-to-component! $ :: :clipboard/read text
 cr query search 'target' -f 'ns/def'           # 或 search-expr 'fn (x)' -l 搜索结构
 
 # 2. 执行修改（会显示 diff 和验证命令）
-cr tree replace 'ns/def' -p "<path>" --leaf -e '<value>'
+cr tree replace 'ns/def' -p '<path>' --leaf -e '<value>'
 
 # 3. 增量更新（推荐）
 cr edit inc --changed ns/def
