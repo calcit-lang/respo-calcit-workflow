@@ -20,7 +20,7 @@ cr tree show 'ns/def' -p '3,2,1'                          # 3. 验证（可选�
 ```bash
 cr query search 'target' -f 'ns/def'                      # 搜索符号/字符串
 cr query search-expr 'fn (x)' -f 'ns/def' -l              # 搜索代码结构
-cr tree replace-leaf 'ns/def' --pattern 'old' --replacement 'new'  # 批量替换
+cr tree replace-leaf 'ns/def' --pattern 'old' -e 'new' --leaf  # 批量替换叶子节点
 ```
 
 ### 效率对比
@@ -165,10 +165,22 @@ Calcit 程序使用 `cr` 命令：
 
 ### LLM 辅助：动态方法提示
 
-- `&inspect-class-methods` - 打印某个值对应 class 的方法清单（不改变原值）
-  - 用法：`(&inspect-class-methods value "|optional note")`
-  - 用途：帮助 LLM 发现动态类型的方法与 proc 签名信息（不是测试/验证用途）
-  - 适合在 pipeline 中插入，快速查看方法、参数、命名空间和 proc 类型信息
+- `&methods-of` - 返回某个值在运行时可用的方法名列表（字符串，包含前导点）
+  - 用法：`&methods-of value`
+  - 返回：`[] |.foo |.bar ...`
+
+- `&inspect-methods` - 打印某个值在运行时可用的方法与 impl 记录来源（不改变原值）
+  - 用法：`&inspect-methods value "|optional note"`
+  - 用途：调试动态分派/traits override 链，适合临时插入 pipeline
+
+- `&impl:origin` - 读取 impl record 的 trait 来源（返回 trait 值或 nil）
+  - 用法：`&impl:origin impl`
+  - 用途：调试/断言 impl 与 trait 的关联关系（配合 `&tuple:impls` 或 `&methods-of` 使用）
+
+- `&trait-call` - 显式调用某个 trait 的方法实现（同名方法消歧/绕开 `.method` 分派）
+  - 用法：`&trait-call Trait :method receiver & args`
+  - 说明：会按当前 value 的 impl precedence 扫描，但只匹配“属于该 trait”的 impl 记录；若 trait 定义了 default 实现则会回退调用
+  - 前置条件：建议用 `defimpl` 创建 impl（impl record 会保存 trait origin，供 `&trait-call` 定位）
 
 ### 文档子命令 (`cr docs`)
 
@@ -349,8 +361,8 @@ cr tree replace namespace/def -p '3,2,2,5,2,4,1,2' -e 'let ((x 1)) (+ x task)'
   ```
 
 - **重构并复用原子节点**（使用 `--refer-inner-branch`）：
-  - 假设原节点是 `(+ 1 2)` (路径 "3,1")，其子节点索引 1 是 `1`，索引 2 是 `2`
-  - 将其重构为 `(* 2 10)`：
+  - 假设原节点是 `+ 1 2` (路径 "3,1")，其子节点索引 1 是 `1`，索引 2 是 `2`
+  - 将其重构为 `* 2 10`：
 
   ```bash
   cr tree replace ns/def -p '3,1' -e '(* #### 10)' --refer-inner-branch '2' --refer-inner-placeholder '####'
@@ -883,6 +895,8 @@ cr tree replace app.main/fn -p '2,0' -e 'symbol'  # 结果：["symbol"]
 | `\|a b c`      | `"a b c"`      | 包含空格     |
 | `\|[tag] text` | `"[tag] text"` | 包含特殊字符 |
 
+**不放心修改是否正确？** 每步后用 `tree show` 验证.
+
 **Tuple vs Vector：**
 
 ```cirru
@@ -913,7 +927,7 @@ send-to-component! $ :: :clipboard/read text
 - **JSON 格式 (`-j / --json`, `-J`, `-e`)**: 字数上限 **2000**。
 
 **大资源处理建议：**
-如果需要修改复杂的长函数，不要尝试一次性替换整个定义。应先构建主体结构，使用占位符（如 `?PLACEHOLDER_FEATURE`, 注意避免重复），然后通过 `cr query target-replace` 进行精准的分段替换.
+如果需要修改复杂的长函数，不要尝试一次性替换整个定义。应先构建主体结构，使用占位符（如 `?PLACEHOLDER_FEATURE`, 注意避免重复），然后通过 `cr tree target-replace` 进行精准的分段替换.
 
 ### 5. 推荐工作流程
 
@@ -967,7 +981,7 @@ cr eval 'thread-first x (+ 1) (* 2)'  # 用 thread-first 代替 ->
 **集合函数参数顺序（易错 ⭐⭐⭐）：**
 
 - **Calcit**: 集合在**第一位** → `map data fn` 或 `-> data (map fn)`
-- **Clojure**: 函数在第一位 → `(map fn data)` 或 `(->> data (map fn))`
+- **Clojure**: 函数在第一位 → `map fn data` 或 `->> data $ map fn`
 - **症状**：`unknown data for foldl-shortcut` 报错
 - **原因**：误用 `->>` 或参数顺序错误
 
