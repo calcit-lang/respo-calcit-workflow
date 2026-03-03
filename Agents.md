@@ -3,7 +3,7 @@ Developer runs `cr js` to watch build JavaScript, and `yarn vite` to start a loc
 查看 Calcit 命令行工具的用法:
 
 ```bash
-cr docs agents
+cr docs agents --full
 ```
 
 查看 Respo 模块的具体用法
