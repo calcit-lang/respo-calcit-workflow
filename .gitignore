@@ -11,3 +11,5 @@ dist/
 calcit.cirru
 
 .yarn/
+
+.copilot-tmp/
