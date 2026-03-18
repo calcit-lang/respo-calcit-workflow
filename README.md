@@ -1,6 +1,4 @@
-
-Respo workflow in Calcit-js
-----
+## Respo workflow in Calcit-js
 
 > Respo web page based on [calcit-js](https://github.com/calcit-lang/calcit).
 
