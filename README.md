@@ -9,9 +9,9 @@ Demo https://repo.calcit-lang.org/respo-calcit-workflow/ .
 To develop:
 
 ```bash
-cr js # watching
+cr js -w
 
-yarn # to install vite
+yarn install --immutable
 yarn vite # watching and running on localhost:3000
 ```
 
