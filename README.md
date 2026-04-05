@@ -9,9 +9,10 @@ Demo https://repo.calcit-lang.org/respo-calcit-workflow/ .
 To develop:
 
 ```bash
-cr js -w
-
+corepack enable && corepack prepare yarn@4.12.0 --activate
 yarn install --immutable
+
+cr js -w
 yarn vite # watching and running on localhost:3000
 ```
 
@@ -20,7 +21,8 @@ calcit-js is using [Calcit Editor](https://github.com/calcit-lang/editor).
 To build:
 
 ```bash
-yarn vite build
+yarn compile
+yarn release
 http-server dist/
 ```
 

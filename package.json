@@ -1,10 +1,14 @@
 {
   "dependencies": {
-    "@calcit/procs": "^0.12.11"
+    "@calcit/procs": "^0.12.14"
   },
   "devDependencies": {
     "bottom-tip": "^0.1.5",
     "vite": "^7.3.1"
+  },
+  "scripts": {
+    "compile": "caps --ci && cr compact.cirru js",
+    "release": "yarn vite build --base=./"
   },
   "version": "0.0.1",
   "packageManager": "yarn@4.12.0"
