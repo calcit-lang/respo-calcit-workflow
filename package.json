@@ -7,7 +7,7 @@
     "vite": "^8.0.12"
   },
   "scripts": {
-    "compile": "caps --ci && cr compact.cirru js",
+    "compile": "caps --ci && cr calcit.cirru js",
     "release": "yarn vite build --base=./"
   },
   "version": "0.0.1",

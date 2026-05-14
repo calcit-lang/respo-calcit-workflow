@@ -46,7 +46,7 @@ yarn vite
 ## 高频工作流
 
 - 先定位再修改。先 `query def/search`，再 `tree show`，最后做 `tree replace` 或 `edit def`。
-- 优先局部替换。不要整段重写 `compact.cirru`，只改目标节点或小段结构。
+- 优先局部替换。不要整段重写 `calcit.cirru`，只改目标节点或小段结构。
 - UI 改动和逻辑改动分开做，减少一次修改的影响面。
 - 复杂结构先自检。尤其是 `let`、属性 map、嵌套列表、事件处理函数。
 - 复用已有组件和样式。优先扩展现有 `defstyle`、组件和数据流，不重复造轮子。
@@ -64,6 +64,6 @@ yarn vite
 
 ## 修改约束
 
-- 严禁直接手改 `compact.cirru`，必须使用 `cr tree` 或 `cr edit`。
+- 严禁直接手改 `calcit.cirru`，必须使用 `cr tree` 或 `cr edit`。
 - 路径不要猜。先用 `cr query search` 拿路径，再用 `cr tree show` 确认。
 - 静态样式优先抽到 `defstyle`，动态列表中尽量少写内联 `:style`。
