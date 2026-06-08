@@ -1,12 +1,12 @@
 
-{} (:about "|file is generated - never edit directly; learn cr edit/tree workflows before changing") (:package |app)
+{} (:about "|Machine-generated snapshot. Do not edit directly — changes will be overwritten. Use `cr query` to inspect and `cr edit`/`cr tree` to modify. Run `cr docs agents --full` first. Manual edits must follow format and schema conventions, then run `cr edit format`.") (:package |app)
   :configs $ {} (:init-fn |app.main/main!) (:reload-fn |app.main/reload!) (:version |0.0.1)
     :modules $ [] |respo.calcit/ |memof/ |respo-ui.calcit/ |reel.calcit/
   :entries $ {}
   :files $ {}
     |app.comp.container $ %{} :FileEntry
       :defs $ {}
-        |comp-container $ %{} :CodeEntry (:doc |)
+        |comp-container $ %{} :CodeEntry (:doc |) (:schema :dynamic)
           :code $ quote
             defcomp comp-container (reel)
               let
@@ -14,27 +14,28 @@
                   states $ :states store
                   cursor $ or (:cursor states) ([])
                   state $ or (:data states)
-                    {} $ :content "\""
+                    {} $ :content |
                 div
                   {} $ :class-name (str-spaced css/preset css/global css/row)
                   textarea $ {}
                     :value $ :content state
-                    :placeholder "\"Content"
+                    :placeholder |Content
                     :class-name $ str-spaced css/expand css/textarea
                     :style $ {} (:height 320)
                     :on-input $ fn (e d!)
-                      d! cursor $ assoc state :content (:value e)
+                      d! cursor $ assoc state :content
+                        str $ :value e
                   =< 8 nil
                   div
                     {} $ :class-name css/expand
                     <> "|This is some content with `code`"
                     =< |8px nil
-                    button $ {} (:class-name css/button) (:inner-text "\"Run")
+                    button $ {} (:class-name css/button) (:inner-text |Run)
                       :on-click $ fn (e d!)
                         println $ :content state
                   when dev? $ comp-reel (>> states :reel) reel ({})
           :examples $ []
-      :ns $ %{} :CodeEntry (:doc |)
+      :ns $ %{} :NsEntry (:doc |)
         :code $ quote
           ns app.comp.container $ :require (respo-ui.css :as css)
             respo.css :refer $ defstyle
@@ -42,45 +43,43 @@
             respo.comp.space :refer $ =<
             reel.comp.reel :refer $ comp-reel
             app.config :refer $ dev?
-        :examples $ []
     |app.config $ %{} :FileEntry
       :defs $ {}
-        |dev? $ %{} :CodeEntry (:doc |)
+        |dev? $ %{} :CodeEntry (:doc |) (:schema :dynamic)
           :code $ quote
-            def dev? $ = "\"dev" (get-env "\"mode" "\"release")
+            def dev? $ = |dev (get-env |mode |release)
           :examples $ []
-        |site $ %{} :CodeEntry (:doc |)
+        |site $ %{} :CodeEntry (:doc |) (:schema :dynamic)
           :code $ quote
-            def site $ {} (:storage-key "\"workflow")
+            def site $ {} (:storage-key |workflow)
           :examples $ []
-      :ns $ %{} :CodeEntry (:doc |)
+      :ns $ %{} :NsEntry (:doc |)
         :code $ quote (ns app.config)
-        :examples $ []
     |app.main $ %{} :FileEntry
       :defs $ {}
-        |*reel $ %{} :CodeEntry (:doc |)
+        |*reel $ %{} :CodeEntry (:doc |) (:schema :dynamic)
           :code $ quote
             defatom *reel $ -> reel-schema/reel (assoc :base schema/store) (assoc :store schema/store)
           :examples $ []
-        |dispatch! $ %{} :CodeEntry (:doc |)
+        |dispatch! $ %{} :CodeEntry (:doc |) (:schema :dynamic)
           :code $ quote
             defn dispatch! (op)
               when
                 and config/dev? $ not= op :states
-                js/console.log "\"Dispatch:" op
+                js/console.log |Dispatch: op
               reset! *reel $ reel-updater updater @*reel op
           :examples $ []
-        |main! $ %{} :CodeEntry (:doc |)
+        |main! $ %{} :CodeEntry (:doc |) (:schema :dynamic)
           :code $ quote
             defn main! ()
-              println "\"Running mode:" $ if config/dev? "\"dev" "\"release"
+              println "|Running mode:" $ if config/dev? |dev |release
               if config/dev? $ load-console-formatter!
               render-app!
               add-watch *reel :changes $ fn (reel prev) (render-app!)
               listen-devtools! |k dispatch!
               js/window.addEventListener |beforeunload $ fn (event) (persist-storage!)
               js/window.addEventListener |visibilitychange $ fn (event)
-                if (= "\"hidden" js/document.visibilityState) (persist-storage!)
+                if (= |hidden js/document.visibilityState) (persist-storage!)
               flipped js/setInterval 60000 persist-storage!
               let
                   raw $ js/localStorage.getItem (:storage-key config/site)
@@ -88,31 +87,31 @@
                   dispatch! $ :: :hydrate-storage (parse-cirru-edn raw)
               println "|App started."
           :examples $ []
-        |mount-target $ %{} :CodeEntry (:doc |)
+        |mount-target $ %{} :CodeEntry (:doc |) (:schema :dynamic)
           :code $ quote
             def mount-target $ js/document.querySelector |.app
           :examples $ []
-        |persist-storage! $ %{} :CodeEntry (:doc |)
+        |persist-storage! $ %{} :CodeEntry (:doc |) (:schema :dynamic)
           :code $ quote
             defn persist-storage! ()
-              println "\"Saved at" $ .!toISOString (new js/Date)
+              println "|Saved at" $ .!toISOString (new js/Date)
               js/localStorage.setItem (:storage-key config/site)
                 format-cirru-edn $ :store @*reel
           :examples $ []
-        |reload! $ %{} :CodeEntry (:doc |)
+        |reload! $ %{} :CodeEntry (:doc |) (:schema :dynamic)
           :code $ quote
             defn reload! () $ if (nil? build-errors)
               do (remove-watch *reel :changes) (clear-cache!)
                 add-watch *reel :changes $ fn (reel prev) (render-app!)
                 reset! *reel $ refresh-reel @*reel schema/store updater
-                hud! "\"ok~" "\"Ok"
-              hud! "\"error" build-errors
+                hud! |ok~ |Ok
+              hud! |error build-errors
           :examples $ []
-        |render-app! $ %{} :CodeEntry (:doc |)
+        |render-app! $ %{} :CodeEntry (:doc |) (:schema :dynamic)
           :code $ quote
             defn render-app! () $ render! mount-target (comp-container @*reel) dispatch!
           :examples $ []
-      :ns $ %{} :CodeEntry (:doc |)
+      :ns $ %{} :NsEntry (:doc |)
         :code $ quote
           ns app.main $ :require
             respo.core :refer $ render! clear-cache!
@@ -123,33 +122,29 @@
             reel.core :refer $ reel-updater refresh-reel
             reel.schema :as reel-schema
             app.config :as config
-            "\"./calcit.build-errors" :default build-errors
-            "\"bottom-tip" :default hud!
-        :examples $ []
+            |./calcit.build-errors :default build-errors
+            |bottom-tip :default hud!
     |app.schema $ %{} :FileEntry
       :defs $ {}
-        |store $ %{} :CodeEntry (:doc |)
+        |store $ %{} :CodeEntry (:doc |) (:schema :dynamic)
           :code $ quote
             def store $ {}
               :states $ {}
                 :cursor $ []
           :examples $ []
-      :ns $ %{} :CodeEntry (:doc |)
+      :ns $ %{} :NsEntry (:doc |)
         :code $ quote (ns app.schema)
-        :examples $ []
     |app.updater $ %{} :FileEntry
       :defs $ {}
-        |updater $ %{} :CodeEntry (:doc |)
+        |updater $ %{} :CodeEntry (:doc |) (:schema :dynamic)
           :code $ quote
             defn updater (store op op-id op-time)
               tag-match op
-                  :states cursor s
-                  update-states store cursor s
+                (:states cursor s) (update-states store cursor s)
                 (:hydrate-storage data) data
-                _ $ do (eprintln "\"unknown op:" op) store
+                _ $ do (eprintln "|unknown op:" op) store
           :examples $ []
-      :ns $ %{} :CodeEntry (:doc |)
+      :ns $ %{} :NsEntry (:doc |)
         :code $ quote
           ns app.updater $ :require
             respo.cursor :refer $ update-states
-        :examples $ []

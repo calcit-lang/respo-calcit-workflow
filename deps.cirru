@@ -1,6 +1,6 @@
 
-{} (:calcit-version |0.12.35)
+{} (:calcit-version |0.12.41)
   :dependencies $ {} (|Respo/reel.calcit |0.6.3)
     |Respo/respo-ui.calcit |0.6.4
-    |Respo/respo.calcit |0.16.43
-    |calcit-lang/memof |0.0.23
+    |Respo/respo.calcit |0.16.46
+    |calcit-lang/memof |0.0.24
