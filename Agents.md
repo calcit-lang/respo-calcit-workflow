@@ -23,17 +23,28 @@ cr query config
 cr query ns <ns>
 cr query defs <ns>
 cr query def <ns/def>
-cr query search '<keyword>' -f '<ns/def>'
-cr tree show <ns/def> -p '<path>'
+cr query search '<keyword>' --filter '<ns/def>'
+cr tree show <ns/def> --path '<path>'
 ```
 
-高频修改命令：
+高频修改命令（`--code` 须用 `quote` 前缀）：
 
 ```bash
-cr tree replace <ns/def> -p '<path>' -e '<code>'
-cr tree target-replace <ns/def> -p '<parent-path>' -e '<old>' -r '<new>'
-cr edit def <ns/def>
-cr edit add-import <ns> -e 'src.ns :refer $ symbol'
+# 替换节点 — leaf 值用 quote |value，表达式用 quote (expr ...)
+cr tree replace <ns/def> --path '<path>' --code 'quote |new-value'
+cr tree replace <ns/def> --path '<path>' --code 'quote (new-expr ...)'
+
+# 按内容搜索替换 leaf
+cr tree search-replace <ns/def> --pattern '<old>' --code 'quote |<new>'
+
+# 从文件读取替换内容
+cr tree replace <ns/def> --path '<path>' --file snippet.cirru  # 内容须以 quote 开头
+
+# 添加/更新定义
+cr edit def <ns/def> --code 'quote (defn my-fn () ...)'
+
+# 添加 import
+cr edit add-import <ns> --code 'quote (src.ns :refer $ sym)'
 ```
 
 高频验证命令：
@@ -67,3 +78,4 @@ yarn vite
 - 严禁直接手改 `calcit.cirru`，必须使用 `cr tree` 或 `cr edit`。
 - 路径不要猜。先用 `cr query search` 拿路径，再用 `cr tree show` 确认。
 - 静态样式优先抽到 `defstyle`，动态列表中尽量少写内联 `:style`。
+- `--code` / `--file` 输入的 Cirru 代码必须用 `quote` 前缀包裹。
