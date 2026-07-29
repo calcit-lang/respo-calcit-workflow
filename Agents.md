@@ -11,7 +11,7 @@ cr docs agents --full
 再看 Respo 模块用法：
 
 ```bash
-cr libs readme respo.calcit -f docs/Respo-Agent.md
+cr libs readme respo.calcit --file docs/Respo-Agent.md --full
 ```
 
 ## 高频命令
