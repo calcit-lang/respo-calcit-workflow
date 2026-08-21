@@ -1,8 +1,9 @@
 
-{} (:about "|Machine-generated snapshot. Do not edit directly — changes will be overwritten. Use `cr query` to inspect and `cr edit`/`cr tree` to modify. Run `cr docs agents --full` first. Manual edits must follow format and schema conventions, then run `cr edit format`.") (:package |app) (:version |0.0.1)
+{} (:about "|Machine-generated snapshot. Do not edit directly — changes will be overwritten. Use `calcit query` to inspect and `calcit edit`/`calcit tree` to modify. Run `calcit docs agents --full` first. Manual edits must follow format and schema conventions, then run `calcit edit format`.") (:package |app)
   :entries $ {}
     :default $ {} (:description |) (:init-fn 'app.main/main!) (:mode :native) (:reload-fn 'app.main/reload!)
-      :modules $ [] |respo.calcit/ |memof/ |respo-ui.calcit/ |reel.calcit/
+      :feature-policy $ {}
+      :modules $ [] |respo.calcit/ |memof/ |respo-ui.calcit/ |reel.calcit/ |js-ffi/
       :type-slots $ {}
   :files $ {}
     |app.comp.container $ %{} 'FileEntry
@@ -12,13 +13,13 @@
             defcomp comp-container (reel)
               let
                   store $ unsafe-coerce (reel.schema/read-field reel :store) 'app.types/Store
-                  states $ &struct:get store :states
+                  states $ :states store
                   cursor $ &map:get states :cursor
                   state $ unsafe-coerce (&map:get states :data) 'app.types/StateData
                 div
                   {} $ :class-name (str-spaced css/preset css/global css/row)
                   textarea $ {}
-                    :value $ &struct:get state :content
+                    :value $ :content state
                     :placeholder |Content
                     :class-name $ str-spaced css/expand css/textarea
                     :style $ {} (:height 320)
@@ -32,7 +33,7 @@
                     =< |8px nil
                     button $ {} (:class-name css/button) (:inner-text |Run)
                       :on-click $ fn (e d!)
-                        println $ &struct:get state :content
+                        println $ :content state
                   when dev? $ comp-reel (>> states :reel) reel ({})
           :examples $ []
           :schema $ :: 'Fn
@@ -93,7 +94,7 @@
                 if (= |hidden js/document.visibilityState) (persist-storage!)
               flipped js/setInterval 60000 persist-storage!
               let
-                  raw $ js/localStorage.getItem (&struct:get config/site :storage-key)
+                  raw $ js/localStorage.getItem (:storage-key config/site)
                 when (js-present? raw)
                   dispatch! $ :: :hydrate-storage
                     parse-cirru-edn $ unsafe-coerce raw String
@@ -112,7 +113,7 @@
           :code $ quote
             defn persist-storage! ()
               println "|Saved at" $ .!toISOString (new js/Date)
-              js/localStorage.setItem (&struct:get config/site :storage-key)
+              js/localStorage.setItem (:storage-key config/site)
                 format-cirru-edn $ unsafe-coerce (get @*reel :store) 'app.types/Store
           :examples $ []
           :schema $ :: 'Fn
@@ -167,17 +168,17 @@
           :code $ quote
             defstruct SiteConfig $ :storage-key 'String
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Enum
         |StateData $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defstruct StateData $ :content 'String
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Enum
         |Store $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defstruct Store $ :states 'Map
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Enum
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote (ns app.types)
     |app.updater $ %{} 'FileEntry
