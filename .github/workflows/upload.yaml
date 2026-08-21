@@ -18,8 +18,8 @@ jobs:
 
     - run: corepack enable && corepack prepare yarn@4.12.0 --activate
 
-    # Validate the setup-calcit PR before publishing its v1 action tag.
-    - uses: tiye/setup-calcit@codex/setup-calcit-version-contract
+    # Consume the published major tag used by downstream workflows.
+    - uses: calcit-lang/setup-calcit@v1
 
     - name: "load deps"
       run: caps --ci && yarn install --immutable
