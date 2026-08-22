@@ -1,17 +1,17 @@
-Developer runs `cr js` for JavaScript build, and `yarn vite` to start the local server. LLMs should edit code through `cr` commands, then trigger recompilation.
+Developer runs `calcit js` for JavaScript build, and `yarn vite` to start the local server. LLMs should edit code through `calcit` commands, then trigger recompilation.
 
 ## 开工前必须看
 
 先读通用 Calcit Agent 指南：
 
 ```bash
-cr docs agents --full
+calcit docs agents --full
 ```
 
 再看 Respo 模块用法：
 
 ```bash
-cr libs readme respo.calcit --file docs/Respo-Agent.md --full
+calcit libs readme respo.calcit --file docs/Respo-Agent.md --full
 ```
 
 ## 高频命令
@@ -19,38 +19,38 @@ cr libs readme respo.calcit --file docs/Respo-Agent.md --full
 优先用查询命令定位，再做最小修改：
 
 ```bash
-cr query config
-cr query ns <ns>
-cr query defs <ns>
-cr query def <ns/def>
-cr query search '<keyword>' --filter '<ns/def>'
-cr tree show <ns/def> --path '<path>'
+calcit query config
+calcit query ns <ns>
+calcit query defs <ns>
+calcit query def <ns/def>
+calcit query search '<keyword>' --filter '<ns/def>'
+calcit tree show <ns/def> --path '<path>'
 ```
 
 高频修改命令（`--code` 须用 `quote` 前缀）：
 
 ```bash
 # 替换节点 — leaf 值用 quote |value，表达式用 quote (expr ...)
-cr tree replace <ns/def> --path '<path>' --code 'quote |new-value'
-cr tree replace <ns/def> --path '<path>' --code 'quote (new-expr ...)'
+calcit tree replace <ns/def> --path '<path>' --code 'quote |new-value'
+calcit tree replace <ns/def> --path '<path>' --code 'quote (new-expr ...)'
 
 # 按内容搜索替换 leaf
-cr tree search-replace <ns/def> --pattern '<old>' --code 'quote |<new>'
+calcit tree search-replace <ns/def> --pattern '<old>' --code 'quote |<new>'
 
 # 从文件读取替换内容
-cr tree replace <ns/def> --path '<path>' --file snippet.cirru  # 内容须以 quote 开头
+calcit tree replace <ns/def> --path '<path>' --file snippet.cirru  # 内容须以 quote 开头
 
 # 添加/更新定义
-cr edit def <ns/def> --code 'quote (defn my-fn () ...)'
+calcit edit def <ns/def> --code 'quote (defn my-fn () ...)'
 
 # 添加 import
-cr edit add-import <ns> --code 'quote (src.ns :refer $ sym)'
+calcit edit add-import <ns> --code 'quote (src.ns :refer $ sym)'
 ```
 
 高频验证命令：
 
 ```bash
-cr js
+calcit js
 yarn vite
 ```
 
@@ -61,7 +61,7 @@ yarn vite
 - UI 改动和逻辑改动分开做，减少一次修改的影响面。
 - 复杂结构先自检。尤其是 `let`、属性 map、嵌套列表、事件处理函数。
 - 复用已有组件和样式。优先扩展现有 `defstyle`、组件和数据流，不重复造轮子。
-- 每次改完都重新编译。默认先跑 `cr js`，需要看界面再跑 `yarn vite`。
+- 每次改完都重新编译。默认先跑 `calcit js`，需要看界面再跑 `yarn vite`。
 
 ## 高频踩坑
 
@@ -75,7 +75,7 @@ yarn vite
 
 ## 修改约束
 
-- 严禁直接手改 `calcit.cirru`，必须使用 `cr tree` 或 `cr edit`。
-- 路径不要猜。先用 `cr query search` 拿路径，再用 `cr tree show` 确认。
+- 严禁直接手改 `calcit.cirru`，必须使用 `calcit tree` 或 `calcit edit`。
+- 路径不要猜。先用 `calcit query search` 拿路径，再用 `calcit tree show` 确认。
 - 静态样式优先抽到 `defstyle`，动态列表中尽量少写内联 `:style`。
 - `--code` / `--file` 输入的 Cirru 代码必须用 `quote` 前缀包裹。
