@@ -12,7 +12,7 @@ To develop:
 corepack enable && corepack prepare yarn@4.12.0 --activate
 yarn install --immutable
 
-cr js -w
+calcit -w calcit.cirru js
 yarn vite # watching and running on localhost:3000
 ```
 
