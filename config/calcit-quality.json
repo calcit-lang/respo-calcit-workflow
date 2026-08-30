@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 2,
+  "scope": {
+    "namespace": null,
+    "namespacePrefix": null,
+    "includeDependencies": false
+  },
+  "metrics": {
+    "typeNone": 5,
+    "typeNotFull": 10,
+    "schemaDynamic": 8,
+    "codeDynamic": 0,
+    "codeNil": 2,
+    "unresolved": 10,
+    "declaredOptional": 0,
+    "deprecatedCalls": 0,
+    "unsafeCoerce": 4
+  },
+  "definitions": {
+    "app.comp.container/comp-container": {
+      "typeNone": 0,
+      "typeNotFull": 1,
+      "schemaDynamic": 1,
+      "codeDynamic": 0,
+      "codeNil": 2,
+      "unresolved": 3,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0,
+      "unsafeCoerce": 2
+    },
+    "app.config/dev?": {
+      "typeNone": 1,
+      "typeNotFull": 1,
+      "schemaDynamic": 1,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 1,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0,
+      "unsafeCoerce": 0
+    },
+    "app.main/*reel": {
+      "typeNone": 0,
+      "typeNotFull": 1,
+      "schemaDynamic": 1,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 1,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0,
+      "unsafeCoerce": 0
+    },
+    "app.main/dispatch!": {
+      "typeNone": 1,
+      "typeNotFull": 1,
+      "schemaDynamic": 1,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 1,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0,
+      "unsafeCoerce": 0
+    },
+    "app.main/main!": {
+      "typeNone": 0,
+      "typeNotFull": 1,
+      "schemaDynamic": 0,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 0,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0,
+      "unsafeCoerce": 1
+    },
+    "app.main/mount-target": {
+      "typeNone": 1,
+      "typeNotFull": 1,
+      "schemaDynamic": 1,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 1,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0,
+      "unsafeCoerce": 0
+    },
+    "app.main/persist-storage!": {
+      "typeNone": 0,
+      "typeNotFull": 1,
+      "schemaDynamic": 0,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 0,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0,
+      "unsafeCoerce": 1
+    },
+    "app.main/reload!": {
+      "typeNone": 1,
+      "typeNotFull": 1,
+      "schemaDynamic": 1,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 1,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0,
+      "unsafeCoerce": 0
+    },
+    "app.main/render-app!": {
+      "typeNone": 1,
+      "typeNotFull": 1,
+      "schemaDynamic": 1,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 1,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0,
+      "unsafeCoerce": 0
+    },
+    "app.updater/updater": {
+      "typeNone": 0,
+      "typeNotFull": 1,
+      "schemaDynamic": 1,
+      "codeDynamic": 0,
+      "codeNil": 0,
+      "unresolved": 1,
+      "declaredOptional": 0,
+      "deprecatedCalls": 0,
+      "unsafeCoerce": 0
+    }
+  }
+}

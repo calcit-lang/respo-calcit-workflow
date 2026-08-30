@@ -8,8 +8,6 @@ dist/
 
 .DS_Store
 
-calcit.cirru
-
 .yarn/
 
 .copilot-tmp/

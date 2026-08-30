@@ -17,10 +17,14 @@ The source snapshot is `calcit.cirru`. Do not add or restore `compact.cirru`; us
 ## Validation
 
 ```bash
-caps --ci
+caps --strict --ci
+yarn install --immutable
+caps verify --toolchain
 calcit calcit.cirru edit format
 git diff --exit-code -- calcit.cirru
 calcit calcit.cirru --check-only
+calcit calcit.cirru analyze dynamic-methods --max 0
+calcit calcit.cirru analyze quality --baseline config/calcit-quality.json
 calcit calcit.cirru js
 yarn vite build --base=./
 ```
@@ -32,4 +36,4 @@ calcit docs read upgrade --full
 calcit docs read library-quality.md --full
 ```
 
-Dependencies belong in `deps.cirru` and should use published version tags. Keep the Calcit version and CLI commands aligned with `setup-calcit` and the current upgrade guide.
+Dependencies belong in `deps.cirru` and should use published version tags. Keep `deps.cirru` and `@calcit/procs` on the same exact Calcit version; enforce that relationship with `caps verify --toolchain`.

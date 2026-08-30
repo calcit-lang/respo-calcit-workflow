@@ -6,9 +6,9 @@
       :modules $ [] |respo.calcit/ |respo-ui.calcit/ |reel.calcit/ |js-ffi/
       :type-slots $ {}
   :files $ {}
-    |app.comp.container $ %{} 'FileEntry
+    'app.comp.container $ %{} 'FileEntry
       :defs $ {}
-        |comp-container $ %{} 'CodeEntry (:doc |)
+        'comp-container $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defcomp comp-container (reel)
               let
@@ -25,7 +25,9 @@
                     :style $ {} (:height 320)
                     :on-input $ fn (e d!)
                       d! cursor $ assoc state :content
-                        str $ option:unwrap (get e :value)
+                        str $
+                          get e :value
+                          , .unwrap
                   =< 8 nil
                   div
                     {} $ :class-name css/expand
@@ -48,15 +50,15 @@
             reel.comp.reel :refer $ comp-reel
             reel.schema :as reel-schema
             app.config :refer $ dev?
-    |app.config $ %{} 'FileEntry
+    'app.config $ %{} 'FileEntry
       :defs $ {}
-        |dev? $ %{} 'CodeEntry (:doc |)
+        'dev? $ %{} 'CodeEntry (:doc |)
           :code $ quote
             def dev? $ = |dev
-              option:unwrap-or (get-env |mode) |release
+              (get-env |mode) .unwrap-or |release
           :examples $ []
           :schema $ :: 'Dynamic
-        |site $ %{} 'CodeEntry (:doc |)
+        'site $ %{} 'CodeEntry (:doc |)
           :code $ quote
             def site $ %{} app.types/SiteConfig (:storage-key |workflow)
           :examples $ []
@@ -65,14 +67,14 @@
         :code $ quote
           ns app.config $ :require
             app.types :refer $ SiteConfig
-    |app.main $ %{} 'FileEntry
+    'app.main $ %{} 'FileEntry
       :defs $ {}
-        |*reel $ %{} 'CodeEntry (:doc |)
+        '*reel $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defatom *reel $ -> reel-schema/reel (assoc :base schema/store) (assoc :store schema/store)
           :examples $ []
           :schema $ :: 'Dynamic
-        |dispatch! $ %{} 'CodeEntry (:doc |)
+        'dispatch! $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn dispatch! (op)
               when
@@ -81,7 +83,7 @@
               reset! *reel $ reel-updater updater @*reel op
           :examples $ []
           :schema $ :: 'Dynamic
-        |main! $ %{} 'CodeEntry (:doc |)
+        'main! $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn main! ()
               println "|Running mode:" $ if config/dev? |dev |release
@@ -104,12 +106,12 @@
             {} (:return 'Dynamic)
               :args $ []
               :features $ #{} :js-ffi
-        |mount-target $ %{} 'CodeEntry (:doc |)
+        'mount-target $ %{} 'CodeEntry (:doc |)
           :code $ quote
             def mount-target $ js/document.querySelector |.app
           :examples $ []
           :schema $ :: 'Dynamic
-        |persist-storage! $ %{} 'CodeEntry (:doc |)
+        'persist-storage! $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn persist-storage! ()
               println "|Saved at" $ .!toISOString (new js/Date)
@@ -120,7 +122,7 @@
             {} (:return 'Dynamic)
               :args $ []
               :features $ #{} :js-ffi
-        |reload! $ %{} 'CodeEntry (:doc |)
+        'reload! $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn reload! () $ if (nil? build-errors)
               do (remove-watch *reel :changes) (clear-cache!)
@@ -130,7 +132,7 @@
               hud! |error build-errors
           :examples $ []
           :schema $ :: 'Dynamic
-        |render-app! $ %{} 'CodeEntry (:doc |)
+        'render-app! $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn render-app! () $ render! mount-target (comp-container @*reel) dispatch!
           :examples $ []
@@ -148,9 +150,9 @@
             app.config :as config
             |./calcit.build-errors :default build-errors
             |bottom-tip :default hud!
-    |app.schema $ %{} 'FileEntry
+    'app.schema $ %{} 'FileEntry
       :defs $ {}
-        |store $ %{} 'CodeEntry (:doc |)
+        'store $ %{} 'CodeEntry (:doc |)
           :code $ quote
             def store $ %{} app.types/Store
               :states $ {}
@@ -162,31 +164,31 @@
         :code $ quote
           ns app.schema $ :require
             app.types :refer $ Store
-    |app.types $ %{} 'FileEntry
+    'app.types $ %{} 'FileEntry
       :defs $ {}
-        |SiteConfig $ %{} 'CodeEntry (:doc |)
+        'SiteConfig $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defstruct SiteConfig $ :storage-key 'String
           :examples $ []
           :schema $ :: 'Enum
-        |StateData $ %{} 'CodeEntry (:doc |)
+        'StateData $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defstruct StateData $ :content 'String
           :examples $ []
           :schema $ :: 'Enum
-        |Store $ %{} 'CodeEntry (:doc |)
+        'Store $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defstruct Store $ :states 'Map
           :examples $ []
           :schema $ :: 'Enum
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote (ns app.types)
-    |app.updater $ %{} 'FileEntry
+    'app.updater $ %{} 'FileEntry
       :defs $ {}
-        |updater $ %{} 'CodeEntry (:doc |)
+        'updater $ %{} 'CodeEntry (:doc |)
           :code $ quote
             defn updater (store op op-id op-time)
-              tag-match op
+              match op
                 (:states cursor s) (update-states store cursor s)
                 (:hydrate-storage data) data
                 _ $ do (eprintln "|unknown op:" op) store
