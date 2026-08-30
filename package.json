@@ -10,6 +10,6 @@
     "compile": "caps --strict --ci && caps verify --toolchain && calcit calcit.cirru js",
     "release": "yarn vite build --base=./"
   },
-  "version": "0.0.3",
+  "version": "0.0.4",
   "packageManager": "yarn@4.12.0"
 }
