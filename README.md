@@ -1,6 +1,6 @@
-## Respo workflow in Calcit-js
+## Respo workflow with Calcit
 
-> Respo web page based on [calcit-js](https://github.com/calcit-lang/calcit).
+> A small Respo web application driven by [Calcit](https://github.com/calcit-lang/calcit)'s JavaScript backend.
 
 Demo https://repo.calcit-lang.org/respo-calcit-workflow/ .
 
@@ -11,12 +11,12 @@ To develop:
 ```bash
 corepack enable && corepack prepare yarn@4.12.0 --activate
 yarn install --immutable
+caps --strict --ci
+caps verify --toolchain
 
 calcit -w calcit.cirru js
 yarn vite # watching and running on localhost:3000
 ```
-
-calcit-js is using [Calcit Editor](https://github.com/calcit-lang/editor).
 
 To build:
 
