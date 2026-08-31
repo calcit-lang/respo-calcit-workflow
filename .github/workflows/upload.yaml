@@ -6,6 +6,9 @@ on:
       - main
   pull_request: {}
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-24.04
@@ -21,9 +24,9 @@ jobs:
         corepack prepare yarn@4.12.0 --activate
         yarn --version
 
-    # Consume the published major tag used by downstream workflows.
+    # Consume the exact published release tag used by downstream workflows.
     - id: setup-calcit
-      uses: calcit-lang/setup-calcit@v1
+      uses: calcit-lang/setup-calcit@v1.4.0
       with:
         caps-version: 0.1.0
 
