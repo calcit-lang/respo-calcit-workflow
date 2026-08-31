@@ -6,6 +6,9 @@ on:
       - main
   pull_request: {}
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-24.04
@@ -21,8 +24,17 @@ jobs:
         corepack prepare yarn@4.12.0 --activate
         yarn --version
 
-    # Consume the published major tag used by downstream workflows.
-    - uses: calcit-lang/setup-calcit@v1
+    # Consume the exact published release tag used by downstream workflows.
+    - id: setup-calcit
+      uses: calcit-lang/setup-calcit@v1.4.0
+      with:
+        caps-version: 0.1.0
+
+    - name: Verify published setup tools
+      run: |
+        test "${{ steps.setup-calcit.outputs.version }}" = "0.13.64"
+        test "${{ steps.setup-calcit.outputs.caps-version }}" = "0.1.0"
+        test "$(caps --version)" = "caps 0.1.0"
 
     - name: "load deps"
       run: caps --strict --ci && yarn install --immutable
