@@ -26,13 +26,13 @@ jobs:
 
     # Consume the exact published release tag used by downstream workflows.
     - id: setup-calcit
-      uses: calcit-lang/setup-calcit@v1.4.0
+      uses: calcit-lang/setup-calcit@704b3f5cd6f9ce3bd1e0c926dbdd1d181adb8180 # v1.4.0
       with:
         caps-version: 0.1.0
 
     - name: Verify published setup tools
       run: |
-        test "${{ steps.setup-calcit.outputs.version }}" = "0.13.64"
+        test "${{ steps.setup-calcit.outputs.version }}" = "0.13.77"
         test "${{ steps.setup-calcit.outputs.caps-version }}" = "0.1.0"
         test "$(caps --version)" = "caps 0.1.0"
 

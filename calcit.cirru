@@ -93,7 +93,9 @@
               listen-devtools! |k dispatch!
               js/window.addEventListener |beforeunload $ fn (event) (persist-storage!)
               js/window.addEventListener |visibilitychange $ fn (event)
-                if (= |hidden js/document.visibilityState) (persist-storage!)
+                if
+                  = |hidden $ expect-string |document.visibilityState js/document.visibilityState
+                  persist-storage!
               flipped js/setInterval 60000 persist-storage!
               let
                   raw $ js/localStorage.getItem (:storage-key config/site)
@@ -150,6 +152,7 @@
             app.config :as config
             |./calcit.build-errors :default build-errors
             |bottom-tip :default hud!
+            js-ffi.contract :refer $ expect-string
     'app.schema $ %{} 'FileEntry
       :defs $ {}
         'store $ %{} 'CodeEntry (:doc |)
@@ -189,7 +192,8 @@
           :code $ quote
             defn updater (store op op-id op-time)
               match op
-                (:states cursor s) (update-states store cursor s)
+                (:states cursor s)
+                  assoc store :states $ update-states (:states store) cursor s
                 (:hydrate-storage data) data
                 _ $ do (eprintln "|unknown op:" op) store
           :examples $ []
