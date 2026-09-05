@@ -192,7 +192,7 @@
             defn updater (store op op-id op-time)
               match op
                 (:states cursor s)
-                  update-states (unsafe-coerce store map) cursor s
+                  update-states (&struct:to-map store) cursor s
                 (:hydrate-storage data) data
                 _ $ do (eprintln "|unknown op:" op) store
           :examples $ []
