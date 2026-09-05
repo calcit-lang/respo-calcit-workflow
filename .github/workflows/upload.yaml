@@ -32,7 +32,7 @@ jobs:
 
     - name: Verify published setup tools
       run: |
-        test "${{ steps.setup-calcit.outputs.version }}" = "0.13.64"
+        test "${{ steps.setup-calcit.outputs.version }}" = "0.13.77"
         test "${{ steps.setup-calcit.outputs.caps-version }}" = "0.1.0"
         test "$(caps --version)" = "caps 0.1.0"
 
