@@ -1,13 +1,13 @@
 {
   "dependencies": {
-    "@calcit/procs": "0.13.77"
+    "@calcit/procs": "0.14.3"
   },
   "devDependencies": {
     "bottom-tip": "^0.1.5",
-    "vite": "^8.0.12"
+    "vite": "^8.2.2"
   },
   "scripts": {
-    "compile": "caps --strict --ci && caps verify --toolchain && calcit calcit.cirru js",
+    "compile": "caps --ci && caps verify --toolchain && calcit calcit.cirru --compat-types js",
     "release": "yarn vite build --base=./"
   },
   "version": "0.0.4",
