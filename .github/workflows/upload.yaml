@@ -32,7 +32,7 @@ jobs:
 
     - name: Verify published setup tools
       run: |
-        test "${{ steps.setup-calcit.outputs.version }}" = "0.14.16"
+        test "${{ steps.setup-calcit.outputs.version }}" = "0.14.17"
         test "${{ steps.setup-calcit.outputs.caps-version }}" = "0.1.1"
         test "$(caps --version)" = "caps 0.1.1"
 
@@ -48,18 +48,18 @@ jobs:
       run: |
         calcit calcit.cirru edit format
         git diff --exit-code -- calcit.cirru
-        calcit calcit.cirru --compat-types --check-only
-        calcit calcit.cirru --compat-types analyze check-types --summary-only --format json
-        calcit calcit.cirru --compat-types analyze weak-types --only schema-dynamic,code-dynamic --intent unresolved --summary-only --format json
-        calcit calcit.cirru --compat-types analyze deprecated --summary-only --format json
-        calcit calcit.cirru --compat-types analyze dynamic-methods --max 0
-        calcit calcit.cirru --compat-types analyze quality --baseline config/calcit-quality.json
-        calcit calcit.cirru --compat-types docs format-md README.md --check
-        calcit calcit.cirru --compat-types docs check-md README.md --failures-only
+        calcit calcit.cirru --check-only
+        calcit calcit.cirru analyze check-types --summary-only --format json
+        calcit calcit.cirru analyze weak-types --only schema-dynamic,code-dynamic --intent unresolved --summary-only --format json
+        calcit calcit.cirru analyze deprecated --summary-only --format json
+        calcit calcit.cirru analyze dynamic-methods --max 0
+        calcit calcit.cirru analyze quality --baseline config/calcit-quality.json
+        calcit calcit.cirru docs format-md README.md --check
+        calcit calcit.cirru docs check-md README.md --failures-only
 
     - name: "compiles to js"
       run: >
-        calcit calcit.cirru --compat-types js
+        calcit calcit.cirru js
         && yarn vite build --base=./
 
     - name: Deploy to server
