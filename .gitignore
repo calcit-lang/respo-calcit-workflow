@@ -13,3 +13,5 @@ dist/
 .copilot-tmp/
 
 .calcit
+.pnp.cjs
+.pnp.loader.mjs
