@@ -32,14 +32,12 @@ jobs:
 
     - name: Verify published setup tools
       run: |
-        test "${{ steps.setup-calcit.outputs.version }}" = "0.18.1"
+        test "${{ steps.setup-calcit.outputs.version }}" = "$(calcit -v)"
         test "${{ steps.setup-calcit.outputs.caps-version }}" = "0.1.1"
         test "$(caps --version)" = "caps 0.1.1"
 
     - name: "load deps"
-      # Latest Respo releases temporarily request adjacent respo/js-ffi patch versions.
-      # caps resolves the highest SemVer correctly; keep the warnings visible in CI.
-      run: caps --ci && yarn install --immutable
+      run: caps --strict --ci && yarn install --immutable
 
     - name: Verify Calcit runtime toolchain
       run: caps verify --toolchain
