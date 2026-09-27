@@ -23,7 +23,7 @@ caps verify --toolchain
 calcit calcit.cirru edit format
 git diff --exit-code -- calcit.cirru
 calcit calcit.cirru --check-only
-calcit calcit.cirru analyze dynamic-methods --max 0
+calcit calcit.cirru analyze dynamic-methods --summary-only --format json
 calcit calcit.cirru analyze quality --baseline config/calcit-quality.json
 calcit calcit.cirru js
 yarn vite build --base=./

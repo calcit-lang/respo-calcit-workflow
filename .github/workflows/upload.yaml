@@ -32,14 +32,12 @@ jobs:
 
     - name: Verify published setup tools
       run: |
-        test "${{ steps.setup-calcit.outputs.version }}" = "0.18.1"
+        test "${{ steps.setup-calcit.outputs.version }}" = "$(calcit -v)"
         test "${{ steps.setup-calcit.outputs.caps-version }}" = "0.1.1"
         test "$(caps --version)" = "caps 0.1.1"
 
     - name: "load deps"
-      # Latest Respo releases temporarily request adjacent respo/js-ffi patch versions.
-      # caps resolves the highest SemVer correctly; keep the warnings visible in CI.
-      run: caps --ci && yarn install --immutable
+      run: caps --strict --ci && yarn install --immutable
 
     - name: Verify Calcit runtime toolchain
       run: caps verify --toolchain
@@ -52,7 +50,7 @@ jobs:
         calcit calcit.cirru analyze check-types --summary-only --format json
         calcit calcit.cirru analyze weak-types --only schema-dynamic,code-dynamic --intent unresolved --summary-only --format json
         calcit calcit.cirru analyze deprecated --summary-only --format json
-        calcit calcit.cirru analyze dynamic-methods --max 0
+        calcit calcit.cirru analyze dynamic-methods
         calcit calcit.cirru analyze quality --baseline config/calcit-quality.json
         calcit calcit.cirru docs format-md README.md --check
         calcit calcit.cirru docs check-md README.md --failures-only
