@@ -43,6 +43,8 @@ https://github.com/calcit-lang/respo-calcit-workflow
 
 迁移既有站点时可以先采用“影子上传”：保持 Vite base 和服务器部署不变，在原有 rsync **之后**额外上传到隔离的 COS 前缀，避免 COS 故障阻断现有生产部署，并以 CDN 读取、逐字节比对 `index.html` 验证。生产前缀覆盖同名文件时，CDN 可能短暂返回旧内容；要对“下载加比对”整体做有限次数重试，每次使用不同的缓存参数。确认影子上传后再另行切换 Vite base 和页面部署；切换时则应先验证 CDN 资源，再更新服务器 HTML。上传 Action 的参数、校验和错误说明以其[中文文档](https://github.com/worktools/cos-upload-action#readme)为准。
 
+已验证的两种迁移方式：[calcit-viewer 的隔离影子上传](https://github.com/calcit-lang/calcit-viewer/pull/53)保留了原页面部署；[diary 的共享 Action 迁移](https://github.com/TopixIM/diary/pull/51)保留了已有的 CDN base、`/pr/` 预览与服务器部署，并在 PR 中通过 COS 上传和公开 CDN 检查。
+
 ### License
 
 MIT
