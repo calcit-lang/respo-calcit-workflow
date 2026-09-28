@@ -41,7 +41,7 @@ https://github.com/calcit-lang/respo-calcit-workflow
 
 验证顺序：先在同仓库 PR 中确认 Calcit 校验、构建、COS 上传和 CDN 读取全部成功，并检查 `dist/index.html` 的资源路径；合并后再检查 `main` 的生产前缀和原有服务器页面。不要仅凭上传命令成功就认为页面可用，也不要把 `dist/`、`js-out/` 等生成物提交到 Git。若出现 `AccessDenied`，先核对组织 secret 是否向该仓库开放、桶名是否包含 APPID、地域与前缀是否正确，再查看 COS 权限；若在上传前失败，应先修复原有构建，不能把失败归因于 COS。
 
-迁移既有站点时可以先采用“影子上传”：保持 Vite base 和服务器部署不变，只额外上传到隔离的 COS 前缀，并以 CDN 读取、逐字节比对 `index.html` 验证。确认后再另行切换 Vite base 和页面部署。上传 Action 的参数、校验和错误说明以其[中文文档](https://github.com/worktools/cos-upload-action#readme)为准。
+迁移既有站点时可以先采用“影子上传”：保持 Vite base 和服务器部署不变，在原有 rsync **之后**额外上传到隔离的 COS 前缀，避免 COS 故障阻断现有生产部署，并以 CDN 读取、逐字节比对 `index.html` 验证。生产前缀覆盖同名文件时，CDN 可能短暂返回旧内容；要对“下载加比对”整体做有限次数重试，每次使用不同的缓存参数。确认影子上传后再另行切换 Vite base 和页面部署；切换时则应先验证 CDN 资源，再更新服务器 HTML。上传 Action 的参数、校验和错误说明以其[中文文档](https://github.com/worktools/cos-upload-action#readme)为准。
 
 ### License
 
