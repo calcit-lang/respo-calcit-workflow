@@ -8,7 +8,7 @@
   },
   "scripts": {
     "compile": "caps --ci && caps verify --toolchain && calcit calcit.cirru js",
-    "release": "yarn vite build --base=./"
+    "release": "yarn vite build --base=\"${VITE_BASE_URL:-./}\""
   },
   "version": "0.0.6",
   "packageManager": "yarn@4.12.0"

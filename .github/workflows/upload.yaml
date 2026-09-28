@@ -55,10 +55,55 @@ jobs:
         calcit calcit.cirru docs format-md README.md --check
         calcit calcit.cirru docs check-md README.md --failures-only
 
-    - name: "compiles to js"
-      run: >
+    - name: Build client with CDN asset URLs
+      id: asset-path
+      env:
+        CDN_ORIGIN: https://cos-sh.tiye.me
+      run: |
+        if [[ "$GITHUB_EVENT_NAME" == "pull_request" ]]; then
+          asset_prefix="${GITHUB_REPOSITORY}/pr/"
+        else
+          asset_prefix="${GITHUB_REPOSITORY}/"
+        fi
+        echo "VITE_BASE_URL=${CDN_ORIGIN}/${asset_prefix}" >> "$GITHUB_ENV"
+        echo "prefix=${asset_prefix}" >> "$GITHUB_OUTPUT"
+        export VITE_BASE_URL="${CDN_ORIGIN}/${asset_prefix}"
         calcit calcit.cirru js
-        && yarn vite build --base=./
+        yarn release
+
+    - name: Verify CDN asset references
+      run: node scripts/verify-cdn-build.mjs
+
+    - name: Upload static assets to COS
+      if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
+      env:
+        COS_BUCKET: ${{ secrets.COS_BUCKET }}
+        COS_SECRET_ID: ${{ secrets.COS_SECRET_ID }}
+        COS_SECRET_KEY: ${{ secrets.COS_SECRET_KEY }}
+        COS_ASSET_PREFIX: ${{ steps.asset-path.outputs.prefix }}
+      run: |
+        : "${COS_BUCKET:?Set COS_BUCKET}"
+        : "${COS_SECRET_ID:?Set COS_SECRET_ID}"
+        : "${COS_SECRET_KEY:?Set COS_SECRET_KEY}"
+        curl -fL --retry 3 \
+          https://github.com/tencentyun/coscli/releases/download/v1.0.9/coscli-v1.0.9-linux-amd64 \
+          -o "$RUNNER_TEMP/coscli"
+        echo "a07de5ba2800147a700ed29036b0c76a4229088cee68e1682d0eae19b638a915  $RUNNER_TEMP/coscli" | sha256sum --check
+        chmod 755 "$RUNNER_TEMP/coscli"
+        if ! "$RUNNER_TEMP/coscli" cp dist/ "cos://${COS_BUCKET}/${COS_ASSET_PREFIX}" -r \
+          --init-skip=true --disable-log \
+          -e cos.ap-shanghai.myqcloud.com \
+          -i "$COS_SECRET_ID" -k "$COS_SECRET_KEY"; then
+          echo "::error::COS upload failed; diagnostic codes from COSCLI:"
+          if [[ -d coscli_output ]]; then
+            grep -RohEi 'status(code)?[=: ]+[0-9]{3}|<Code>[^<]+|<Message>[^<]+|AccessDenied|SignatureDoesNotMatch|NoSuchBucket|Invalid[A-Za-z]+' coscli_output | head -40 || true
+          fi
+          exit 1
+        fi
+
+    - name: Verify uploaded CDN assets
+      if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
+      run: node scripts/verify-cdn-build.mjs --remote
 
     - name: Deploy to server
       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -72,6 +117,18 @@ jobs:
         ssh_options: ''
         src: 'dist/*'
         dest: 'rsync-user@tiye.me:/web-assets/repo/${{ github.repository }}'
+
+    - name: Deploy PR preview
+      if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+      uses: Pendect/action-rsyncer@8e05ffa5c93e5d9c9b167796b26044d2c616b2b9 # v2.0.0
+      env:
+        DEPLOY_KEY: ${{ secrets.rsync_private_key }}
+      with:
+        flags: '-avzr --progress'
+        options: ''
+        ssh_options: ''
+        src: 'dist/*'
+        dest: 'rsync-user@tiye.me:/web-assets/repo/${{ github.repository }}/pr/'
 
     - name: Display status from deploy
       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
