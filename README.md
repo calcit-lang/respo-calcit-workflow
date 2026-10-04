@@ -35,9 +35,9 @@ https://github.com/calcit-lang/respo-calcit-workflow
 本项目的 [上传工作流](.github/workflows/upload.yaml) 是 Calcit/Respo 应用的完整示例；[worktools/cos-upload-action](https://github.com/worktools/cos-upload-action) 负责把已经构建好的目录上传到腾讯云 COS，并可经公开 CDN 对每个文件做字节数与 SHA-256 校验。项目仍保留自己的 Calcit 校验、Vite 构建、CDN 路径选择和原有服务器部署。
 
 1. 在仓库或组织配置 `COS_BUCKET`、`COS_SECRET_ID`、`COS_SECRET_KEY` 三个 Actions secret。当前存储桶地域是 `ap-shanghai`，公开读取入口是 `https://cos-sh.tiye.me/`。COS 凭据仅授予目标桶所需的上传权限；来自 fork 的 PR 不运行需要密钥的步骤。
-2. 构建前按目标路径设置 Vite base：生产环境为 `https://cos-sh.tiye.me/<owner>/<repo>/`，本项目的 PR 预览为 `https://cos-sh.tiye.me/<owner>/<repo>/pr/`。`prefix` 与公开 URL 必须对应同一目录，不能只改上传前缀而沿用旧 base。
+2. 构建前按目标路径设置 Vite base：生产环境为 `https://cos-sh.tiye.me/<owner>/<repo>/`，本项目的 PR 资源为 `https://cos-sh.tiye.me/<owner>/<repo>/pr/<pr-number>/<run-id>/<run-attempt>/`。`prefix`、Vite base 与 `public-base-url` 来自同一个目录输出，不能只改上传前缀而沿用旧 base。
 3. 用固定 commit SHA 引用上传 Action，并传入 `source-dir: dist`、`bucket`、`region`、`prefix`、`public-base-url` 与三个 secret。Action 上传后会从公开 CDN 逐文件下载并比对字节数和 SHA-256，全部通过后才执行原有 rsync；项目不再复制远端验证脚本，COS 上传或公开读取失败也不会更新服务器上的 HTML。
-4. 保留生产和 PR 预览的独立路径。固定 `/pr/` 是本项目刻意提供的共享预览地址；并发 PR 可能覆盖这个地址。若只是验证上传能力、无需共享预览地址，改用 `<owner>/<repo>/pr/<pr-number>/<run-id>/` 隔离每次运行，并在 CDN 请求中加入 `?run=<run-id>` 避免缓存影响检查。长期使用运行级前缀时，应给旧对象设置存储桶生命周期清理策略。
+4. COS 的 PR 资源按 PR 编号、运行和重试次数隔离，避免不同构建覆盖同名资源。原服务器 `/web-assets/repo/<owner>/<repo>/pr/` 共享预览入口保持不变，其 HTML 引用当次独立 COS 目录；生产 COS 前缀与原服务器路径也不变。CDN 校验的缓存参数与重试由 Action 内部处理，不再手动重复校验。长期使用运行级前缀时，应给旧对象设置存储桶生命周期清理策略。
 
 验证顺序：先在同仓库 PR 中确认 Calcit 校验、构建、COS 上传和 CDN 读取全部成功，并检查 `dist/index.html` 的资源路径；合并后再检查 `main` 的生产前缀和原有服务器页面。不要仅凭上传命令成功就认为页面可用，也不要把 `dist/`、`js-out/` 等生成物提交到 Git。若出现 `AccessDenied`，先核对组织 secret 是否向该仓库开放、桶名是否包含 APPID、地域与前缀是否正确，再查看 COS 权限；若在上传前失败，应先修复原有构建，不能把失败归因于 COS。
 
