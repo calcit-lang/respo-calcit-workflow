@@ -4,6 +4,31 @@
 
 Demo https://repo.calcit-lang.org/respo-calcit-workflow/ .
 
+### Calcit 0.30.0 迁移候选
+
+使用正式 Calcit / `@calcit/procs` 0.30.0、Reel 0.6.38、UI 0.7.40、
+Respo 0.16.120、js-ffi 0.2.3，传递 Router 0.8.35；不引入 alpha/hash 模块版本。
+本模板的 default entry 明确为 JS，`calcit` 默认生成前端代码。
+
+内部 Reel 改为名义 `State<Op, Store>`，组件直接发单个 `:states` Op；
+复制模板后新增业务操作时，应在 `app.types/Op`、`decode-op` 和 updater 中同步声明。
+devtools 操作仍通过 Reel 自带的 `decode-control` 处理。未知业务操作会在入栈前报错，
+不再记录一个无效的历史项。正常界面、输入、存储 key `workflow`、定时器与部署路径保留。
+
+旧 Struct/Map 及历史单层 `:some Store` wire 包装在真实恢复边界解码；保存时取 Store 值，
+不把 Option 本身强转后序列化。旧包装仅按 tag/arity 解包后验证 Store，不假装恢复了名义 Option。
+初始空状态明确显示空字符串；不合法的已存字段报错，不以断言或强转绕过。
+状态树仍是允许异构 payload 的容器，不能把静态指标为零理解为所有字段都已静态化。
+
+迁移删除旧 Map 回调适配器和两层临时解码 helper，不添加校验框架、concurrently 或
+重复 COS 验证。原质量基线保留并将 schemaDynamic/unsafe 上限收紧至 0：完整 strict/preflight、190 个定义及一项针对
+状态更新/序列化恢复的附着回归通过；schemaDynamic 和 unsafe 指标均为 0。
+隔离浏览器已用合成文本验证输入、按钮、刷新恢复、Reel 面板、Reset 与保留状态的 HMR，
+控制台无 error；依赖仍有一条未配置 `mode` 的既有 warning，不冒称零 warning。
+旧包装保存→恢复→新格式保存后再次恢复也已在隔离浏览器通过。
+测试仅在副本中启用 dev 模式、使用唯一存储 key，临时页面和进程已关闭。
+干净 Caps/CI 仍须单独验收，候选尚未合并部署。
+
 ### Usages
 
 To develop:
@@ -14,9 +39,15 @@ yarn install --immutable
 caps --strict --ci
 caps verify --toolchain
 
-calcit -w calcit.cirru js
+calcit -w calcit.cirru
 yarn vite # watching and running on localhost:3000
 ```
+
+`-w` 用于配置入口的持续运行，不与一次性的 `js` 子命令混用。
+监听沿用 Calcit 的增量通知协议；用 CLI 修改 Snapshot 后，通过
+`calcit edit inc --changed app.comp.container/comp-container` 等既有命令通知对应定义，
+而不是假设直接改写 Snapshot 会自动被监听。编辑其他定义时替换为实际目标。
+完整流程查看 `calcit docs read cli-options.md` 和 `calcit edit inc --help`，不额外增加 watcher 脚本。
 
 To build:
 
