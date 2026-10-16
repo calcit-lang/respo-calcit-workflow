@@ -103,12 +103,6 @@
             render-app!
             add-watch! *reel :changes $ fn (reel prev) (render-app!)
             listen-devtools! |k dispatch!
-            js/window.addEventListener |beforeunload $ fn (event) (persist-storage!)
-            js/window.addEventListener |visibilitychange $ fn (event)
-              if
-                = |hidden $ str js/document.visibilityState
-                persist-storage!
-            js/setInterval persist-storage! 60000
             match
               js-nullish->option $
                 js-ffi.browser/window-local-storage
@@ -116,6 +110,12 @@
               (:some raw)
                 dispatch! $ :: :hydrate-storage $ parse-cirru-edn raw
               (:none) &unit
+            js/window.addEventListener |beforeunload $ fn (event) (persist-storage!)
+            js/window.addEventListener |visibilitychange $ fn (event)
+              if
+                = |hidden $ str js/document.visibilityState
+                persist-storage!
+            js/setInterval persist-storage! 60000
             println "|App started."
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Dynamic)
