@@ -8,19 +8,19 @@
   "metrics": {
     "typeNone": 0,
     "typeNotFull": 7,
-    "schemaDynamic": 3,
+    "schemaDynamic": 0,
     "codeDynamic": 0,
     "codeNil": 2,
     "unresolved": 5,
     "declaredOptional": 0,
     "deprecatedCalls": 0,
-    "unsafeCoerce": 2
+    "unsafeCoerce": 0
   },
   "definitions": {
     "app.comp.container/comp-container": {
       "typeNone": 0,
       "typeNotFull": 1,
-      "schemaDynamic": 1,
+      "schemaDynamic": 0,
       "codeDynamic": 0,
       "codeNil": 2,
       "unresolved": 3,
@@ -31,7 +31,7 @@
     "app.main/*reel": {
       "typeNone": 0,
       "typeNotFull": 1,
-      "schemaDynamic": 1,
+      "schemaDynamic": 0,
       "codeDynamic": 0,
       "codeNil": 0,
       "unresolved": 1,
@@ -59,7 +59,7 @@
       "unresolved": 0,
       "declaredOptional": 0,
       "deprecatedCalls": 0,
-      "unsafeCoerce": 1
+      "unsafeCoerce": 0
     },
     "app.main/mount-target": {
       "typeNone": 0,
@@ -81,12 +81,12 @@
       "unresolved": 0,
       "declaredOptional": 0,
       "deprecatedCalls": 0,
-      "unsafeCoerce": 1
+      "unsafeCoerce": 0
     },
     "app.updater/updater": {
       "typeNone": 0,
       "typeNotFull": 1,
-      "schemaDynamic": 1,
+      "schemaDynamic": 0,
       "codeDynamic": 0,
       "codeNil": 0,
       "unresolved": 1,
