@@ -1,15 +1,15 @@
 {
   "dependencies": {
-    "@calcit/procs": "0.30.0"
+    "@calcit/procs": "0.30.1"
   },
   "devDependencies": {
     "bottom-tip": "^0.1.5",
-    "vite": "^8.2.2"
+    "vite": "^8.3.1"
   },
   "scripts": {
-    "compile": "caps --ci && caps verify --toolchain && calcit calcit.cirru js",
+    "compile": "caps --strict --ci && caps verify --toolchain && calcit calcit.cirru js",
     "release": "yarn vite build --base=\"${VITE_BASE_URL:-./}\""
   },
   "version": "0.0.6",
-  "packageManager": "yarn@4.12.0"
+  "packageManager": "yarn@4.18.0"
 }
