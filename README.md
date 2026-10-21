@@ -6,10 +6,10 @@ Demo https://repo.calcit-lang.org/respo-calcit-workflow/ .
 
 ### Calcit 0.30.1：使用者影响
 
-本轮成对升级到正式 Calcit / `@calcit/procs` 0.30.1、Reel 0.6.39、UI 0.7.41、
-Respo 0.16.122、js-ffi 0.2.3，传递 Router 0.8.36；不引入 alpha/hash 模块版本。
-只将 `main!` / `persist-storage!` 的返回声明从 Dynamic 收紧为其实现已经返回的 Unit；
-函数体、存储合同及原生产/PR预览路径不变，旧存档不迁移或清空。
+当前固定正式 Calcit / `@calcit/procs` 0.30.1、Reel 0.6.41、UI 0.8.0、
+Respo 0.16.124、js-ffi 0.2.5，传递 Router 0.8.37；不引入 alpha/hash 模块版本。
+本轮补齐正式依赖图，不改 Snapshot、函数体、存储合同及原生产/PR预览路径，旧存档不迁移或清空。
+此前已将 `main!` / `persist-storage!` 的返回声明从 Dynamic 收紧为其实现已经返回的 Unit。
 升级后重启开发服务并完整刷新；本轮精确正式验收以 PR 为准，不沿用旧版本结果冒称完成。
 本模板的 default entry 明确为 JS，`calcit` 默认生成前端代码。
 
