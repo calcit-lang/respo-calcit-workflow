@@ -256,7 +256,9 @@
                   app.types/Op :states ([] :draft) (app.types/StateData :content |hello)
                   , |probe 1
               assert= |hello $ :content $ decode-map-as
-                &struct:to-map $ .unwrap $ get-in (:states changed) ([] :draft :data)
+                &struct:to-map $ .unwrap-or
+                  get-in (:states changed) ([] :draft :data)
+                  , nil
                 , app.types/StateData
               assert= initial $ updater initial
                 app.types/decode-op $ :: :hydrate-storage $ parse-cirru-edn (format-cirru-edn initial)
