@@ -4,7 +4,21 @@
 
 Demo https://repo.calcit-lang.org/respo-calcit-workflow/ .
 
-### Calcit 0.31.0：使用者影响
+### Calcit 0.32.0 本地候选：使用者影响
+
+本候选将 CLI / `@calcit/procs` 同步到正式 **0.32.0**，目标依赖为 Reel **0.7.0**、
+UI **0.9.0**、Respo **0.17.0**、js-ffi **0.2.8**，传递 Router **0.9.0**。
+其中 UI 依赖图的正式 tag 尚未齐备，目前仅用独立本地候选验证；不能把下述结果当作
+`caps --strict --ci` 正式安装或可发布证明。正式依赖就绪后需重新安装并重跑原门禁。
+
+本次通过官方 formatter 迁移类型标注表示，18 个定义的 schema 均保持；两处字段类型
+表达式改为 quoted 类型树。业务函数、存档合同、`hud!` 错误提示及原部署路径不变。
+完整 strict、原状态更新/恢复测试、原质量基线、JS/Vite 构建和 immutable 安装在候选图通过；
+unsafe/schemaDynamic/deprecated/dynamic-method 均为 0。原质量预算未放宽。
+本轮已在独立回环来源验证实际输入、Run 回调及刷新恢复，控制台无 warning/error；
+未重跑 dev/HMR、坏存档和历史包装的浏览器场景，正式 CI 尚待依赖发布。
+
+### 历史：Calcit 0.31.0 使用者影响
 
 当前配对正式 Calcit / `@calcit/procs` **0.31.0**、已发布 Reel 0.7.0-alpha.4、UI 0.9.0-alpha.4、Respo 0.17.0-alpha.4、js-ffi 0.2.7，传递 Router 0.9.0-alpha.3。
 UI 配套依赖仍在 alpha 线，不能与旧 0.30.x 图混装；升级后重新安装完整依赖图、重启开发服务并完整刷新。
