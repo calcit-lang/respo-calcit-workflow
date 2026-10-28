@@ -4,13 +4,13 @@
 
 Demo https://repo.calcit-lang.org/respo-calcit-workflow/ .
 
-### Calcit 0.30.1：使用者影响
+### Calcit 0.31.0：使用者影响
 
-当前固定正式 Calcit / `@calcit/procs` 0.30.1、Reel 0.6.41、UI 0.8.0、
-Respo 0.16.124、js-ffi 0.2.5，传递 Router 0.8.37；不引入 alpha/hash 模块版本。
-本轮补齐正式依赖图，不改 Snapshot、函数体、存储合同及原生产/PR预览路径，旧存档不迁移或清空。
-此前已将 `main!` / `persist-storage!` 的返回声明从 Dynamic 收紧为其实现已经返回的 Unit。
-升级后重启开发服务并完整刷新；本轮精确正式验收以 PR 为准，不沿用旧版本结果冒称完成。
+当前配对正式 Calcit / `@calcit/procs` **0.31.0**、已发布 Reel 0.7.0-alpha.4、UI 0.9.0-alpha.4、Respo 0.17.0-alpha.4、js-ffi 0.2.7，传递 Router 0.9.0-alpha.3。
+UI 配套依赖仍在 alpha 线，不能与旧 0.30.x 图混装；升级后重新安装完整依赖图、重启开发服务并完整刷新。
+本轮不改 Snapshot、函数体、存储合同及原生产/PR 预览路径，旧存档不迁移或清空。
+保留既有类型门禁、原测试与全部质量预算，不增加验证脚本、进程管理器或强转。
+
 本模板的 default entry 明确为 JS，`calcit` 默认生成前端代码。
 
 内部 Reel 改为名义 `State<Op, Store>`，组件直接发单个 `:states` Op；
@@ -31,7 +31,7 @@ devtools 操作仍通过 Reel 自带的 `decode-control` 处理。未知业务�
 控制台无 error；依赖仍有一条未配置 `mode` 的既有 warning，不冒称零 warning。
 旧包装保存→恢复→新格式保存后再次恢复也已在隔离浏览器通过。
 测试仅在副本中启用 dev 模式、使用唯一存储 key，临时页面和进程已关闭。
-上述为此前 0.30.0 迁移的验收，已经合入 main；不是本轮 0.30.1 的新验收。
+上述为此前 0.30.0 迁移的验收，已经合入 main；不是本轮 0.31.0 的新验收。
 
 ### Usages
 
