@@ -12,6 +12,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@calcit/procs@npm:0.32.1":
+  version: 0.32.1
+  resolution: "@calcit/procs@npm:0.32.1"
+  dependencies:
+    "@calcit/finger-vec": "npm:0.1.1"
+    "@calcit/ternary-tree": "npm:0.0.26"
+    "@cirru/parser.ts": "npm:0.0.10"
+    "@cirru/writer.ts": "npm:^0.1.9"
+  checksum: 10c0/54c505396a4653e643d24eaa71bf9a029b48034cabcd68ce47b2b40b565cf04a4693ac47c7feb34b8e84936621a397802743bffd3134ddeb37b08d23ef113923
+  languageName: node
+  linkType: hard
+
 "@calcit/ternary-tree@npm:0.0.26":
   version: 0.0.26
   resolution: "@calcit/ternary-tree@npm:0.0.26"
