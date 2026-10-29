@@ -4,10 +4,10 @@
 
 Demo https://repo.calcit-lang.org/respo-calcit-workflow/ .
 
-### Calcit 0.31.0：使用者影响
+### Calcit 0.32.1：使用者影响
 
-当前配对正式 Calcit / `@calcit/procs` **0.31.0**、已发布 Reel 0.7.0-alpha.4、UI 0.9.0-alpha.4、Respo 0.17.0-alpha.4、js-ffi 0.2.7，传递 Router 0.9.0-alpha.3。
-UI 配套依赖仍在 alpha 线，不能与旧 0.30.x 图混装；升级后重新安装完整依赖图、重启开发服务并完整刷新。
+当前配对正式 Calcit / `@calcit/procs` **0.32.1**、已发布 Reel 0.7.0-alpha.5、UI 0.9.0、Respo 0.17.1、js-ffi 0.2.9，传递 Router 0.9.0-alpha.4。
+升级后重新安装完整依赖图、重启开发服务并完整刷新；Snapshot 类型写法已用 `edit format` 迁移到 0.32 语法，旧 0.31 及更早的图不能混装。
 本轮不改 Snapshot、函数体、存储合同及原生产/PR 预览路径，旧存档不迁移或清空。
 保留既有类型门禁、原测试与全部质量预算，不增加验证脚本、进程管理器或强转。
 
