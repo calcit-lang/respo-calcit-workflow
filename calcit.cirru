@@ -17,14 +17,14 @@
                 states $ :states store
                 cursor $ decode-map-as
                   .unwrap-or (get states :cursor) ([])
-                  :: 'List 'Dynamic
+                  quote $ List Dynamic
                 state $ match (get states :data)
                   (:none) (app.types/StateData :content |)
                   (:some raw)
                     let
                         fields $ if (nil? raw) ({})
                           if (struct? raw) (&struct:to-map raw)
-                            decode-map-as raw $ :: 'Map 'Tag 'Dynamic
+                            decode-map-as raw $ quote $ Map Tag Dynamic
                       decode-map-as
                         merge
                           {} $ :content |
@@ -50,7 +50,9 @@
                   button $ {} (:class-name css/button) (:inner-text |Run)
                     :on-click $ fn (e d!)
                       println $ :content state
-                when dev? $ comp-typed-reel (>> states :reel) reel $ {}
+                if dev?
+                  Option :some $ comp-typed-reel (>> states :reel) reel $ {}
+                  Option :none
           :examples $ []
           :schema $ quote $ Fn (reel.typed/State app.types/Op app.types/Store) (-> respo.schema/Component)
       :ns $ %{} 'NsEntry (:doc |)
@@ -186,16 +188,16 @@
           :code $ quote $ defenum Op
             :states
               quote $ List Dynamic
-              , 'Dynamic
-            :hydrate-storage 'app.types/Store
+              , Dynamic
+            :hydrate-storage app.types/Store
           :examples $ []
           :schema $ quote EnumDef
         'SiteConfig $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defstruct SiteConfig (:storage-key 'String)
+          :code $ quote $ defstruct SiteConfig (:storage-key String)
           :examples $ []
           :schema $ quote StructDef
         'StateData $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defstruct StateData (:content 'String)
+          :code $ quote $ defstruct StateData (:content String)
           :examples $ []
           :schema $ quote StructDef
         'Store $ %{} 'CodeEntry (:doc |)
@@ -208,7 +210,7 @@
             match op
               (:states cursor data)
                 Op :states
-                  decode-map-as cursor $ :: 'List 'Dynamic
+                  decode-map-as cursor $ quote $ List Dynamic
                   , data
               (:hydrate-storage data)
                 let
@@ -233,7 +235,7 @@
               (:states cursor data)
                 assoc store :states $ decode-map-as
                   respo.cursor/update-state-tree (:states store) cursor data
-                  :: 'Map 'Tag 'Dynamic
+                  quote $ Map Tag Dynamic
               (:hydrate-storage data) data
           :examples $ []
           :schema $ quote $ Fn app.types/Store app.types/Op String Number (-> app.types/Store)
