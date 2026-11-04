@@ -9,8 +9,9 @@ Demo https://repo.calcit-lang.org/respo-calcit-workflow/ .
 CLI / `@calcit/procs` 同步正式 **0.34.2**，依赖使用已发布 Reel **0.8.1**、UI **0.12.1**、Respo **0.18.1**、JS-FFI **0.2.9**，传递 Router **0.10.1**。请重新安装完整精确图、生成 JS 并完整刷新，不混用旧工具链实例；UI 从 0.11 升至 0.12 系列，基础样式可能变化。
 
 新增业务状态游标只接受 Tag、字符串和数字，`CursorKey` union 在 Op、解码和组件读取三处保持一致；Bool 等非法元素会更早报错。状态 payload 仍是允许异构数据的真实边界，不用 union 假装所有业务字段都闭合。
+Store 的根状态 key 也对齐 `CursorKey`，字符串和数字根路径不会在更新或恢复时又被仅 Tag 的旧限制拒绝。
 
-启动先读取和恢复存档，再首次渲染和注册监听/保存。读取、解析或 Store 解码失败经原 JS `hud!` 提示后中止，不继续使用默认 Store；只有 key 真正缺失时才使用初始状态。原存储 key 和 wire 包装兼容保持。
+启动先读取和恢复存档，再首次渲染和注册监听/保存。读取、解析、Store 解码或首次渲染失败经原 JS `hud!` 提示后中止；只有 key 真正缺失时才使用初始状态。原存储 key 和 wire 包装兼容保持。
 
 Reel 0.8.0 的旧 Map API 改用 Option；本模板沿用 typed API，业务操作与历史算法不变。
 

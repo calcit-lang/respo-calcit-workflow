@@ -100,19 +100,20 @@
             println "|Running mode:" $ if config/dev? |dev |release
             if config/dev? $ load-console-formatter!
             try
-              match
-                js-nullish->option $
-                  js-ffi.browser/window-local-storage
-                  , .get-item $ :storage-key config/site
-                (:some raw)
-                  dispatch! $ :: :hydrate-storage $ parse-cirru-edn raw
-                (:none) &unit
+              do
+                match
+                  js-nullish->option $
+                    js-ffi.browser/window-local-storage
+                    , .get-item $ :storage-key config/site
+                  (:some raw)
+                    dispatch! $ :: :hydrate-storage $ parse-cirru-edn raw
+                  (:none) &unit
+                render-app!
               fn (error)
                 let
                     message $ :message $ shared/normalize-error error
                   hud! |error message
                   raise message
-            render-app!
             add-watch! *reel :changes $ fn (reel prev) (render-app!)
             listen-devtools! |k dispatch!
             js/window.addEventListener |beforeunload $ fn (event) (persist-storage!)
@@ -212,7 +213,7 @@
           :schema $ quote StructDef
         'Store $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstruct Store
-            :states $ quote $ Map Tag Dynamic
+            :states $ quote $ Map app.types/CursorKey Dynamic
           :examples $ []
           :schema $ quote StructDef
         'decode-op $ %{} 'CodeEntry (:doc |)
@@ -245,7 +246,7 @@
               (:states cursor data)
                 assoc store :states $ decode-map-as
                   respo.cursor/update-state-tree (:states store) cursor data
-                  quote $ Map Tag Dynamic
+                  quote $ Map app.types/CursorKey Dynamic
               (:hydrate-storage data) data
           :examples $ []
           :schema $ quote $ Fn app.types/Store app.types/Op String Number (-> app.types/Store)
@@ -255,6 +256,12 @@
                 changed $ updater initial
                   app.types/Op :states ([] :draft) (app.types/StateData :content |hello)
                   , |probe 1
+                string-root $ updater initial
+                  app.types/Op :states ([] |draft) false
+                  , |string-root 5
+                number-root $ updater string-root
+                  app.types/Op :states ([] 2) |number-data
+                  , |number-root 6
               assert= |hello $ :content $ decode-map-as
                 &struct:to-map $ .unwrap-or
                   get-in (:states changed) ([] :draft :data)
@@ -270,6 +277,15 @@
                 app.types/decode-op $ :: :hydrate-storage $ parse-cirru-edn
                   format-cirru-edn $ Option :some initial
                 , |probe 4
+              assert= false $ .unwrap-or
+                get-in (:states number-root) ([] |draft :data)
+                , |missing-root-data
+              assert= |number-data $ .unwrap-or
+                get-in (:states number-root) ([] 2 :data)
+                , |missing-root-data
+              assert= number-root $ updater initial
+                app.types/decode-op $ :: :hydrate-storage $ parse-cirru-edn (format-cirru-edn number-root)
+                , |roundtrip 7
             :tags $ #{} :unit
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.updater
