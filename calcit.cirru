@@ -3,7 +3,7 @@
   :about "|Machine-generated snapshot. Do not edit directly — changes will be overwritten. Use `calcit query` to inspect and `calcit edit`/`calcit tree` to modify. Run `calcit docs agents --contract` before mutations; use `--full` for first orientation or changed contract digest. Manual edits must follow format and schema conventions, then run `calcit edit format`."
   :package |app
   :entries $ {} $ :default
-    {} (:description |) (:init-fn 'app.main/main!) (:mode :js) (:reload-fn 'app.main/reload!)
+    {} (:description |) (:init-fn 'app.main/main!) (:mode :js) (:reload-fn 'app.main/reload!) (:target :browser)
       :feature-policy $ {}
       :modules $ [] |respo.calcit/ |respo-ui.calcit/ |reel.calcit/ |js-ffi/
       :type-slots $ {} $ :dispatch-op |app.types/Op
@@ -17,7 +17,7 @@
                 states $ :states store
                 cursor $ decode-map-as
                   .unwrap-or (get states :cursor) ([])
-                  quote $ List Dynamic
+                  quote $ List app.types/CursorKey
                 state $ match (get states :data)
                   (:none) (app.types/StateData :content |)
                   (:some raw)
@@ -99,16 +99,22 @@
           :code $ quote $ defn main! ()
             println "|Running mode:" $ if config/dev? |dev |release
             if config/dev? $ load-console-formatter!
+            try
+              match
+                js-nullish->option $
+                  js-ffi.browser/window-local-storage
+                  , .get-item $ :storage-key config/site
+                (:some raw)
+                  dispatch! $ :: :hydrate-storage $ parse-cirru-edn raw
+                (:none) &unit
+              fn (error)
+                let
+                    message $ :message $ shared/normalize-error error
+                  hud! |error message
+                  raise message
             render-app!
             add-watch! *reel :changes $ fn (reel prev) (render-app!)
             listen-devtools! |k dispatch!
-            match
-              js-nullish->option $
-                js-ffi.browser/window-local-storage
-                , .get-item $ :storage-key config/site
-              (:some raw)
-                dispatch! $ :: :hydrate-storage $ parse-cirru-edn raw
-              (:none) &unit
             js/window.addEventListener |beforeunload $ fn (event) (persist-storage!)
             js/window.addEventListener |visibilitychange $ fn (event)
               if
@@ -184,10 +190,14 @@
           :require $ app.types :refer $ Store
     'app.types $ %{} 'FileEntry
       :defs $ {}
+        'CursorKey $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ defunion CursorKey Tag String Number
+          :examples $ []
+          :schema $ quote UnionDef
         'Op $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defenum Op
             :states
-              quote $ List Dynamic
+              quote $ List app.types/CursorKey
               , Dynamic
             :hydrate-storage app.types/Store
           :examples $ []
@@ -210,7 +220,7 @@
             match op
               (:states cursor data)
                 Op :states
-                  decode-map-as cursor $ quote $ List Dynamic
+                  decode-map-as cursor $ quote $ List app.types/CursorKey
                   , data
               (:hydrate-storage data)
                 let

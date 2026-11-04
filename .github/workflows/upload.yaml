@@ -51,7 +51,7 @@ jobs:
       run: |
         set -euo pipefail
         calcit calcit.cirru edit format
-        git diff --exit-code -- calcit.cirru
+        git diff --exit-code --quiet -- calcit.cirru
         calcit calcit.cirru --check-only --all-defs
         calcit calcit.cirru fix --workflow strict --verify --format edn
         calcit calcit.cirru analyze weak-types --only schema-dynamic,code-dynamic --intent unresolved --summary-only --format json
