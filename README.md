@@ -4,15 +4,20 @@
 
 Demo https://repo.calcit-lang.org/respo-calcit-workflow/ .
 
-### Calcit 0.34.1：使用者影响
+### Calcit 0.34.2：使用者影响
 
-CLI / `@calcit/procs` 同步正式 **0.34.1**，依赖统一为已发布 Reel **0.8.0**、UI **0.11.0**、Respo **0.18.0**、JS-FFI **0.2.9**，传递 Router **0.9.0**；移除旧 alpha。请重新安装完整精确图、生成 JS 并完整刷新，不混用旧工具链实例。
+CLI / `@calcit/procs` 同步正式 **0.34.2**，依赖使用已发布 Reel **0.8.1**、UI **0.12.1**、Respo **0.18.1**、JS-FFI **0.2.9**，传递 Router **0.10.1**。请重新安装完整精确图、生成 JS 并完整刷新，不混用旧工具链实例；UI 从 0.11 升至 0.12 系列，基础样式可能变化。
+
+新增业务状态游标只接受 Tag、字符串和数字，`CursorKey` union 在 Op、解码和组件读取三处保持一致；Bool 等非法元素会更早报错。状态 payload 仍是允许异构数据的真实边界，不用 union 假装所有业务字段都闭合。
+Store 的根状态 key 也对齐 `CursorKey`，字符串和数字根路径不会在更新或恢复时又被仅 Tag 的旧限制拒绝。
+
+启动先读取和恢复存档，再首次渲染和注册监听/保存。读取、解析、Store 解码或首次渲染失败经原 JS `hud!` 提示后中止；只有 key 真正缺失时才使用初始状态。原存储 key 和 wire 包装兼容保持。
 
 Reel 0.8.0 的旧 Map API 改用 Option；本模板沿用 typed API，业务操作与历史算法不变。
 
 官方事务规范旧类型声明；开发工具可选子节点改为显式 Option，关闭时不插入占位节点。保留原业务操作、存档格式与恢复失败保护、HUD、类型/质量预算和原测试；不修改生产/PR 预览路径，不新增校验脚本或强转。下文 0.30.0 的浏览器验收是历史记录，本轮验证结果以 PR 为准。
 
-本模板的 default entry 明确为 JS，`calcit` 默认生成前端代码。
+本模板的 default entry 明确为 JS/browser，`calcit` 默认生成前端代码。
 
 内部 Reel 改为名义 `State<Op, Store>`，组件直接发单个 `:states` Op；
 复制模板后新增业务操作时，应在 `app.types/Op`、`decode-op` 和 updater 中同步声明。
@@ -32,7 +37,7 @@ devtools 操作仍通过 Reel 自带的 `decode-control` 处理。未知业务�
 控制台无 error；依赖仍有一条未配置 `mode` 的既有 warning，不冒称零 warning。
 旧包装保存→恢复→新格式保存后再次恢复也已在隔离浏览器通过。
 测试仅在副本中启用 dev 模式、使用唯一存储 key，临时页面和进程已关闭。
-上述为此前 0.30.0 迁移的验收，已经合入 main；不是本轮 0.34.1 的新验收。
+上述为此前 0.30.0 迁移的验收，已经合入 main；不是本轮 0.34.2 的新验收。
 
 ### Usages
 

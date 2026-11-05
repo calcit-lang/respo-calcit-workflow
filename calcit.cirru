@@ -3,7 +3,7 @@
   :about "|Machine-generated snapshot. Do not edit directly — changes will be overwritten. Use `calcit query` to inspect and `calcit edit`/`calcit tree` to modify. Run `calcit docs agents --contract` before mutations; use `--full` for first orientation or changed contract digest. Manual edits must follow format and schema conventions, then run `calcit edit format`."
   :package |app
   :entries $ {} $ :default
-    {} (:description |) (:init-fn 'app.main/main!) (:mode :js) (:reload-fn 'app.main/reload!)
+    {} (:description |) (:init-fn 'app.main/main!) (:mode :js) (:reload-fn 'app.main/reload!) (:target :browser)
       :feature-policy $ {}
       :modules $ [] |respo.calcit/ |respo-ui.calcit/ |reel.calcit/ |js-ffi/
       :type-slots $ {} $ :dispatch-op |app.types/Op
@@ -17,7 +17,7 @@
                 states $ :states store
                 cursor $ decode-map-as
                   .unwrap-or (get states :cursor) ([])
-                  quote $ List Dynamic
+                  quote $ List app.types/CursorKey
                 state $ match (get states :data)
                   (:none) (app.types/StateData :content |)
                   (:some raw)
@@ -99,16 +99,23 @@
           :code $ quote $ defn main! ()
             println "|Running mode:" $ if config/dev? |dev |release
             if config/dev? $ load-console-formatter!
-            render-app!
+            try
+              do
+                match
+                  js-nullish->option $
+                    js-ffi.browser/window-local-storage
+                    , .get-item $ :storage-key config/site
+                  (:some raw)
+                    dispatch! $ :: :hydrate-storage $ parse-cirru-edn raw
+                  (:none) &unit
+                render-app!
+              fn (error)
+                let
+                    message $ :message $ shared/normalize-error error
+                  hud! |error message
+                  raise message
             add-watch! *reel :changes $ fn (reel prev) (render-app!)
             listen-devtools! |k dispatch!
-            match
-              js-nullish->option $
-                js-ffi.browser/window-local-storage
-                , .get-item $ :storage-key config/site
-              (:some raw)
-                dispatch! $ :: :hydrate-storage $ parse-cirru-edn raw
-              (:none) &unit
             js/window.addEventListener |beforeunload $ fn (event) (persist-storage!)
             js/window.addEventListener |visibilitychange $ fn (event)
               if
@@ -184,10 +191,14 @@
           :require $ app.types :refer $ Store
     'app.types $ %{} 'FileEntry
       :defs $ {}
+        'CursorKey $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ defunion CursorKey Tag String Number
+          :examples $ []
+          :schema $ quote UnionDef
         'Op $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defenum Op
             :states
-              quote $ List Dynamic
+              quote $ List app.types/CursorKey
               , Dynamic
             :hydrate-storage app.types/Store
           :examples $ []
@@ -202,7 +213,7 @@
           :schema $ quote StructDef
         'Store $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstruct Store
-            :states $ quote $ Map Tag Dynamic
+            :states $ quote $ Map app.types/CursorKey Dynamic
           :examples $ []
           :schema $ quote StructDef
         'decode-op $ %{} 'CodeEntry (:doc |)
@@ -210,7 +221,7 @@
             match op
               (:states cursor data)
                 Op :states
-                  decode-map-as cursor $ quote $ List Dynamic
+                  decode-map-as cursor $ quote $ List app.types/CursorKey
                   , data
               (:hydrate-storage data)
                 let
@@ -235,7 +246,7 @@
               (:states cursor data)
                 assoc store :states $ decode-map-as
                   respo.cursor/update-state-tree (:states store) cursor data
-                  quote $ Map Tag Dynamic
+                  quote $ Map app.types/CursorKey Dynamic
               (:hydrate-storage data) data
           :examples $ []
           :schema $ quote $ Fn app.types/Store app.types/Op String Number (-> app.types/Store)
@@ -245,6 +256,12 @@
                 changed $ updater initial
                   app.types/Op :states ([] :draft) (app.types/StateData :content |hello)
                   , |probe 1
+                string-root $ updater initial
+                  app.types/Op :states ([] |draft) false
+                  , |string-root 5
+                number-root $ updater string-root
+                  app.types/Op :states ([] 2) |number-data
+                  , |number-root 6
               assert= |hello $ :content $ decode-map-as
                 &struct:to-map $ .unwrap-or
                   get-in (:states changed) ([] :draft :data)
@@ -260,6 +277,15 @@
                 app.types/decode-op $ :: :hydrate-storage $ parse-cirru-edn
                   format-cirru-edn $ Option :some initial
                 , |probe 4
+              assert= false $ .unwrap-or
+                get-in (:states number-root) ([] |draft :data)
+                , |missing-root-data
+              assert= |number-data $ .unwrap-or
+                get-in (:states number-root) ([] 2 :data)
+                , |missing-root-data
+              assert= number-root $ updater initial
+                app.types/decode-op $ :: :hydrate-storage $ parse-cirru-edn (format-cirru-edn number-root)
+                , |roundtrip 7
             :tags $ #{} :unit
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.updater
