@@ -17,14 +17,14 @@
                 states $ :states store
                 cursor $ decode-map-as
                   .unwrap-or (get states :cursor) ([])
-                  quote $ List app.types/CursorKey
+                  List app.types/CursorKey
                 state $ match (get states :data)
                   (:none) (app.types/StateData :content |)
                   (:some raw)
                     let
                         fields $ if (nil? raw) ({})
                           if (struct? raw) (&struct:to-map raw)
-                            decode-map-as raw $ quote $ Map Tag Dynamic
+                            decode-map-as raw $ Map Tag Dynamic
                       decode-map-as
                         merge
                           {} $ :content |
@@ -38,15 +38,16 @@
                   :class-name $ str-spaced css/expand css/textarea
                   :style $ {} $ :height 320
                   :on-input $ fn (e d!)
+                    hint-fn $ Fn respo.schema/RespoEvent
+                      Fn *dispatch-op $ -> Unit
+                      -> Unit
                     d! $ app.types/Op :states cursor $ assoc state :content
-                      decode-map-as
-                        .unwrap $ get e :value
-                        , 'String
-                =< 8 nil
+                      decode-map-as (:value e) 'String
+                space-x 8
                 div
                   {} $ :class-name css/expand
                   <> "|This is some content with `code`"
-                  =< |8px nil
+                  space-x 8
                   button $ {} (:class-name css/button) (:inner-text |Run)
                     :on-click $ fn (e d!)
                       println $ :content state
@@ -59,7 +60,7 @@
         :code $ quote $ ns app.comp.container
           :require (respo-ui.css :as css)
             respo.core :refer $ defcomp <> >> div button textarea
-            respo.comp.space :refer $ =<
+            respo.comp.space :refer $ space-x
             reel.comp.reel :refer $ comp-typed-reel
             app.config :refer $ dev?
     'app.config $ %{} 'FileEntry
@@ -94,7 +95,7 @@
             reset! *reel $ next-reel op
             , &unit
           :examples $ []
-          :schema $ quote $ Fn Enum (-> Unit) (:features :js-ffi)
+          :schema $ quote $ Fn AnyEnum (-> Unit) (:features :js-ffi)
         'main! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn main! ()
             println "|Running mode:" $ if config/dev? |dev |release
@@ -137,7 +138,7 @@
               (:none)
                 typed/record-op updater @*reel (app.types/decode-op op) (generate-id!) (shared/now-ms)
           :examples $ []
-          :schema $ quote $ Fn Enum
+          :schema $ quote $ Fn AnyEnum
             -> $ reel.typed/State app.types/Op app.types/Store
         'persist-storage! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn persist-storage! ()
@@ -197,9 +198,7 @@
           :schema $ quote UnionDef
         'Op $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defenum Op
-            :states
-              quote $ List app.types/CursorKey
-              , Dynamic
+            :states (List app.types/CursorKey) Dynamic
             :hydrate-storage app.types/Store
           :examples $ []
           :schema $ quote EnumDef
@@ -213,7 +212,7 @@
           :schema $ quote StructDef
         'Store $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstruct Store
-            :states $ quote $ Map app.types/CursorKey Dynamic
+            :states $ Map app.types/CursorKey Dynamic
           :examples $ []
           :schema $ quote StructDef
         'decode-op $ %{} 'CodeEntry (:doc |)
@@ -221,7 +220,7 @@
             match op
               (:states cursor data)
                 Op :states
-                  decode-map-as cursor $ quote $ List app.types/CursorKey
+                  decode-map-as cursor $ List app.types/CursorKey
                   , data
               (:hydrate-storage data)
                 let
@@ -235,7 +234,7 @@
                     , Store
               _ $ raise "|Unknown workflow operation"
           :examples $ []
-          :schema $ quote $ Fn Enum (-> app.types/Op)
+          :schema $ quote $ Fn AnyEnum (-> app.types/Op)
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.types
     'app.updater $ %{} 'FileEntry
@@ -246,7 +245,7 @@
               (:states cursor data)
                 assoc store :states $ decode-map-as
                   respo.cursor/update-state-tree (:states store) cursor data
-                  quote $ Map app.types/CursorKey Dynamic
+                  Map app.types/CursorKey Dynamic
               (:hydrate-storage data) data
           :examples $ []
           :schema $ quote $ Fn app.types/Store app.types/Op String Number (-> app.types/Store)
