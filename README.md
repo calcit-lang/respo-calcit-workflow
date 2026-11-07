@@ -4,7 +4,12 @@
 
 Demo https://repo.calcit-lang.org/respo-calcit-workflow/ .
 
-### Calcit 0.35.1 的使用者影响
+### Calcit 0.37.0 的使用者影响
+
+CLI / `@calcit/procs` 配对正式 **0.37.0**，依赖使用 Reel **0.10.0**、UI **0.15.2**、Respo **0.19.5**、JS-FFI **0.2.13**，传递 Router **0.12.2**。
+入口的 `:dispatch-op` 类型槽改为符号 `'app.types/Op`，0.37 不再接受字符串写法。
+
+### 历史 Calcit 0.35.1 的使用者影响
 
 CLI / `@calcit/procs` 配对正式 **0.35.1**，依赖使用已发布 Reel **0.9.2**、UI **0.15.1**、Respo **0.19.4**、JS-FFI **0.2.13**，传递 Router **0.12.1**。请重新安装完整依赖图、生成 JS 并刷新。新版 UI 可能影响基础样式。
 
@@ -39,7 +44,7 @@ devtools 操作仍通过 Reel 自带的 `decode-control` 处理。未知业务�
 控制台无 error；依赖仍有一条未配置 `mode` 的既有 warning，不冒称零 warning。
 旧包装保存→恢复→新格式保存后再次恢复也已在隔离浏览器通过。
 测试仅在副本中启用 dev 模式、使用唯一存储 key，临时页面和进程已关闭。
-上述为此前 0.30.0 迁移的验收，已经合入 main；本轮 0.35.1 验收见 PR。
+上述为此前 0.30.0 迁移的验收，已经合入 main；0.35.1 与 0.37.0 的验收见各自 PR。
 
 ### Usages
 
