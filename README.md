@@ -4,7 +4,13 @@
 
 Demo https://repo.calcit-lang.org/respo-calcit-workflow/ .
 
-### Calcit 0.37.0 的使用者影响
+### Calcit 0.38.0 / Reel 0.11.0 的使用者影响
+
+CLI / `@calcit/procs` 配对正式 **0.38.0**，依赖使用 Reel **0.11.0**、UI **0.15.2**、Respo **0.19.5**、JS-FFI **0.2.13**。
+Reel 0.11.0 不再往应用 dispatch 发 `:reel/*` 匿名事件：入口新增 `on-control!`，用 `reel.typed/apply-control` 更新 `*reel`，
+并传给 `comp-typed-reel` 和 `listen-devtools!`。
+
+### 历史 Calcit 0.37.0 的使用者影响
 
 CLI / `@calcit/procs` 配对正式 **0.37.0**，依赖使用 Reel **0.10.0**、UI **0.15.2**、Respo **0.19.5**、JS-FFI **0.2.13**，传递 Router **0.12.2**。
 入口的 `:dispatch-op` 类型槽改为符号 `'app.types/Op`，0.37 不再接受字符串写法。
