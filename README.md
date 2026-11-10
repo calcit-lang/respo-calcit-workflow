@@ -4,11 +4,11 @@
 
 Demo https://repo.calcit-lang.org/respo-calcit-workflow/ .
 
-### Calcit 0.38.0 / Reel 0.11.0 的使用者影响
+### Calcit 0.40.0 / Reel 0.11.0 的使用者影响
 
-CLI / `@calcit/procs` 配对正式 **0.38.0**，依赖使用 Reel **0.11.0**、UI **0.15.2**、Respo **0.19.5**、JS-FFI **0.2.13**。
+CLI / `@calcit/procs` 配对正式 **0.40.0**，依赖使用 Reel **0.11.0**、UI **0.15.2**、Respo **0.19.5**、JS-FFI **0.2.13**。
 Reel 0.11.0 不再往应用 dispatch 发 `:reel/*` 匿名事件：入口新增 `on-control!`，用 `reel.typed/apply-control` 更新 `*reel`，
-并传给 `comp-typed-reel` 和 `listen-devtools!`。
+面板使用 `comp-typed-reel`，键盘使用 `listen-devtools-toggle!`。
 
 ### 历史 Calcit 0.37.0 的使用者影响
 
@@ -33,9 +33,7 @@ Reel 0.8.0 的旧 Map API 改用 Option；本模板沿用 typed API，业务操�
 本模板的 default entry 明确为 JS/browser，`calcit` 默认生成前端代码。
 
 内部 Reel 改为名义 `State<Op, Store>`，组件直接发单个 `:states` Op；
-复制模板后新增业务操作时，应在 `app.types/Op`、`decode-op` 和 updater 中同步声明。
-devtools 操作仍通过 Reel 自带的 `decode-control` 处理。未知业务操作会在入栈前报错，
-不再记录一个无效的历史项。正常界面、输入、存储 key `workflow`、定时器与部署路径保留。
+复制模板后新增业务操作时，在 `app.types/Op` 和 updater 中同步声明。页面直接派发具名 `Op`，旧存档在读取时由 `decode-store` 验证，再构造 `Op :hydrate-storage`。
 
 旧 Struct/Map 及历史单层 `:some Store` wire 包装在真实恢复边界解码；保存时取 Store 值，
 不把 Option 本身强转后序列化。旧包装仅按 tag/arity 解包后验证 Store，不假装恢复了名义 Option。
