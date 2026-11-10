@@ -25,7 +25,10 @@ git diff --exit-code -- calcit.cirru
 calcit calcit.cirru --check-only --all-defs
 calcit calcit.cirru fix --workflow strict --verify --format edn
 calcit calcit.cirru analyze weak-types --only dynamic-method --summary-only --format json
-calcit calcit.cirru analyze quality --baseline config/calcit-quality.json
+calcit calcit.cirru analyze weak-types --only coverage --summary-only --format json |
+  jq -e '.data.summary.levels | .none == 0 and .partial == 0'
+calcit calcit.cirru analyze weak-types --summary-only --format json |
+  jq -e '.data.summary.hits == 0'
 calcit calcit.cirru test --require-match
 calcit calcit.cirru js
 yarn vite build --base=./
