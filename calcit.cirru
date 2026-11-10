@@ -94,10 +94,10 @@
                 (:states cursor data) false
                 _ true
               js/console.log |Dispatch: op
-            reset! *reel $ next-reel op
+            reset! *reel $ typed/record-op updater @*reel op (generate-id!) (shared/now-ms)
             , &unit
           :examples $ []
-          :schema $ quote $ Fn AnyEnum (-> Unit) (:features :js-ffi)
+          :schema $ quote $ Fn app.types/Op (-> Unit) (:features :js-ffi)
         'main! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn main! ()
             println "|Running mode:" $ if config/dev? |dev |release
@@ -109,7 +109,7 @@
                     js-ffi.browser/window-local-storage
                     , .get-item $ :storage-key config/site
                   (:some raw)
-                    dispatch! $ :: :hydrate-storage $ parse-cirru-edn raw
+                    dispatch! $ app.types/Op :hydrate-storage $ app.types/decode-store (parse-cirru-edn raw)
                   (:none) &unit
                 render-app!
               fn (error)
@@ -118,7 +118,7 @@
                   hud! |error message
                   raise message
             add-watch! *reel :changes $ fn (reel prev) (render-app!)
-            listen-devtools! |k on-control!
+            listen-devtools-toggle! |k $ fn () $ on-control! (typed/Control :toggle)
             js/window.addEventListener |beforeunload $ fn (event) (persist-storage!)
             js/window.addEventListener |visibilitychange $ fn (event)
               if
@@ -133,15 +133,6 @@
             .unwrap $ respo.ffi.browser/query-selector |.app
           :examples $ []
           :schema $ quote $ Fn (-> respo.dom/DomElement) (:features :js-ffi)
-        'next-reel $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn next-reel (op)
-            match (typed/decode-control op)
-              (:some control) (typed/apply-control updater @*reel control)
-              (:none)
-                typed/record-op updater @*reel (app.types/decode-op op) (generate-id!) (shared/now-ms)
-          :examples $ []
-          :schema $ quote $ Fn AnyEnum
-            -> $ reel.typed/State app.types/Op app.types/Store
         'on-control! $ %{} 'CodeEntry
           :doc "|Apply a Reel devtools Control; the panel calls this instead of dispatching :reel/* events."
           :code $ quote $ defn on-control! (control)
@@ -169,19 +160,19 @@
           :schema $ quote $ Fn (-> Unit)
         'render-app! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn render-app! ()
-            render! (mount-target) (comp-container @*reel on-control!)
-              fn (op)
-                if (enum? op) (dispatch! op) (raise "|render dispatch expected an Enum operation")
+            render-with! (mount-target)
+              fn () $ comp-container @*reel on-control!
+              , dispatch!
           :examples $ []
           :schema $ quote $ Fn (-> Unit)
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.main
           :require
-            respo.core :refer $ render! clear-cache!
+            respo.core :refer $ render-with! clear-cache!
             app.comp.container :refer $ comp-container
             app.updater :refer $ updater
             app.schema :as schema
-            reel.util :refer $ listen-devtools!
+            reel.util :refer $ listen-devtools-toggle!
             reel.typed :as typed
             js-ffi.shared :as shared
             app.config :as config
@@ -224,26 +215,19 @@
             :states $ Map app.types/CursorKey Dynamic
           :examples $ []
           :schema $ quote StructDef
-        'decode-op $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn decode-op (op)
-            match op
-              (:states cursor data)
-                Op :states
-                  decode-map-as cursor $ List app.types/CursorKey
+        'decode-store $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ defn decode-store (data)
+            let
+                value $ if (enum? data)
+                  match data
+                    (:some legacy-store) legacy-store
+                    _ $ raise "|Unsupported legacy storage wrapper"
                   , data
-              (:hydrate-storage data)
-                let
-                    value $ if (enum? data)
-                      match data
-                        (:some legacy-store) legacy-store
-                        _ $ raise "|Unsupported legacy storage wrapper"
-                      , data
-                  Op :hydrate-storage $ decode-map-as
-                    if (struct? value) (&struct:to-map value) value
-                    , Store
-              _ $ raise "|Unknown workflow operation"
+              decode-map-as
+                if (struct? value) (&struct:to-map value) value
+                , Store
           :examples $ []
-          :schema $ quote $ Fn AnyEnum (-> app.types/Op)
+          :schema $ quote $ Fn V (-> app.types/Store) (:generics V)
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.types
     'app.updater $ %{} 'FileEntry
@@ -276,13 +260,13 @@
                   , nil
                 , app.types/StateData
               assert= initial $ updater initial
-                app.types/decode-op $ :: :hydrate-storage $ parse-cirru-edn (format-cirru-edn initial)
+                app.types/Op :hydrate-storage $ app.types/decode-store $ parse-cirru-edn (format-cirru-edn initial)
                 , |probe 2
               assert= initial $ updater initial
-                app.types/decode-op $ :: :hydrate-storage $ &struct:to-map initial
+                app.types/Op :hydrate-storage $ app.types/decode-store $ &struct:to-map initial
                 , |probe 3
               assert= initial $ updater initial
-                app.types/decode-op $ :: :hydrate-storage $ parse-cirru-edn
+                app.types/Op :hydrate-storage $ app.types/decode-store $ parse-cirru-edn
                   format-cirru-edn $ Option :some initial
                 , |probe 4
               assert= false $ .unwrap-or
@@ -292,7 +276,7 @@
                 get-in (:states number-root) ([] 2 :data)
                 , |missing-root-data
               assert= number-root $ updater initial
-                app.types/decode-op $ :: :hydrate-storage $ parse-cirru-edn (format-cirru-edn number-root)
+                app.types/Op :hydrate-storage $ app.types/decode-store $ parse-cirru-edn (format-cirru-edn number-root)
                 , |roundtrip 7
             :tags $ #{} :unit
       :ns $ %{} 'NsEntry (:doc |)
