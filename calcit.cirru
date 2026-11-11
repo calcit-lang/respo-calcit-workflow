@@ -41,8 +41,7 @@
                     hint-fn $ Fn respo.schema/RespoEvent
                       Fn *dispatch-op $ -> Unit
                       -> Unit
-                    d! $ app.types/Op :states cursor $ assoc state :content
-                      decode-map-as (:value e) 'String
+                    d! $ app.types/Op :edit-content cursor $ respo.core/event-value e
                 space-x 8
                 div
                   {} $ :class-name css/expand
@@ -52,8 +51,8 @@
                     :on-click $ fn (e d!)
                       println $ :content state
                 if dev?
-                  Option :some $ comp-typed-reel (>> states :reel) reel ({}) on-control
-                  Option :none
+                  Some $ comp-typed-reel (>> states :reel) reel ({}) on-control
+                  , None
           :examples $ []
           :schema $ quote $ Fn (reel.typed/State app.types/Op app.types/Store)
             Fn reel.typed/Control $ -> Unit
@@ -77,7 +76,7 @@
         'site $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def site (app.types/SiteConfig :storage-key |workflow)
           :examples $ []
-          :schema $ quote app.types/SiteConfig
+          :schema $ quote SiteConfig
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.config
           :require $ app.types :refer $ SiteConfig
@@ -86,12 +85,13 @@
         '*reel $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defref *reel (typed/new-reel schema/store)
           :examples $ []
-          :schema $ quote $ Ref (reel.typed/State app.types/Op app.types/Store)
+          :schema $ quote $ Ref (typed/State app.types/Op app.types/Store)
         'dispatch! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn dispatch! (op)
             when
               and config/dev? $ match op
                 (:states cursor data) false
+                (:edit-content cursor content) false
                 _ true
               js/console.log |Dispatch: op
             reset! *reel $ typed/record-op updater @*reel op (generate-id!) (shared/now-ms)
@@ -139,7 +139,7 @@
             reset! *reel $ typed/apply-control updater @*reel control
             , &unit
           :examples $ []
-          :schema $ quote $ Fn reel.typed/Control (-> Unit)
+          :schema $ quote $ Fn typed/Control (-> Unit)
         'persist-storage! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn persist-storage! ()
             js/localStorage.setItem (:storage-key config/site)
@@ -186,7 +186,7 @@
               :cursor $ []
               :data $ {}
           :examples $ []
-          :schema $ quote app.types/Store
+          :schema $ quote Store
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.schema
           :require $ app.types :refer $ Store
@@ -199,6 +199,7 @@
         'Op $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defenum Op
             :states (List app.types/CursorKey) Dynamic
+            :edit-content (List app.types/CursorKey) String
             :hydrate-storage app.types/Store
           :examples $ []
           :schema $ quote EnumDef
@@ -227,7 +228,7 @@
                 if (struct? value) (&struct:to-map value) value
                 , Store
           :examples $ []
-          :schema $ quote $ Fn V (-> app.types/Store) (:generics V)
+          :schema $ quote $ Fn V (-> Store) (:generics V)
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.types
     'app.updater $ %{} 'FileEntry
@@ -239,46 +240,62 @@
                 assoc store :states $ decode-map-as
                   respo.cursor/update-state-tree (:states store) cursor data
                   Map app.types/CursorKey Dynamic
+              (:edit-content cursor content)
+                assoc store :states $ decode-map-as
+                  respo.cursor/update-state-tree (:states store) cursor $ app.types/StateData :content content
+                  Map app.types/CursorKey Dynamic
               (:hydrate-storage data) data
           :examples $ []
           :schema $ quote $ Fn app.types/Store app.types/Op String Number (-> app.types/Store)
-          :tests $ [] $ %{} 'TestEntry (:name |store-state-and-restore)
-            :code $ quote $ let
-                initial app.schema/store
-                changed $ updater initial
-                  app.types/Op :states ([] :draft) (app.types/StateData :content |hello)
-                  , |probe 1
-                string-root $ updater initial
-                  app.types/Op :states ([] |draft) false
-                  , |string-root 5
-                number-root $ updater string-root
-                  app.types/Op :states ([] 2) |number-data
-                  , |number-root 6
-              assert= |hello $ :content $ decode-map-as
-                &struct:to-map $ .unwrap-or
-                  get-in (:states changed) ([] :draft :data)
-                  , nil
-                , app.types/StateData
-              assert= initial $ updater initial
-                app.types/Op :hydrate-storage $ app.types/decode-store $ parse-cirru-edn (format-cirru-edn initial)
-                , |probe 2
-              assert= initial $ updater initial
-                app.types/Op :hydrate-storage $ app.types/decode-store $ &struct:to-map initial
-                , |probe 3
-              assert= initial $ updater initial
-                app.types/Op :hydrate-storage $ app.types/decode-store $ parse-cirru-edn
-                  format-cirru-edn $ Option :some initial
-                , |probe 4
-              assert= false $ .unwrap-or
-                get-in (:states number-root) ([] |draft :data)
-                , |missing-root-data
-              assert= |number-data $ .unwrap-or
-                get-in (:states number-root) ([] 2 :data)
-                , |missing-root-data
-              assert= number-root $ updater initial
-                app.types/Op :hydrate-storage $ app.types/decode-store $ parse-cirru-edn (format-cirru-edn number-root)
-                , |roundtrip 7
-            :tags $ #{} :unit
+          :tests $ []
+            %{} 'TestEntry (:name |store-state-and-restore)
+              :code $ quote $ let
+                  initial app.schema/store
+                  changed $ updater initial
+                    app.types/Op :edit-content ([] :draft) |hello
+                    , |probe 1
+                  string-root $ updater initial
+                    app.types/Op :states ([] |draft) false
+                    , |string-root 5
+                  number-root $ updater string-root
+                    app.types/Op :states ([] 2) |number-data
+                    , |number-root 6
+                assert= |hello $ :content $ decode-map-as
+                  &struct:to-map $ .unwrap-or
+                    get-in (:states changed) ([] :draft :data)
+                    , nil
+                  , app.types/StateData
+                assert= initial $ updater initial
+                  app.types/Op :hydrate-storage $ app.types/decode-store $ parse-cirru-edn (format-cirru-edn initial)
+                  , |probe 2
+                assert= initial $ updater initial
+                  app.types/Op :hydrate-storage $ app.types/decode-store $ &struct:to-map initial
+                  , |probe 3
+                assert= initial $ updater initial
+                  app.types/Op :hydrate-storage $ app.types/decode-store $ parse-cirru-edn
+                    format-cirru-edn $ Some initial
+                  , |probe 4
+                assert= false $ .unwrap-or
+                  get-in (:states number-root) ([] |draft :data)
+                  , |missing-root-data
+                assert= |number-data $ .unwrap-or
+                  get-in (:states number-root) ([] 2 :data)
+                  , |missing-root-data
+                assert= number-root $ updater initial
+                  app.types/Op :hydrate-storage $ app.types/decode-store $ parse-cirru-edn (format-cirru-edn number-root)
+                  , |roundtrip 7
+              :tags $ #{} :unit
+            %{} 'TestEntry (:name |edit-content-at-root)
+              :code $ quote $ let
+                  changed $ updater app.schema/store
+                    app.types/Op :edit-content ([]) |root-text
+                    , |root-edit 1
+                assert= |root-text $ :content $ decode-map-as
+                  &struct:to-map $ .unwrap-or
+                    get (:states changed) :data
+                    , nil
+                  , app.types/StateData
+              :tags $ #{} :unit
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.updater
           :require $ respo.cursor :refer $ update-states
