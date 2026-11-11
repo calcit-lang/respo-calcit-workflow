@@ -21,8 +21,9 @@ set -euo pipefail
 caps --strict --ci
 yarn install --immutable
 caps verify --toolchain
+snapshot_before="$(git hash-object calcit.cirru)"
 calcit calcit.cirru edit format
-git diff --exit-code -- calcit.cirru
+test "$snapshot_before" = "$(git hash-object calcit.cirru)"
 calcit calcit.cirru --check-only --all-defs
 calcit calcit.cirru fix --workflow strict --verify --format edn
 calcit calcit.cirru analyze weak-types --only dynamic-method --summary-only --format json
