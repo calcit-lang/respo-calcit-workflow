@@ -17,6 +17,7 @@ The source snapshot is `calcit.cirru`. Do not add or restore `compact.cirru`; us
 ## Validation
 
 ```bash
+set -euo pipefail
 caps --strict --ci
 yarn install --immutable
 caps verify --toolchain

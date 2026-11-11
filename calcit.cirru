@@ -91,6 +91,7 @@
             when
               and config/dev? $ match op
                 (:states cursor data) false
+                (:edit-content cursor content) false
                 _ true
               js/console.log |Dispatch: op
             reset! *reel $ typed/record-op updater @*reel op (generate-id!) (shared/now-ms)
@@ -246,43 +247,55 @@
               (:hydrate-storage data) data
           :examples $ []
           :schema $ quote $ Fn app.types/Store app.types/Op String Number (-> app.types/Store)
-          :tests $ [] $ %{} 'TestEntry (:name |store-state-and-restore)
-            :code $ quote $ let
-                initial app.schema/store
-                changed $ updater initial
-                  app.types/Op :edit-content ([] :draft) |hello
-                  , |probe 1
-                string-root $ updater initial
-                  app.types/Op :states ([] |draft) false
-                  , |string-root 5
-                number-root $ updater string-root
-                  app.types/Op :states ([] 2) |number-data
-                  , |number-root 6
-              assert= |hello $ :content $ decode-map-as
-                &struct:to-map $ .unwrap-or
-                  get-in (:states changed) ([] :draft :data)
-                  , nil
-                , app.types/StateData
-              assert= initial $ updater initial
-                app.types/Op :hydrate-storage $ app.types/decode-store $ parse-cirru-edn (format-cirru-edn initial)
-                , |probe 2
-              assert= initial $ updater initial
-                app.types/Op :hydrate-storage $ app.types/decode-store $ &struct:to-map initial
-                , |probe 3
-              assert= initial $ updater initial
-                app.types/Op :hydrate-storage $ app.types/decode-store $ parse-cirru-edn
-                  format-cirru-edn $ Some initial
-                , |probe 4
-              assert= false $ .unwrap-or
-                get-in (:states number-root) ([] |draft :data)
-                , |missing-root-data
-              assert= |number-data $ .unwrap-or
-                get-in (:states number-root) ([] 2 :data)
-                , |missing-root-data
-              assert= number-root $ updater initial
-                app.types/Op :hydrate-storage $ app.types/decode-store $ parse-cirru-edn (format-cirru-edn number-root)
-                , |roundtrip 7
-            :tags $ #{} :unit
+          :tests $ []
+            %{} 'TestEntry (:name |store-state-and-restore)
+              :code $ quote $ let
+                  initial app.schema/store
+                  changed $ updater initial
+                    app.types/Op :edit-content ([] :draft) |hello
+                    , |probe 1
+                  string-root $ updater initial
+                    app.types/Op :states ([] |draft) false
+                    , |string-root 5
+                  number-root $ updater string-root
+                    app.types/Op :states ([] 2) |number-data
+                    , |number-root 6
+                assert= |hello $ :content $ decode-map-as
+                  &struct:to-map $ .unwrap-or
+                    get-in (:states changed) ([] :draft :data)
+                    , nil
+                  , app.types/StateData
+                assert= initial $ updater initial
+                  app.types/Op :hydrate-storage $ app.types/decode-store $ parse-cirru-edn (format-cirru-edn initial)
+                  , |probe 2
+                assert= initial $ updater initial
+                  app.types/Op :hydrate-storage $ app.types/decode-store $ &struct:to-map initial
+                  , |probe 3
+                assert= initial $ updater initial
+                  app.types/Op :hydrate-storage $ app.types/decode-store $ parse-cirru-edn
+                    format-cirru-edn $ Some initial
+                  , |probe 4
+                assert= false $ .unwrap-or
+                  get-in (:states number-root) ([] |draft :data)
+                  , |missing-root-data
+                assert= |number-data $ .unwrap-or
+                  get-in (:states number-root) ([] 2 :data)
+                  , |missing-root-data
+                assert= number-root $ updater initial
+                  app.types/Op :hydrate-storage $ app.types/decode-store $ parse-cirru-edn (format-cirru-edn number-root)
+                  , |roundtrip 7
+              :tags $ #{} :unit
+            %{} 'TestEntry (:name |edit-content-at-root)
+              :code $ quote $ let
+                  changed $ updater app.schema/store
+                    app.types/Op :edit-content ([]) |root-text
+                    , |root-edit 1
+                assert= |root-text $ :content $ decode-map-as
+                  &struct:to-map $ .unwrap-or
+                    get (:states changed) :data
+                    , nil
+                  , app.types/StateData
+              :tags $ #{} :unit
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.updater
           :require $ respo.cursor :refer $ update-states
