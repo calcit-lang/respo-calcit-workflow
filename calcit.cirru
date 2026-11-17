@@ -55,9 +55,9 @@
                   , None
           :examples $ []
           :schema $ quote $ Fn (reel.typed/State app.types/Op app.types/Store)
-            Fn reel.typed/Control $ -> Unit
+            Fn reel.typed/Control (-> Unit) (:features :state)
             -> respo.schema/Component
-            :features :io
+            :features :io :state
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.comp.container
           :require (respo-ui.css :as css)
