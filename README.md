@@ -4,7 +4,11 @@
 
 Demo https://repo.calcit-lang.org/respo-calcit-workflow/ .
 
-### Calcit 0.43.0 / Reel 0.11.2 的使用者影响
+### Calcit 0.44.0 的使用者影响
+
+CLI / `@calcit/procs` 配对正式 **0.44.0**，依赖为 Reel **0.11.4**、UI **0.15.6**、Respo **0.19.12**、JS-FFI **0.2.18**。重新安装依赖并生成前端；存档格式和 HUD 行为保持。
+
+### 历史 Calcit 0.43.0 / Reel 0.11.2 的使用者影响
 
 CLI / `@calcit/procs` 配对正式 **0.43.0**，依赖使用 Reel **0.11.2**、UI **0.15.4**、Respo **0.19.10**、JS-FFI **0.2.18**。
 Reel 0.11.0 不再往应用 dispatch 发 `:reel/*` 匿名事件：入口新增 `on-control!`，用 `reel.typed/apply-control` 更新 `*reel`，
