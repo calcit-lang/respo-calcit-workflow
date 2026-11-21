@@ -4,7 +4,11 @@
 
 Demo https://repo.calcit-lang.org/respo-calcit-workflow/ .
 
-### Calcit 0.43.0 / Reel 0.11.2 的使用者影响
+### Calcit 0.44.0 的使用者影响
+
+CLI / `@calcit/procs` 配对正式 **0.44.0**，依赖为 Reel **0.11.5**、UI **0.15.7**、Respo **0.19.13**、JS-FFI **0.2.19**。重新安装依赖并生成前端；存档格式和 HUD 行为保持。
+
+### 历史 Calcit 0.43.0 / Reel 0.11.2 的使用者影响
 
 CLI / `@calcit/procs` 配对正式 **0.43.0**，依赖使用 Reel **0.11.2**、UI **0.15.4**、Respo **0.19.10**、JS-FFI **0.2.18**。
 Reel 0.11.0 不再往应用 dispatch 发 `:reel/*` 匿名事件：入口新增 `on-control!`，用 `reel.typed/apply-control` 更新 `*reel`，
@@ -29,7 +33,7 @@ Store 的根状态 key 也对齐 `CursorKey`，字符串和数字根路径不会
 
 Reel 0.8.0 的旧 Map API 改用 Option；本模板沿用 typed API，业务操作与历史算法不变。
 
-官方事务规范旧类型声明；开发工具可选子节点改为显式 Option，关闭时不插入占位节点。保留原业务操作、存档格式与恢复失败保护、HUD、类型/质量预算和原测试；不修改生产/PR 预览路径，不新增校验脚本或强转。下文 0.30.0 的浏览器验收是历史记录，本轮验证结果以 PR 为准。
+官方事务规范旧类型声明；开发工具可选子节点改为显式 Option，关闭时不插入占位节点。保留原业务操作、存档格式与恢复失败保护、HUD、类型/质量预算和原测试；生产路径不变，PR 页面改按编号隔离，不新增校验脚本或强转。下文 0.30.0 的浏览器验收是历史记录，本轮验证结果以 PR 为准。
 
 本模板的 default entry 明确为 JS/browser，`calcit` 默认生成前端代码。
 
@@ -90,7 +94,7 @@ https://github.com/calcit-lang/respo-calcit-workflow
 1. 在仓库或组织配置 `COS_BUCKET`、`COS_SECRET_ID`、`COS_SECRET_KEY` 三个 Actions secret。当前存储桶地域是 `ap-shanghai`，公开读取入口是 `https://cos-sh.tiye.me/`。COS 凭据仅授予目标桶所需的上传权限；外部 fork 和 Dependabot PR 仍完整安装、校验、测试与构建，但不执行 COS/rsync，因而没有远端预览。Dependabot 默认不能读取普通 Actions secrets，人工重跑也不改变原权限；不要为生成预览而复制生产部署密钥或改为执行不可信代码的 `pull_request_target`。普通可信 PR 和 main 仍需 COS 内置校验成功才部署，凭据缺失仍应失败，详见 [#58](https://github.com/calcit-lang/respo-calcit-workflow/issues/58)。
 2. 构建前按目标路径设置 Vite base：生产环境为 `https://cos-sh.tiye.me/<owner>/<repo>/`，本项目的 PR 资源为 `https://cos-sh.tiye.me/<owner>/<repo>/pr/<pr-number>/<run-id>/<run-attempt>/`。`prefix`、Vite base 与 `public-base-url` 来自同一个目录输出，不能只改上传前缀而沿用旧 base。
 3. 保留正式 v1.2.0 对应的固定 commit SHA 引用上传 Action，并传入 `source-dir: dist`、`bucket`、`region`、`prefix`、`public-base-url` 与三个 secret。Action 上传后会从公开 CDN 逐文件下载并比对字节数和 SHA-256，全部通过后才执行原有 rsync；项目不再复制远端验证脚本，COS 上传或公开读取失败也不会更新服务器上的 HTML。
-4. COS 的 PR 资源按 PR 编号、运行和重试次数隔离，避免不同构建覆盖同名资源。原服务器 `/web-assets/repo/<owner>/<repo>/pr/` 共享预览入口保持不变，其 HTML 引用当次独立 COS 目录；生产 COS 前缀与原服务器路径也不变。CDN 校验的缓存参数与重试由 Action 内部处理，不再手动重复校验。长期使用运行级前缀时，应给旧对象设置存储桶生命周期清理策略。
+4. COS 的 PR 资源按 PR 编号、运行和重试次数隔离，避免不同构建覆盖同名资源。服务器 PR 页面改为 `/web-assets/repo/<owner>/<repo>/pr/<pr-number>/`，其 HTML 引用当次独立 COS 目录，不再覆盖共享 `/pr/` 页面；生产 COS 前缀与原服务器路径不变。CDN 校验的缓存参数与重试由 Action 内部处理，不再手动重复校验。长期使用运行级前缀时，应给旧对象设置存储桶生命周期清理策略。
 
 验证顺序：先在同仓库 PR 中确认 Calcit 校验、构建、COS 上传和 CDN 读取全部成功，并检查 `dist/index.html` 的资源路径；合并后再检查 `main` 的生产前缀和原有服务器页面。不要仅凭上传命令成功就认为页面可用，也不要把 `dist/`、`js-out/` 等生成物提交到 Git。若出现 `AccessDenied`，先核对组织 secret 是否向该仓库开放、桶名是否包含 APPID、地域与前缀是否正确，再查看 COS 权限；若在上传前失败，应先修复原有构建，不能把失败归因于 COS。
 
