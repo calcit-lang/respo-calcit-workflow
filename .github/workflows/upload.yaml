@@ -115,10 +115,10 @@ jobs:
         DEPLOY_KEY: ${{ secrets.rsync_private_key }}
       with:
         flags: '-avzr --progress'
-        options: ''
+        options: '--rsync-path="mkdir -p /web-assets/repo/${{ github.repository }}/pr/${{ github.event.number }} && rsync"'
         ssh_options: ''
         src: 'dist/*'
-        dest: 'rsync-user@tiye.me:/web-assets/repo/${{ github.repository }}/pr/'
+        dest: 'rsync-user@tiye.me:/web-assets/repo/${{ github.repository }}/pr/${{ github.event.number }}/'
 
     - name: Display status from deploy
       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
