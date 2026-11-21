@@ -6,7 +6,7 @@ Demo https://repo.calcit-lang.org/respo-calcit-workflow/ .
 
 ### Calcit 0.44.0 的使用者影响
 
-CLI / `@calcit/procs` 配对正式 **0.44.0**，依赖为 Reel **0.11.4**、UI **0.15.6**、Respo **0.19.12**、JS-FFI **0.2.18**。重新安装依赖并生成前端；存档格式和 HUD 行为保持。
+CLI / `@calcit/procs` 配对正式 **0.44.0**，依赖为 Reel **0.11.5**、UI **0.15.7**、Respo **0.19.13**、JS-FFI **0.2.19**。重新安装依赖并生成前端；存档格式和 HUD 行为保持。
 
 ### 历史 Calcit 0.43.0 / Reel 0.11.2 的使用者影响
 
