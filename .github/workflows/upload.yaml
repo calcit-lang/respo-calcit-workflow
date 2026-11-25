@@ -29,17 +29,17 @@ jobs:
 
     # Use the published setup-calcit release that installs standalone prebuilt caps.
     - id: setup-calcit
-      uses: calcit-lang/setup-calcit@v1.5.0
+      uses: calcit-lang/setup-calcit@v1.5.2
       with:
         tools: calcit,caps
         deps-file: deps.cirru
-        caps-version: 0.1.1
+        caps-version: 0.1.2
 
     - name: Verify published setup tools
       run: |
         test "${{ steps.setup-calcit.outputs.version }}" = "$(calcit -v)"
-        test "${{ steps.setup-calcit.outputs.caps-version }}" = "0.1.1"
-        test "$(caps --version)" = "caps 0.1.1"
+        test "${{ steps.setup-calcit.outputs.caps-version }}" = "0.1.2"
+        test "$(caps --version)" = "caps 0.1.2"
 
     - name: "load deps"
       run: caps --strict --ci && yarn install --immutable
